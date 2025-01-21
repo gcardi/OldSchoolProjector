@@ -1,0 +1,175 @@
+inherited frmMain: TfrmMain
+  Caption = 'Display OEE'
+  ClientHeight = 299
+  ClientWidth = 339
+  StyleBook = dmStyleRes.StyleBook1
+  OnCloseQuery = FormCloseQuery
+  DesignerMasterStyle = 0
+  inherited layoutMain: TLayout
+    Size.Width = 339.000000000000000000
+    Size.Height = 253.000000000000000000
+    TabOrder = 1
+    inherited Button1: TButton
+      Position.Y = 16.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+    end
+    inherited Button11: TButton
+      Position.Y = 56.000000000000000000
+      Size.Height = 30.000000000000000000
+    end
+    inherited Button2: TButton
+      Position.Y = 56.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+    end
+    inherited Button3: TButton
+      Position.Y = 56.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+    end
+    inherited Button5: TButton
+      Position.Y = 16.000000000000000000
+      Size.Height = 30.000000000000000000
+    end
+    inherited Button7: TButton
+      Position.Y = 16.000000000000000000
+      Size.Height = 30.000000000000000000
+    end
+    inherited comboboxPanelTopLeftScreen: TComboBox
+      Size.Height = 32.000000000000000000
+    end
+    inherited edtEventCode: TEdit
+      Size.Height = 32.000000000000000000
+    end
+    inherited Label1: TLabel
+      Position.Y = 179.000000000000000000
+      Size.Width = 45.000000000000000000
+      Size.Height = 19.000000000000000000
+    end
+    inherited Label9: TLabel
+      TabOrder = 17
+    end
+    inherited switchPanelClipping: TSwitch
+      Size.Width = 44.000000000000000000
+    end
+    inherited switchPanelKeepAspectRatio: TSwitch
+      Size.Width = 44.000000000000000000
+    end
+    inherited switchPanelScaling: TSwitch
+      Size.Width = 44.000000000000000000
+    end
+    object tmrPolling: TTimer
+      Enabled = False
+      Interval = 60000
+      Left = 208
+      Top = 136
+    end
+    object Line1: TLine
+      Anchors = [akLeft, akTop, akBottom]
+      LineType = Left
+      Position.X = 336.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 9.000000000000000000
+      Size.Height = 236.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  inherited StatusBar1: TStatusBar
+    Position.Y = 277.000000000000000000
+    Size.Width = 339.000000000000000000
+    TabOrder = 3
+    OnDblClick = StatusBar1DblClick
+  end
+  inherited popupmenuTrayIcon: TPopupMenu
+    Left = 144
+  end
+  object MenuBar1: TMenuBar [4]
+    Size.Width = 339.000000000000000000
+    Size.Height = 24.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object MenuItem1: TMenuItem
+      Locked = True
+      Text = 'File'
+      object MenuItem2: TMenuItem
+        Action = actFileStart
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem3: TMenuItem
+        Action = actFileStop
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem4: TMenuItem
+        Locked = True
+        Text = '-'
+      end
+      object MenuItem5: TMenuItem
+        Action = actFileConfig
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem6: TMenuItem
+        Locked = True
+        Text = '-'
+      end
+      object MenuItem7: TMenuItem
+        Action = actFileExit
+        Locked = True
+        ImageIndex = -1
+      end
+    end
+    object MenuItem9: TMenuItem
+      Locked = True
+      Text = 'Panel'
+      object MenuItem10: TMenuItem
+        Action = actPanelShow
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem11: TMenuItem
+        Action = actPanelHide
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem12: TMenuItem
+        Locked = True
+        Text = '-'
+      end
+      object MenuItem13: TMenuItem
+        Action = actPanelMonoscope
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem16: TMenuItem
+        Locked = True
+        Text = '-'
+      end
+      object MenuItem17: TMenuItem
+        Action = actPanelClipping
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem18: TMenuItem
+        Action = actPanelScaling
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem19: TMenuItem
+        Action = actPanelKeepAspectRatio
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem34: TMenuItem
+        Action = actPanelAutoFit
+        Locked = True
+        ImageIndex = -1
+      end
+    end
+  end
+  inherited ActionList1: TActionList
+    Left = 280
+  end
+end

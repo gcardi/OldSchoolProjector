@@ -1,0 +1,5 @@
+inherited frmPanel: TfrmPanel
+  Caption = 'Schermo'
+  StyleBook = dmStyleRes.StyleBook1
+  DesignerMasterStyle = 0
+end

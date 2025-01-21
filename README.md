@@ -1,2 +1,2 @@
-# OldSchoolProjector
-Slide projector simulation
+# Tabellone
+Old School Projector (FMX)
