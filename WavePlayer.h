@@ -17,9 +17,10 @@ public:
     WavePlayer( WavePlayer const & ) = delete;
     WavePlayer& operator=( WavePlayer const & ) = delete;
 
-    void LoadWaveFromStream( TStream& Stream );
-    void LoadWaveFromFile( String FilePath );
-    void LoadWaveFromResource( HINSTANCE HInstance, String Name, String Type = _D( "WAVE" ) );
+    void LoadWaveFromStream( TStream& Stream, float Volume = 1.0F );
+    void LoadWaveFromFile( String FilePath, float Volume = 1.0F );
+    void LoadWaveFromResource( HINSTANCE HInstance, String Name,
+                               float Volume = 1.0F, String Type = _D( "WAVE" ) );
     void Play( bool Loop = false );
     void Stop();
 

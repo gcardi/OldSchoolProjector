@@ -5,7 +5,6 @@
 
 #include <FMX.Filter.Effects.hpp>
 #include <FMX.DialogService.Sync.hpp>
-#include <FMX.Platform.Win.hpp>
 
 #include "FormMain.h"
 #include "FormConfig.h"
@@ -119,11 +118,17 @@ void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::StatusBar1DblClick(TObject *Sender)
+void __fastcall TfrmMain::actPictureNextExecute(TObject *Sender)
 {
-    player_ = make_unique<WavePlayer>( Fmx::Platform::Win::WindowHandleToPlatform( Handle )->Wnd );
-    player_->LoadWaveFromResource( HInstance, _D( "sound" ) );
-    player_->Play( false );
+    panel_->Next();
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actPictureNextUpdate(TObject *Sender)
+{
+    TAction& Act = static_cast<TAction&>( *Sender );
+    Act.Enabled = GetPanel() && !panel_->Images.empty();
+}
+//---------------------------------------------------------------------------
+
 

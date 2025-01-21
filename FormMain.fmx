@@ -1,13 +1,13 @@
 inherited frmMain: TfrmMain
   Caption = 'Display OEE'
-  ClientHeight = 299
+  ClientHeight = 345
   ClientWidth = 339
   StyleBook = dmStyleRes.StyleBook1
   OnCloseQuery = FormCloseQuery
   DesignerMasterStyle = 0
   inherited layoutMain: TLayout
     Size.Width = 339.000000000000000000
-    Size.Height = 253.000000000000000000
+    Size.Height = 299.000000000000000000
     TabOrder = 1
     inherited Button1: TButton
       Position.Y = 16.000000000000000000
@@ -71,15 +71,25 @@ inherited frmMain: TfrmMain
       Position.X = 336.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 9.000000000000000000
-      Size.Height = 236.000000000000000000
+      Size.Height = 282.000000000000000000
       Size.PlatformDefault = False
+    end
+    object Button4: TButton
+      Action = actPictureNext
+      ImageIndex = -1
+      Position.X = 24.000000000000000000
+      Position.Y = 248.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 18
+      TextSettings.Trimming = None
     end
   end
   inherited StatusBar1: TStatusBar
-    Position.Y = 277.000000000000000000
+    Position.Y = 323.000000000000000000
     Size.Width = 339.000000000000000000
     TabOrder = 3
-    OnDblClick = StatusBar1DblClick
   end
   inherited popupmenuTrayIcon: TPopupMenu
     Left = 144
@@ -171,5 +181,11 @@ inherited frmMain: TfrmMain
   end
   inherited ActionList1: TActionList
     Left = 280
+    object actPictureNext: TAction
+      Category = 'Picture'
+      Text = 'Next'
+      OnExecute = actPictureNextExecute
+      OnUpdate = actPictureNextUpdate
+    end
   end
 end

@@ -12,21 +12,38 @@
 #include <FMX.Types.hpp>
 #include <System.Classes.hpp>
 #include "FMXFormPanelBase.h"
+#include <FMX.Ani.hpp>
+#include <FMX.ExtCtrls.hpp>
+#include <FMX.Effects.hpp>
+#include <FMX.Filter.Effects.hpp>
+
+#include <memory>
+
+#include "WavePlayer.h"
 
 //---------------------------------------------------------------------------
-
-using TNumEvent =
-    void __fastcall (__closure *)( System::TObject* Sender, int Num, bool Val );
 
 class TfrmPanel : public TfrmPanelBase
 {
 __published:	// IDE-managed Components
+    TLayout *Layout1;
+    TImageViewer *ImageViewer2;
+    TFloatAnimation *FloatAnimation2;
+    TRectangle *Rectangle1;
+    TFloatAnimation *FloatAnimation1;
+    void __fastcall FloatAnimation2Finish(TObject *Sender);
 private:	// User declarations
-    //static constexpr auto TabsNodeName = _D( "Tabs" );
+    using ImageFileNameCont = std::vector<String>;
+
+    std::unique_ptr<WavePlayer> player_;
+    size_t phase_ {};
+    ImageFileNameCont entries_;
+    size_t idx_ {};
 
     void RestoreProperties();
     void SaveProperties() const;
-
+    void LoadImage( size_t Index );
+    ImageFileNameCont& GetImages();
 public:		// User declarations
     using inherited = TfrmPanelBase;
 
@@ -36,6 +53,9 @@ public:		// User declarations
                           Anafestica::TConfigNode* const RootNode = nullptr );
     __fastcall ~TfrmPanel();
 
+    void Next();
+
+    __property ImageFileNameCont& Images = { read = GetImages };
 };
 //---------------------------------------------------------------------------
 //extern PACKAGE TfrmPanel *frmPanel;

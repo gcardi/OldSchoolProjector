@@ -51,7 +51,7 @@ static void AdjustVolume( int16_t* Samples, size_t SampleCount, float Volume )
 }
 //---------------------------------------------------------------------------
 
-void WavePlayer::LoadWaveFromStream( TStream& Stream )
+void WavePlayer::LoadWaveFromStream( TStream& Stream, float Volume )
 {
     char ChunkId[4];
     DWORD ChunkSize;
@@ -85,7 +85,7 @@ void WavePlayer::LoadWaveFromStream( TStream& Stream )
             AdjustVolume(
                 reinterpret_cast<int16_t*>( waveData_.data() ),
                 waveData_.size() / sizeof( int16_t ),
-                0.1F
+                Volume
             );
             break;
         }
@@ -96,21 +96,22 @@ void WavePlayer::LoadWaveFromStream( TStream& Stream )
 }
 //---------------------------------------------------------------------------
 
-void WavePlayer::LoadWaveFromFile( String FilePath )
+void WavePlayer::LoadWaveFromFile( String FilePath, float Volume )
 {
     auto Stream = make_unique<TFileStream>( FilePath, fmOpenRead );
-    LoadWaveFromStream( *Stream );
+    LoadWaveFromStream( *Stream, Volume );
 }
 //---------------------------------------------------------------------------
 
-void WavePlayer::LoadWaveFromResource( HINSTANCE HInstance, String Name, String Type )
+void WavePlayer::LoadWaveFromResource( HINSTANCE HInstance, String Name,
+                                       float Volume, String Type )
 {
     auto Stream =
         make_unique<TResourceStream>(
             reinterpret_cast<THandle>( HInstance ), Name.c_str(), Type.c_str()
         );
 
-    LoadWaveFromStream( *Stream );
+    LoadWaveFromStream( *Stream, Volume );
 }
 //---------------------------------------------------------------------------
 

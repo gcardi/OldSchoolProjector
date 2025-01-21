@@ -295,7 +295,7 @@ void __fastcall TfrmPanelAppMain::actPanelMonoscopeExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelMonoscopeUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = GetPanel();
 }
 //---------------------------------------------------------------------------
@@ -312,7 +312,7 @@ void __fastcall TfrmPanelAppMain::actPanelClippingExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelClippingUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     TfrmPanelBase* const Panel = GetPanel();
     Act.Enabled = !Panel || !Panel->WindowMode;
 }
@@ -330,7 +330,7 @@ void __fastcall TfrmPanelAppMain::actPanelScalingExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelScalingUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     TfrmPanelBase* const Panel = GetPanel();
     Act.Enabled = !Panel || !Panel->WindowMode;
 }
@@ -348,7 +348,7 @@ void __fastcall TfrmPanelAppMain::actPanelKeepAspectRatioExecute(TObject *Sender
 
 void __fastcall TfrmPanelAppMain::actPanelKeepAspectRatioUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     TfrmPanelBase* const Panel = GetPanel();
     Act.Enabled = !Panel || !Panel->WindowMode;
 }
@@ -430,7 +430,7 @@ void __fastcall TfrmPanelAppMain::actPanelShowExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelShowUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     TfrmPanelBase* const Panel = GetPanel();
     Act.Enabled = Panel && !Panel->Visible;
 }
@@ -446,7 +446,7 @@ void __fastcall TfrmPanelAppMain::actPanelHideExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelHideUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     TfrmPanelBase* const Panel = GetPanel();
     Act.Enabled = Panel && Panel->Visible;
 }
@@ -454,14 +454,14 @@ void __fastcall TfrmPanelAppMain::actPanelHideUpdate(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::EnabledIfNotRunning(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = !GetPanel();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPanelAppMain::EnabledIfRunning(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = GetPanel();
 }
 //---------------------------------------------------------------------------
@@ -583,7 +583,7 @@ void __fastcall TfrmPanelAppMain::actViewOpenMainWindowExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actViewOpenMainWindowUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = trayIcon_->Visible;
 }
 //---------------------------------------------------------------------------
@@ -598,7 +598,7 @@ void __fastcall TfrmPanelAppMain::actPanelAutoFitExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelAutoFitUpdate(TObject *Sender)
 {
-    TAction& Act = dynamic_cast<TAction&>( *Sender );
+    TAction& Act = static_cast<TAction&>( *Sender );
     TfrmPanelBase* const Panel = GetPanel();
     Act.Enabled = Panel && Panel->WindowMode;
 }

@@ -6,7 +6,7 @@
         <Projects Include="OldSchoolProjector.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\TestOldSchoolProjector\TestOldSchoolProjector.cbproj">
+        <Projects Include="TestOldSchoolProjector\TestOldSchoolProjector.cbproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -27,13 +27,13 @@
         <MSBuild Projects="OldSchoolProjector.cbproj" Targets="Make"/>
     </Target>
     <Target Name="TestOldSchoolProjector">
-        <MSBuild Projects="..\TestOldSchoolProjector\TestOldSchoolProjector.cbproj"/>
+        <MSBuild Projects="TestOldSchoolProjector\TestOldSchoolProjector.cbproj"/>
     </Target>
     <Target Name="TestOldSchoolProjector:Clean">
-        <MSBuild Projects="..\TestOldSchoolProjector\TestOldSchoolProjector.cbproj" Targets="Clean"/>
+        <MSBuild Projects="TestOldSchoolProjector\TestOldSchoolProjector.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="TestOldSchoolProjector:Make">
-        <MSBuild Projects="..\TestOldSchoolProjector\TestOldSchoolProjector.cbproj" Targets="Make"/>
+        <MSBuild Projects="TestOldSchoolProjector\TestOldSchoolProjector.cbproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
         <CallTarget Targets="OldSchoolProjector;TestOldSchoolProjector"/>

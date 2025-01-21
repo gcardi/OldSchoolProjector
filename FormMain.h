@@ -22,7 +22,6 @@
 #include <vector>
 #include <memory>
 
-#include "WavePlayer.h"
 #include "FormPanel.h"
 
 //---------------------------------------------------------------------------
@@ -50,15 +49,17 @@ __published:	// IDE-managed Components
     TMenuItem *MenuItem34;
     TLine *Line1;
     TMenuBar *MenuBar1;
+    TButton *Button4;
+    TAction *actPictureNext;
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
-    void __fastcall StatusBar1DblClick(TObject *Sender);
+    void __fastcall actPictureNextExecute(TObject *Sender);
+    void __fastcall actPictureNextUpdate(TObject *Sender);
 
 
 private:	// User declarations
     using PanelType = TfrmPanel;
 
     std::unique_ptr<TfrmPanel> panel_;
-    std::unique_ptr<WavePlayer> player_;
 
     void CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
                       bool Scaling, bool KeepAspectRatio );

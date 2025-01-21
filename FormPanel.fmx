@@ -2,4 +2,48 @@ inherited frmPanel: TfrmPanel
   Caption = 'Schermo'
   StyleBook = dmStyleRes.StyleBook1
   DesignerMasterStyle = 0
+  inherited layoutMain: TLayout
+    object Layout1: TLayout
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 1920.000000000000000000
+      Size.Height = 1080.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object FloatAnimation2: TFloatAnimation
+        Duration = 0.600000023841857900
+        OnFinish = FloatAnimation2Finish
+        PropertyName = 'Position.X'
+        StartValue = 0.000000000000000000
+        StopValue = 660.000000000000000000
+      end
+      object Rectangle1: TRectangle
+        Align = Client
+        Fill.Color = claBlack
+        Opacity = 0.000000000000000000
+        Size.Width = 1920.000000000000000000
+        Size.Height = 1080.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.000000000000000000
+        object FloatAnimation1: TFloatAnimation
+          AutoReverse = True
+          Duration = 0.300000011920929000
+          Interpolation = Quadratic
+          PropertyName = 'Opacity'
+          StartValue = 0.000000000000000000
+          StopValue = 1.000000000000000000
+        end
+      end
+      object ImageViewer2: TImageViewer
+        Size.Width = 1920.000000000000000000
+        Size.Height = 1080.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        BackgroundFill.Color = claBlack
+        ShowScrollBars = False
+        Viewport.Width = 1916.000000000000000000
+        Viewport.Height = 1076.000000000000000000
+      end
+    end
+  end
 end
