@@ -31,6 +31,8 @@ __published:	// IDE-managed Components
     TFloatAnimation *FloatAnimation2;
     TRectangle *Rectangle1;
     TFloatAnimation *FloatAnimation1;
+    TLayout *Layout2;
+    TNormalBlendEffect *NormalBlendEffect1;
     void __fastcall FloatAnimation2Finish(TObject *Sender);
 private:	// User declarations
     using ImageFileNameCont = std::vector<String>;
@@ -39,11 +41,14 @@ private:	// User declarations
     size_t phase_ {};
     ImageFileNameCont entries_;
     size_t idx_ {};
+    bool backward_ {};
 
     void RestoreProperties();
     void SaveProperties() const;
     void LoadImage( size_t Index );
     ImageFileNameCont& GetImages();
+    bool GetVignetting() const;
+    void SetVignetting( bool Val );
 public:		// User declarations
     using inherited = TfrmPanelBase;
 
@@ -52,10 +57,11 @@ public:		// User declarations
                           StoreOpts StoreOptions,
                           Anafestica::TConfigNode* const RootNode = nullptr );
     __fastcall ~TfrmPanel();
-
     void Next();
-
+    void Prior();
     __property ImageFileNameCont& Images = { read = GetImages };
+    bool IsIdle() const;
+    __property bool Vignetting = { read = GetVignetting, write = SetVignetting };
 };
 //---------------------------------------------------------------------------
 //extern PACKAGE TfrmPanel *frmPanel;

@@ -119,8 +119,8 @@ void TfrmPanelBase::Init()
         Cursor = crDefault;
         layoutMain->Cursor = crDefault;
         FormStyle = TFormStyle::Normal;
-        RESTORE_LOCAL_PROPERTY( ClientWidth );
-        RESTORE_LOCAL_PROPERTY( ClientHeight );
+        //RESTORE_LOCAL_PROPERTY( ClientWidth );
+        //RESTORE_LOCAL_PROPERTY( ClientHeight );
     }
 
     RestoreProperties();
@@ -131,8 +131,8 @@ void TfrmPanelBase::Destroy()
 {
     SaveProperties();
     if ( !display_ ) {
-        SAVE_LOCAL_PROPERTY( ClientWidth );
-        SAVE_LOCAL_PROPERTY( ClientHeight );
+        //SAVE_LOCAL_PROPERTY( ClientWidth );
+        //SAVE_LOCAL_PROPERTY( ClientHeight );
     }
     ClearRegion();
 }

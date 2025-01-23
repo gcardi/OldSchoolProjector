@@ -9,6 +9,8 @@
 #include <FMX.StdCtrls.hpp>
 #include <FMX.Types.hpp>
 #include <System.Classes.hpp>
+#include <FMX.Effects.hpp>
+#include <FMX.Filter.Effects.hpp>
 
 //---------------------------------------------------------------------------
 
