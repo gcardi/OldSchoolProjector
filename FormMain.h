@@ -53,10 +53,11 @@ __published:	// IDE-managed Components
     TAction *actPictureNext;
     TButton *Button6;
     TAction *actPicturePrior;
-    TSwitch *Switch1;
+    TSwitch *switchVignetting;
     TLabel *Label2;
     TAction *actPanelVignetting;
-    TTrackBar *TrackBar1;
+    TTrackBar *trackbarMechSndVol;
+    TLabel *Label4;
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
     void __fastcall actPictureNextExecute(TObject *Sender);
     void __fastcall actPictureNextUpdate(TObject *Sender);
@@ -64,6 +65,7 @@ __published:	// IDE-managed Components
     void __fastcall actPicturePriorUpdate(TObject *Sender);
     void __fastcall actPanelVignettingExecute(TObject *Sender);
     void __fastcall actPanelVignettingUpdate(TObject *Sender);
+    void __fastcall trackbarMechSndVolChange(TObject *Sender);
 
 
 private:	// User declarations
@@ -76,6 +78,14 @@ private:	// User declarations
                       bool Scaling, bool KeepAspectRatio );
     void DestroyPanel();
     void SetPanelVignetting( bool Val );
+    void IdleEvent( TObject* Sender, bool &Done );
+    TfrmPanel* GetProjectorPanel() {
+        return static_cast<TfrmPanel*>( GetPanel() );
+    }
+    int GetMechSoundVol() const;
+    void SetMechSndVol( int Val );
+
+    __property TfrmPanel* ProjectorPanel = { read = GetProjectorPanel };
 protected:
     virtual void RestoreProperties();
     virtual void SaveProperties() const;
@@ -92,6 +102,7 @@ public:		// User declarations
     __property bool PanelVignetting = {
         read = panelVignetting_, write = SetPanelVignetting
     };
+    __property int MechSndVol = { read = GetMechSoundVol, write = SetMechSndVol };
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMain *frmMain;

@@ -97,7 +97,7 @@ inherited frmMain: TfrmMain
       TabOrder = 19
       TextSettings.Trimming = None
     end
-    object Switch1: TSwitch
+    object switchVignetting: TSwitch
       Action = actPanelVignetting
       Position.X = 24.000000000000000000
       Position.Y = 250.000000000000000000
@@ -115,14 +115,27 @@ inherited frmMain: TfrmMain
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Vignetting'
-      TabOrder = 21
+      TabOrder = 22
     end
-    object TrackBar1: TTrackBar
+    object trackbarMechSndVol: TTrackBar
       CanParentFocus = True
       Orientation = Horizontal
       Position.X = 24.000000000000000000
       Position.Y = 285.000000000000000000
-      TabOrder = 22
+      TabOrder = 23
+      Value = 50.000000000000000000
+      OnChange = trackbarMechSndVolChange
+    end
+    object Label4: TLabel
+      Action = actPanelScaling
+      Position.X = 135.000000000000000000
+      Position.Y = 279.000000000000000000
+      Size.Width = 177.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Trimming = None
+      Text = 'Mechanism sound volume'
+      TabOrder = 21
     end
   end
   inherited StatusBar1: TStatusBar

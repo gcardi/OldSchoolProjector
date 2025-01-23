@@ -32,26 +32,17 @@ using std::towlower;
 //TfrmPanel *frmPanel;
 //---------------------------------------------------------------------------
 
-/*
-__fastcall TfrmPanel::TfrmPanel( TComponent* Owner,
-                                 FMXWinDisplayDev const * Display,
-                                 Anafestica::TConfigNode* const RootNode )
-    : TfrmPanel( Owner, Display, StoreOpts::All, RootNode )
-{
-}
-*/
-//---------------------------------------------------------------------------
-
-__fastcall TfrmPanel::TfrmPanel( TComponent* Owner,
+__fastcall TfrmPanel::TfrmPanel( TComponent* Owner, int MechSoundVolume,
                                  FMXWinDisplayDev const * Display,
                                  StoreOpts StoreOptions,
                                  Anafestica::TConfigNode* const RootNode )
     : TfrmPanelBase( Owner, Display, StoreOptions, RootNode )
+    , mechSoundVolume_{ MechSoundVolume }
     , player_ { new WavePlayer{ WindowHandleToPlatform( Handle )->Wnd } }
 {
     RestoreProperties();
 
-    player_->LoadWaveFromResource( HInstance, _D( "sound" ) );
+    LoadWave();
 
 	//std::wstring Path = LR"=(C:\Users\Giuliano\Desktop\SlideShow)=";
 	std::wstring Path = LR"=(C:\Users\Giuliano\Desktop\Lesso\SLIDE)=";
@@ -154,9 +145,35 @@ bool TfrmPanel::IsIdle() const
 }
 //---------------------------------------------------------------------------
 
+void TfrmPanel::LoadWave()
+{
+    player_->LoadWaveFromResource(
+        HInstance, _D( "sound" ),
+        static_cast<float>( mechSoundVolume_ ) / 100.0F
+    );
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanel::SetMechSoundVolume( int Val )
+{
+    if ( mechSoundVolume_ != Val ) {
+        mechSoundVolume_ = Val;
+        LoadWave();
+    }
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanel::PlayMechanicalSound()
+{
+    if ( player_ ) {
+        player_->Play( false );
+    }
+}
+//---------------------------------------------------------------------------
+
 void TfrmPanel::Next()
 {
-    player_->Play( false );
+    PlayMechanicalSound();
     ++phase_;
     backward_ = false;
     FloatAnimation2->StopValue = ImageViewer2->Width * 2;
@@ -167,7 +184,7 @@ void TfrmPanel::Next()
 
 void TfrmPanel::Prior()
 {
-    player_->Play( false );
+    PlayMechanicalSound();
     ++phase_;
     backward_ = true;
     FloatAnimation2->StopValue = ImageViewer2->Width * 2;

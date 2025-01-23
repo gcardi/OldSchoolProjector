@@ -287,7 +287,7 @@ void TfrmPanelAppMain::SaveProperties() const
 
 void __fastcall TfrmPanelAppMain::actPanelMonoscopeExecute(TObject *Sender)
 {
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->Monoscope = actPanelMonoscope->Checked;
     }
 }
@@ -295,7 +295,7 @@ void __fastcall TfrmPanelAppMain::actPanelMonoscopeExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelMonoscopeUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
+    auto& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = GetPanel();
 }
 //---------------------------------------------------------------------------
@@ -304,7 +304,7 @@ void __fastcall TfrmPanelAppMain::actPanelClippingExecute(TObject *Sender)
 {
     panelClipping_ = !panelClipping_;
     actPanelClipping->Checked = panelClipping_;
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->MonitorClipping = PanelClipping;
     }
 }
@@ -312,8 +312,8 @@ void __fastcall TfrmPanelAppMain::actPanelClippingExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelClippingUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
-    TfrmPanelBase* const Panel = GetPanel();
+    auto& Act = static_cast<TAction&>( *Sender );
+    auto Panel = GetPanel();
     Act.Enabled = !Panel || !Panel->WindowMode;
 }
 //---------------------------------------------------------------------------
@@ -330,7 +330,7 @@ void __fastcall TfrmPanelAppMain::actPanelScalingExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelScalingUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
+    auto& Act = static_cast<TAction&>( *Sender );
     TfrmPanelBase* const Panel = GetPanel();
     Act.Enabled = !Panel || !Panel->WindowMode;
 }
@@ -340,7 +340,7 @@ void __fastcall TfrmPanelAppMain::actPanelKeepAspectRatioExecute(TObject *Sender
 {
     panelKeepAspectRatio_ = !panelKeepAspectRatio_;
     actPanelKeepAspectRatio->Checked = panelKeepAspectRatio_;
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->MaintainAspectRatio = PanelKeepAspectRatio;
     }
 }
@@ -348,8 +348,8 @@ void __fastcall TfrmPanelAppMain::actPanelKeepAspectRatioExecute(TObject *Sender
 
 void __fastcall TfrmPanelAppMain::actPanelKeepAspectRatioUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
-    TfrmPanelBase* const Panel = GetPanel();
+    auto& Act = static_cast<TAction&>( *Sender );
+    auto Panel = GetPanel();
     Act.Enabled = !Panel || !Panel->WindowMode;
 }
 //---------------------------------------------------------------------------
@@ -358,7 +358,7 @@ void TfrmPanelAppMain::SetPanelClipping( bool Val )
 {
     actPanelClipping->Checked = Val;
     panelClipping_ = Val;
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->MonitorClipping = Val;
     }
 }
@@ -368,7 +368,7 @@ void TfrmPanelAppMain::SetPanelScaling( bool Val )
 {
     actPanelScaling->Checked = Val;
     panelScaling_ = Val;
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->MonitorScaling = Val;
     }
 }
@@ -378,7 +378,7 @@ void TfrmPanelAppMain::SetPanelKeepAspectRatio( bool Val )
 {
     actPanelKeepAspectRatio->Checked = Val;
     panelKeepAspectRatio_ = Val;
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->MaintainAspectRatio = Val;
     }
 }
@@ -422,7 +422,7 @@ void TfrmPanelAppMain::Stop()
 
 void __fastcall TfrmPanelAppMain::actPanelShowExecute(TObject *Sender)
 {
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->Visible = true;
     }
 }
@@ -430,15 +430,15 @@ void __fastcall TfrmPanelAppMain::actPanelShowExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelShowUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
-    TfrmPanelBase* const Panel = GetPanel();
+    auto& Act = static_cast<TAction&>( *Sender );
+    auto Panel = GetPanel();
     Act.Enabled = Panel && !Panel->Visible;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPanelAppMain::actPanelHideExecute(TObject *Sender)
 {
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->Visible = false;
     }
 }
@@ -446,22 +446,22 @@ void __fastcall TfrmPanelAppMain::actPanelHideExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelHideUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
-    TfrmPanelBase* const Panel = GetPanel();
+    auto& Act = static_cast<TAction&>( *Sender );
+    auto Panel = GetPanel();
     Act.Enabled = Panel && Panel->Visible;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPanelAppMain::EnabledIfNotRunning(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
+    auto& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = !GetPanel();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPanelAppMain::EnabledIfRunning(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
+    auto& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = GetPanel();
 }
 //---------------------------------------------------------------------------
@@ -583,14 +583,14 @@ void __fastcall TfrmPanelAppMain::actViewOpenMainWindowExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actViewOpenMainWindowUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
+    auto& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = trayIcon_->Visible;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPanelAppMain::actPanelAutoFitExecute(TObject *Sender)
 {
-    if ( TfrmPanelBase* const Panel = GetPanel() ) {
+    if ( auto Panel = GetPanel() ) {
         Panel->AutoFit();
     }
 }
@@ -598,8 +598,8 @@ void __fastcall TfrmPanelAppMain::actPanelAutoFitExecute(TObject *Sender)
 
 void __fastcall TfrmPanelAppMain::actPanelAutoFitUpdate(TObject *Sender)
 {
-    TAction& Act = static_cast<TAction&>( *Sender );
-    TfrmPanelBase* const Panel = GetPanel();
+    auto& Act = static_cast<TAction&>( *Sender );
+    auto Panel = GetPanel();
     Act.Enabled = Panel && Panel->WindowMode;
 }
 //---------------------------------------------------------------------------

@@ -42,6 +42,7 @@ private:	// User declarations
     ImageFileNameCont entries_;
     size_t idx_ {};
     bool backward_ {};
+    int mechSoundVolume_ { 50 };
 
     void RestoreProperties();
     void SaveProperties() const;
@@ -49,10 +50,13 @@ private:	// User declarations
     ImageFileNameCont& GetImages();
     bool GetVignetting() const;
     void SetVignetting( bool Val );
+    void PlayMechanicalSound();
+    void SetMechSoundVolume( int Val );
+    void LoadWave();
 public:		// User declarations
     using inherited = TfrmPanelBase;
 
-    __fastcall TfrmPanel( TComponent* Owner,
+    __fastcall TfrmPanel( TComponent* Owner, int MechSoundVolume,
                           FMXWinDisplayDev const * Display,
                           StoreOpts StoreOptions,
                           Anafestica::TConfigNode* const RootNode = nullptr );
@@ -62,6 +66,9 @@ public:		// User declarations
     __property ImageFileNameCont& Images = { read = GetImages };
     bool IsIdle() const;
     __property bool Vignetting = { read = GetVignetting, write = SetVignetting };
+    __property int MechSoundVolume = {
+        read = mechSoundVolume_, write = SetMechSoundVolume
+    };
 };
 //---------------------------------------------------------------------------
 //extern PACKAGE TfrmPanel *frmPanel;
