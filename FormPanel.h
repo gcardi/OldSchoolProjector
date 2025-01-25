@@ -43,6 +43,8 @@ private:	// User declarations
     size_t idx_ {};
     bool backward_ {};
     int mechSoundVolume_ { 50 };
+    String picturesPath_;
+    bool recursivePicturesSearch_ {};
 
     void RestoreProperties();
     void SaveProperties() const;
@@ -53,10 +55,13 @@ private:	// User declarations
     void PlayMechanicalSound();
     void SetMechSoundVolume( int Val );
     void LoadWave();
+    void LoadPictures();
 public:		// User declarations
     using inherited = TfrmPanelBase;
 
     __fastcall TfrmPanel( TComponent* Owner, int MechSoundVolume,
+                          String PicturesPath,
+                          bool RecursivePicturesSearch,
                           FMXWinDisplayDev const * Display,
                           StoreOpts StoreOptions,
                           Anafestica::TConfigNode* const RootNode = nullptr );

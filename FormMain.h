@@ -18,6 +18,7 @@
 #include <System.Actions.hpp>
 #include <System.Classes.hpp>
 #include "FMXFormAppMain.h"
+#include <FMX.Dialogs.hpp>
 
 #include <vector>
 #include <memory>
@@ -53,11 +54,24 @@ __published:	// IDE-managed Components
     TAction *actPictureNext;
     TButton *Button6;
     TAction *actPicturePrior;
-    TSwitch *switchVignetting;
+    TSwitch *switchVignetting1;
     TLabel *Label2;
     TAction *actPanelVignetting;
     TTrackBar *trackbarMechSndVol;
     TLabel *Label4;
+    TEdit *edtPicturesPath;
+    TLabel *Label5;
+    TSwitch *switchRecursivePicturesSearch1;
+    TLabel *Label6;
+    TButton *Button9;
+    TAction *actPanelRecursivePicturesSearch;
+    TAction *actFileBrowsePicturesPath;
+    TMenuItem *MenuItem14;
+    TMenuItem *MenuItem15;
+    TMenuItem *MenuItem20;
+    TMenuItem *MenuItem21;
+    TMenuItem *MenuItem22;
+    TOpenDialog *OpenDialog1;
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
     void __fastcall actPictureNextExecute(TObject *Sender);
     void __fastcall actPictureNextUpdate(TObject *Sender);
@@ -66,26 +80,36 @@ __published:	// IDE-managed Components
     void __fastcall actPanelVignettingExecute(TObject *Sender);
     void __fastcall actPanelVignettingUpdate(TObject *Sender);
     void __fastcall trackbarMechSndVolChange(TObject *Sender);
+    void __fastcall actPanelRecursivePicturesSearchExecute(TObject *Sender);
+    void __fastcall actPanelRecursivePicturesSearchUpdate(TObject *Sender);
+    void __fastcall actFileBrowsePicturesPathUpdate(TObject *Sender);
+    void __fastcall actFileBrowsePicturesPathExecute(TObject *Sender);
 
 
 private:	// User declarations
     using PanelType = TfrmPanel;
 
     std::unique_ptr<TfrmPanel> panel_;
-    bool panelVignetting_ {};
+    bool vignetting_ {};
+    String picturesPath_;
 
     void CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
                       bool Scaling, bool KeepAspectRatio );
     void DestroyPanel();
-    void SetPanelVignetting( bool Val );
+    void SetVignetting( bool Val );
     void IdleEvent( TObject* Sender, bool &Done );
     TfrmPanel* GetProjectorPanel() {
         return static_cast<TfrmPanel*>( GetPanel() );
     }
-    int GetMechSoundVol() const;
-    void SetMechSndVol( int Val );
+    int GetMechanicalSoundVolume() const;
+    void SetMechanicalSoundVolume( int Val );
 
     __property TfrmPanel* ProjectorPanel = { read = GetProjectorPanel };
+
+    String GetPicturesPath() const;
+    void SetPicturesPath( String Val );
+    bool GetRecursivePicturesSearch() const;
+    void SetRecursivePicturesSearch( bool Val );
 protected:
     virtual void RestoreProperties();
     virtual void SaveProperties() const;
@@ -99,10 +123,18 @@ public:		// User declarations
 
     __fastcall TfrmMain(TComponent* Owner);
     __fastcall ~TfrmMain();
-    __property bool PanelVignetting = {
-        read = panelVignetting_, write = SetPanelVignetting
+    __property bool Vignetting = {
+        read = vignetting_, write = SetVignetting
     };
-    __property int MechSndVol = { read = GetMechSoundVol, write = SetMechSndVol };
+    __property int MechanicalSoundVolume = {
+        read = GetMechanicalSoundVolume, write = SetMechanicalSoundVolume
+    };
+    __property String PicturesPath = {
+        read = GetPicturesPath, write = SetPicturesPath
+    };
+    __property bool RecursivePicturesSearch = {
+        read = GetRecursivePicturesSearch, write = SetRecursivePicturesSearch
+    };
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMain *frmMain;

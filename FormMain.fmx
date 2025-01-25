@@ -1,13 +1,13 @@
 inherited frmMain: TfrmMain
   Caption = 'Display OEE'
-  ClientHeight = 420
+  ClientHeight = 526
   ClientWidth = 339
   StyleBook = dmStyleRes.StyleBook1
   OnCloseQuery = FormCloseQuery
   DesignerMasterStyle = 0
   inherited layoutMain: TLayout
     Size.Width = 339.000000000000000000
-    Size.Height = 374.000000000000000000
+    Size.Height = 480.000000000000000000
     TabOrder = 1
     inherited Button1: TButton
       Position.Y = 16.000000000000000000
@@ -72,7 +72,7 @@ inherited frmMain: TfrmMain
       Position.X = 336.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 9.000000000000000000
-      Size.Height = 357.000000000000000000
+      Size.Height = 463.000000000000000000
       Size.PlatformDefault = False
     end
     object Button4: TButton
@@ -97,7 +97,7 @@ inherited frmMain: TfrmMain
       TabOrder = 19
       TextSettings.Trimming = None
     end
-    object switchVignetting: TSwitch
+    object switchVignetting1: TSwitch
       Action = actPanelVignetting
       Position.X = 24.000000000000000000
       Position.Y = 250.000000000000000000
@@ -109,20 +109,20 @@ inherited frmMain: TfrmMain
     object Label2: TLabel
       Action = actPanelScaling
       Position.X = 80.000000000000000000
-      Position.Y = 244.000000000000000000
+      Position.Y = 243.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 33.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Vignetting'
-      TabOrder = 22
+      TabOrder = 23
     end
     object trackbarMechSndVol: TTrackBar
       CanParentFocus = True
       Orientation = Horizontal
       Position.X = 24.000000000000000000
       Position.Y = 285.000000000000000000
-      TabOrder = 23
+      TabOrder = 24
       Value = 50.000000000000000000
       OnChange = trackbarMechSndVolChange
     end
@@ -137,9 +137,61 @@ inherited frmMain: TfrmMain
       Text = 'Mechanism sound volume'
       TabOrder = 21
     end
+    object edtPicturesPath: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 25
+      Position.X = 24.000000000000000000
+      Position.Y = 393.000000000000000000
+      Size.Width = 265.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label5: TLabel
+      Action = actPanelScaling
+      Position.X = 24.000000000000000000
+      Position.Y = 364.000000000000000000
+      Size.Width = 129.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Trimming = None
+      Text = 'Pictures path'
+      TabOrder = 22
+    end
+    object switchRecursivePicturesSearch1: TSwitch
+      Action = actPanelRecursivePicturesSearch
+      Position.X = 25.000000000000000000
+      Position.Y = 440.000000000000000000
+      Size.Width = 44.000000000000000000
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 26
+    end
+    object Label6: TLabel
+      Position.X = 80.000000000000000000
+      Position.Y = 440.000000000000000000
+      Size.Width = 169.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Recursive pictures search'
+      TabOrder = 27
+    end
+    object Button9: TButton
+      Action = actFileBrowsePicturesPath
+      StyledSettings = [Family, Style, FontColor]
+      ImageIndex = -1
+      Position.X = 297.000000000000000000
+      Position.Y = 393.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 28
+      Text = #8729#8729#8729
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.Trimming = None
+    end
   end
   inherited StatusBar1: TStatusBar
-    Position.Y = 398.000000000000000000
+    Position.Y = 504.000000000000000000
     Size.Width = 339.000000000000000000
     TabOrder = 3
   end
@@ -229,6 +281,29 @@ inherited frmMain: TfrmMain
         Locked = True
         ImageIndex = -1
       end
+      object MenuItem14: TMenuItem
+        Locked = True
+        Text = '-'
+      end
+      object MenuItem15: TMenuItem
+        Action = actPicturePrior
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem20: TMenuItem
+        Action = actPictureNext
+        Locked = True
+        ImageIndex = -1
+      end
+      object MenuItem21: TMenuItem
+        Locked = True
+        Text = '-'
+      end
+      object MenuItem22: TMenuItem
+        Action = actPanelVignetting
+        Locked = True
+        ImageIndex = -1
+      end
     end
   end
   inherited ActionList1: TActionList
@@ -253,5 +328,23 @@ inherited frmMain: TfrmMain
       OnExecute = actPanelVignettingExecute
       OnUpdate = actPanelVignettingUpdate
     end
+    object actPanelRecursivePicturesSearch: TAction
+      Category = 'Panel'
+      AutoCheck = True
+      Text = 'actPanelRecursivePicturesSearch'
+      OnExecute = actPanelRecursivePicturesSearchExecute
+      OnUpdate = actPanelRecursivePicturesSearchUpdate
+    end
+    object actFileBrowsePicturesPath: TAction
+      Category = 'File'
+      Text = 'actFileBrowsePicturesPath'
+      OnExecute = actFileBrowsePicturesPathExecute
+      OnUpdate = actFileBrowsePicturesPathUpdate
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
+    Left = 248
+    Top = 280
   end
 end

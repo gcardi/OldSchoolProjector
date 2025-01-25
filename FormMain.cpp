@@ -3,6 +3,8 @@
 #include <fmx.h>
 #pragma hdrstop
 
+#include <System.IOUtils.hpp>
+
 #include <FMX.Filter.Effects.hpp>
 #include <FMX.DialogService.Sync.hpp>
 
@@ -10,6 +12,7 @@
 #include "FormConfig.h"
 #include "AppUtils.h"
 #include "DataModStyleRes.h"
+#include "BrowseFolder.h"
 
 using Anafestica::TConfigNode;
 
@@ -28,7 +31,7 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     : TfrmPanelAppMain(Owner)
 {
-    // build buttons
+    PicturesPath = System::Ioutils::TPath::GetPicturesPath();
 	Application->OnIdle = &IdleEvent;
     RestoreProperties();
 }
@@ -48,12 +51,10 @@ void TfrmMain::RestoreProperties()
 {
     TConfigNode& BaseNode = GetConfigBaseNode( GetConfigRootNode() );
     TConfigNode& PanelNode = BaseNode.GetSubNode( _D( "Panel" ) );
-    auto PnlVignetting = PanelVignetting;
-    PanelNode.GetItem( _D( "Vignetting" ), PnlVignetting );
-    PanelVignetting = PnlVignetting;
-    auto MSndVol = MechSndVol;
-    PanelNode.GetItem( _D( "MechanicalSoundVolume" ), MSndVol );
-    MechSndVol = MSndVol;
+    RESTORE_PROPERTY( PanelNode, Vignetting );
+    RESTORE_PROPERTY( PanelNode, MechanicalSoundVolume );
+    RESTORE_PROPERTY( PanelNode, PicturesPath );
+    RESTORE_PROPERTY( PanelNode, RecursivePicturesSearch );
 }
 //---------------------------------------------------------------------------
 
@@ -61,8 +62,10 @@ void TfrmMain::SaveProperties() const
 {
     TConfigNode& BaseNode = GetConfigBaseNode( GetConfigRootNode() );
     TConfigNode& PanelNode = BaseNode.GetSubNode( _D( "Panel" ) );
-    SaveValue( PanelNode, _D( "Vignetting" ), PanelVignetting );
-    SaveValue( PanelNode, _D( "MechanicalSoundVolume" ), MechSndVol );
+    SAVE_PROPERTY( PanelNode, Vignetting );
+    SAVE_PROPERTY( PanelNode, MechanicalSoundVolume );
+    SAVE_PROPERTY( PanelNode, PicturesPath );
+    SAVE_PROPERTY( PanelNode, RecursivePicturesSearch );
 }
 //---------------------------------------------------------------------------
 
@@ -91,7 +94,9 @@ void TfrmMain::CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
     panel_ =
         make_unique<PanelType>(
             nullptr
-          , MechSndVol
+          , MechanicalSoundVolume
+          , PicturesPath
+          , RecursivePicturesSearch
           , Display
           , Display ? StoreOpts::None : StoreOpts::All
 //          , &GetConfigRootNode().GetSubNode( _D( "Panel" ) )
@@ -102,7 +107,7 @@ void TfrmMain::CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
     panel_->MonitorClipping = Clipping;
     panel_->MonitorScaling = Scaling;
     panel_->MaintainAspectRatio = KeepAspectRatio;
-    panel_->Vignetting = PanelVignetting;
+    panel_->Vignetting = Vignetting;
 }
 //---------------------------------------------------------------------------
 
@@ -140,7 +145,7 @@ void __fastcall TfrmMain::actPicturePriorExecute(TObject *Sender)
 void __fastcall TfrmMain::actPicturePriorUpdate(TObject *Sender)
 {
     auto& Act = static_cast<TAction&>( *Sender );
-    Act.Enabled = ProjectorPanel && !ProjectorPanel->Images.empty() &&
+    Act.Enabled = ProjectorPanel && ProjectorPanel->Images.size() > 1 &&
                   ProjectorPanel->IsIdle();
 }
 //---------------------------------------------------------------------------
@@ -154,28 +159,30 @@ void __fastcall TfrmMain::actPictureNextExecute(TObject *Sender)
 void __fastcall TfrmMain::actPictureNextUpdate(TObject *Sender)
 {
     auto& Act = static_cast<TAction&>( *Sender );
-    Act.Enabled = ProjectorPanel && !ProjectorPanel->Images.empty() &&
+    Act.Enabled = ProjectorPanel && ProjectorPanel->Images.size() > 1 &&
                   ProjectorPanel->IsIdle();
 }
 //---------------------------------------------------------------------------
 
-void TfrmMain::SetPanelVignetting( bool Val )
+void TfrmMain::SetVignetting( bool Val )
 {
     actPanelVignetting->Checked = Val;
-    panelVignetting_ = Val;
+    vignetting_ = Val;
+
     if ( ProjectorPanel ) {
-        ProjectorPanel->Vignetting = Val;
+        //ProjectorPanel->Vignetting = Val;
+        ProjectorPanel->Vignetting = true;
     }
 }
 //---------------------------------------------------------------------------
 
-int TfrmMain::GetMechSoundVol() const
+int TfrmMain::GetMechanicalSoundVolume() const
 {
     return trackbarMechSndVol->Value;
 }
 //---------------------------------------------------------------------------
 
-void TfrmMain::SetMechSndVol( int Val )
+void TfrmMain::SetMechanicalSoundVolume( int Val )
 {
     Val = clamp( Val, 0, 100 );
     //if ( Val != GetMechSoundVol() ) {
@@ -187,11 +194,26 @@ void TfrmMain::SetMechSndVol( int Val )
 }
 //---------------------------------------------------------------------------
 
+String TfrmMain::GetPicturesPath() const
+{
+    return Trim( edtPicturesPath->Text );
+}
+//---------------------------------------------------------------------------
+
+void TfrmMain::SetPicturesPath( String Val )
+{
+    picturesPath_ = Trim( Val );
+    edtPicturesPath->Text = Val;
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmMain::actPanelVignettingExecute(TObject *Sender)
 {
-    panelVignetting_ = !panelVignetting_;
-    actPanelVignetting->Checked = panelVignetting_;
-    ProjectorPanel->Vignetting = PanelVignetting;
+    vignetting_ = !vignetting_;
+    actPanelVignetting->Checked = vignetting_;
+    if ( ProjectorPanel ) {
+        ProjectorPanel->Vignetting = vignetting_;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -207,15 +229,58 @@ void __fastcall TfrmMain::actPanelVignettingUpdate(TObject *Sender)
 void __fastcall TfrmMain::trackbarMechSndVolChange(TObject *Sender)
 {
 //
-    SetMechSndVol( trackbarMechSndVol->Value );
+    SetMechanicalSoundVolume( trackbarMechSndVol->Value );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::IdleEvent( TObject* Sender, bool &Done )
 {
     trackbarMechSndVol->Enabled = !ProjectorPanel || ProjectorPanel->IsIdle();
+    edtPicturesPath->Enabled = !ProjectorPanel;
     Done = true;
 }
 //---------------------------------------------------------------------------
 
+bool TfrmMain::GetRecursivePicturesSearch() const
+{
+    //return switchRecursivePicturesSearch->IsChecked;
+    return actPanelRecursivePicturesSearch->Checked;
+}
+//---------------------------------------------------------------------------
+
+void TfrmMain::SetRecursivePicturesSearch( bool Val )
+{
+    //switchRecursivePicturesSearch->IsChecked = Val;
+    actPanelRecursivePicturesSearch->Checked = Val;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actPanelRecursivePicturesSearchExecute(TObject *Sender)
+
+{
+//
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actPanelRecursivePicturesSearchUpdate(TObject *Sender)
+{
+    auto& Act = static_cast<TAction&>( *Sender );
+    Act.Enabled = !ProjectorPanel;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actFileBrowsePicturesPathExecute(TObject *Sender)
+{
+    if ( auto NewPath = BrowseFolder( PicturesPath ); !NewPath.IsEmpty() ) {
+        PicturesPath = NewPath;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actFileBrowsePicturesPathUpdate(TObject *Sender)
+{
+    auto& Act = static_cast<TAction&>( *Sender );
+    Act.Enabled = !ProjectorPanel;
+}
+//---------------------------------------------------------------------------
 

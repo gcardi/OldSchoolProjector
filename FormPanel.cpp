@@ -19,6 +19,7 @@ using Fmx::Platform::Win::WindowHandleToPlatform;
 using std::make_unique;
 using std::swap;
 using std::filesystem::directory_iterator;
+using std::filesystem::recursive_directory_iterator;
 using std::filesystem::is_directory;
 using std::transform;
 using std::begin;
@@ -33,32 +34,20 @@ using std::towlower;
 //---------------------------------------------------------------------------
 
 __fastcall TfrmPanel::TfrmPanel( TComponent* Owner, int MechSoundVolume,
+                                 String PicturesPath,
+                                 bool RecursivePicturesSearch,
                                  FMXWinDisplayDev const * Display,
                                  StoreOpts StoreOptions,
                                  Anafestica::TConfigNode* const RootNode )
     : TfrmPanelBase( Owner, Display, StoreOptions, RootNode )
     , mechSoundVolume_{ MechSoundVolume }
     , player_ { new WavePlayer{ WindowHandleToPlatform( Handle )->Wnd } }
+    , picturesPath_{ PicturesPath }
+    , recursivePicturesSearch_{ RecursivePicturesSearch }
 {
     RestoreProperties();
-
     LoadWave();
-
-	//std::wstring Path = LR"=(C:\Users\Giuliano\Desktop\SlideShow)=";
-	std::wstring Path = LR"=(C:\Users\Giuliano\Desktop\Lesso\SLIDE)=";
-    //std::wstring Path = LR"=(.)=";
-	if ( is_directory( Path ) ) {
-		for ( decltype( auto ) Entry : directory_iterator( Path ) ) {
-            auto Path = Entry.path();
-            String Ext = String{ Path.extension().c_str() };
-			if ( SameText( Ext, _D( ".jpg" ) ) ) {
-				entries_.emplace_back( Path.c_str() );
-			}
-		}
-	}
-	if ( !entries_.empty() ) {
-		LoadImage( idx_ );
-	}
+    LoadPictures();
 }
 //---------------------------------------------------------------------------
 
@@ -99,6 +88,37 @@ void __fastcall TfrmPanel::FloatAnimation2Finish(TObject *Sender)
         FloatAnimation2->Start();
         FloatAnimation1->Start();
     }
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanel::LoadPictures()
+{
+	//std::wstring Path = LR"=(C:\Users\Giuliano\Desktop\SlideShow)=";
+	//std::wstring Path = LR"=(C:\Users\Giuliano\Desktop\Lesso\SLIDE)=";
+    std::wstring Path = picturesPath_.c_str();
+	if ( is_directory( Path ) ) {
+        auto Inserter = [this]( auto const & Entry )
+        {
+            auto Path = Entry.path();
+            String Ext = String{ Path.extension().c_str() };
+			if ( SameText( Ext, _D( ".jpg" ) ) || SameText( Ext, _D( ".png" ) ) ) {
+				entries_.emplace_back( Path.c_str() );
+			}
+		};
+        if ( recursivePicturesSearch_ ) {
+            for ( decltype( auto ) Entry : recursive_directory_iterator( Path ) ) {
+                Inserter( Entry );
+            }
+        }
+        else {
+    		for ( decltype( auto ) Entry : directory_iterator( Path ) ) {
+                Inserter( Entry );
+            }
+        }
+	}
+	if ( !entries_.empty() ) {
+		LoadImage( idx_ );
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -192,8 +212,4 @@ void TfrmPanel::Prior()
     FloatAnimation1->Start();
 }
 //---------------------------------------------------------------------------
-
-
-
-
 
