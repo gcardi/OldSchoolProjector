@@ -5,7 +5,7 @@
         <FrameworkType>FMX</FrameworkType>
         <MainSource>OldSchoolProjector.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win64x</Platform>
         <TargetedPlatforms>1048579</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -139,6 +139,8 @@
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
         <BCC_EnableBatchCompilation>true</BCC_EnableBatchCompilation>
+        <Icon_MainIcon>Resources\Icon.ico</Icon_MainIcon>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <BCC_OptimizeForSpeed>false</BCC_OptimizeForSpeed>
@@ -256,6 +258,11 @@
         <CppCompile Include="OldSchoolProjector.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
+        <RcItem Include="Resources\FanNoise.wav">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>WAVE</ResourceType>
+            <ResourceId>noise</ResourceId>
+        </RcItem>
         <RcItem Include="Resources\old-school-projector.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
@@ -302,6 +309,10 @@
                     <Source Name="MainSource">OldSchoolProjector.cpp</Source>
                 </Source>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\SynEditDD290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\SynEditDD290.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPython290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPython290.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonVcl290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonVcl290.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonFmx290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonFmx290.bpl not found</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k290.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcbofficexp290.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
@@ -410,6 +421,12 @@
                 <DeployFile LocalName=".\Win64x\Release\OldSchoolProjector.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win64x">
                         <RemoteName>OldSchoolProjector.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Resources\FanNoise.wav" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64x">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

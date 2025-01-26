@@ -71,7 +71,14 @@ __published:	// IDE-managed Components
     TMenuItem *MenuItem20;
     TMenuItem *MenuItem21;
     TMenuItem *MenuItem22;
-    TOpenDialog *OpenDialog1;
+    TTrackBar *trackbarNoiseSndVol;
+    TLabel *Label7;
+    TTimer *tmrChangeSoundVol;
+    TSwitch *switchFanNoise;
+    TLabel *Label10;
+    TAction *actPanelFanNoise;
+    TMenuItem *MenuItem38;
+    TLabel *lblFileName;
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
     void __fastcall actPictureNextExecute(TObject *Sender);
     void __fastcall actPictureNextUpdate(TObject *Sender);
@@ -84,6 +91,10 @@ __published:	// IDE-managed Components
     void __fastcall actPanelRecursivePicturesSearchUpdate(TObject *Sender);
     void __fastcall actFileBrowsePicturesPathUpdate(TObject *Sender);
     void __fastcall actFileBrowsePicturesPathExecute(TObject *Sender);
+    void __fastcall trackbarNoiseSndVolChange(TObject *Sender);
+    void __fastcall tmrChangeSoundVolTimer(TObject *Sender);
+    void __fastcall actPanelFanNoiseExecute(TObject *Sender);
+    void __fastcall actPanelFanNoiseUpdate(TObject *Sender);
 
 
 private:	// User declarations
@@ -103,6 +114,8 @@ private:	// User declarations
     }
     int GetMechanicalSoundVolume() const;
     void SetMechanicalSoundVolume( int Val );
+    int GetNoiseSoundVolume() const;
+    void SetNoiseSoundVolume( int Val );
 
     __property TfrmPanel* ProjectorPanel = { read = GetProjectorPanel };
 
@@ -110,6 +123,9 @@ private:	// User declarations
     void SetPicturesPath( String Val );
     bool GetRecursivePicturesSearch() const;
     void SetRecursivePicturesSearch( bool Val );
+    bool GetFanNoise() const;
+    void SetFanNoise( bool Val );
+    void ShowFileName();
 protected:
     virtual void RestoreProperties();
     virtual void SaveProperties() const;
@@ -129,12 +145,16 @@ public:		// User declarations
     __property int MechanicalSoundVolume = {
         read = GetMechanicalSoundVolume, write = SetMechanicalSoundVolume
     };
+    __property int NoiseSoundVolume = {
+        read = GetNoiseSoundVolume, write = SetNoiseSoundVolume
+    };
     __property String PicturesPath = {
         read = GetPicturesPath, write = SetPicturesPath
     };
     __property bool RecursivePicturesSearch = {
         read = GetRecursivePicturesSearch, write = SetRecursivePicturesSearch
     };
+    __property bool FanNoise = { read = GetFanNoise, write = SetFanNoise };
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMain *frmMain;

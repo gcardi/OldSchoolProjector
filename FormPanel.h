@@ -34,17 +34,21 @@ __published:	// IDE-managed Components
     TLayout *Layout2;
     TNormalBlendEffect *NormalBlendEffect1;
     void __fastcall FloatAnimation2Finish(TObject *Sender);
+    void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
     using ImageFileNameCont = std::vector<String>;
 
     std::unique_ptr<WavePlayer> player_;
+    std::unique_ptr<WavePlayer> playerNoise_;
     size_t phase_ {};
     ImageFileNameCont entries_;
     size_t idx_ {};
     bool backward_ {};
-    int mechSoundVolume_ { 50 };
+    int mechSoundVolume_;
+    int noiseSoundVolume_;
     String picturesPath_;
     bool recursivePicturesSearch_ {};
+    bool fanNoise_ {};
 
     void RestoreProperties();
     void SaveProperties() const;
@@ -53,13 +57,21 @@ private:	// User declarations
     bool GetVignetting() const;
     void SetVignetting( bool Val );
     void PlayMechanicalSound();
+    void PlayNoiseSound();
     void SetMechSoundVolume( int Val );
-    void LoadWave();
+    void LoadMechanicalSound();
+    void LoadNoiseSound( WavePlayer& Player );
     void LoadPictures();
+    void SetNoiseSoundVolume( int Val );
+    bool GetFanNoise() const;
+    void SetFanNoise( bool Val );
 public:		// User declarations
     using inherited = TfrmPanelBase;
 
-    __fastcall TfrmPanel( TComponent* Owner, int MechSoundVolume,
+    __fastcall TfrmPanel( TComponent* Owner,
+                          int MechSoundVolume,
+                          bool FanNoise,
+                          int NoiseSoundVol,
                           String PicturesPath,
                           bool RecursivePicturesSearch,
                           FMXWinDisplayDev const * Display,
@@ -74,6 +86,10 @@ public:		// User declarations
     __property int MechSoundVolume = {
         read = mechSoundVolume_, write = SetMechSoundVolume
     };
+    __property int NoiseSoundVolume = {
+        read = noiseSoundVolume_, write = SetNoiseSoundVolume
+    };
+    __property bool FanNoise = { read = GetFanNoise, write = SetFanNoise };
 };
 //---------------------------------------------------------------------------
 //extern PACKAGE TfrmPanel *frmPanel;

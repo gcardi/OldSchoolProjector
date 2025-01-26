@@ -53,6 +53,8 @@ void TfrmMain::RestoreProperties()
     TConfigNode& PanelNode = BaseNode.GetSubNode( _D( "Panel" ) );
     RESTORE_PROPERTY( PanelNode, Vignetting );
     RESTORE_PROPERTY( PanelNode, MechanicalSoundVolume );
+    RESTORE_PROPERTY( PanelNode, FanNoise );
+    RESTORE_PROPERTY( PanelNode, NoiseSoundVolume );
     RESTORE_PROPERTY( PanelNode, PicturesPath );
     RESTORE_PROPERTY( PanelNode, RecursivePicturesSearch );
 }
@@ -64,6 +66,8 @@ void TfrmMain::SaveProperties() const
     TConfigNode& PanelNode = BaseNode.GetSubNode( _D( "Panel" ) );
     SAVE_PROPERTY( PanelNode, Vignetting );
     SAVE_PROPERTY( PanelNode, MechanicalSoundVolume );
+    SAVE_PROPERTY( PanelNode, FanNoise );
+    SAVE_PROPERTY( PanelNode, NoiseSoundVolume );
     SAVE_PROPERTY( PanelNode, PicturesPath );
     SAVE_PROPERTY( PanelNode, RecursivePicturesSearch );
 }
@@ -95,6 +99,8 @@ void TfrmMain::CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
         make_unique<PanelType>(
             nullptr
           , MechanicalSoundVolume
+          , FanNoise
+          , NoiseSoundVolume
           , PicturesPath
           , RecursivePicturesSearch
           , Display
@@ -139,6 +145,7 @@ void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 void __fastcall TfrmMain::actPicturePriorExecute(TObject *Sender)
 {
     ProjectorPanel->Prior();
+    ShowFileName();
 }
 //---------------------------------------------------------------------------
 
@@ -153,6 +160,7 @@ void __fastcall TfrmMain::actPicturePriorUpdate(TObject *Sender)
 void __fastcall TfrmMain::actPictureNextExecute(TObject *Sender)
 {
     ProjectorPanel->Next();
+    ShowFileName();
 }
 //---------------------------------------------------------------------------
 
@@ -185,12 +193,10 @@ int TfrmMain::GetMechanicalSoundVolume() const
 void TfrmMain::SetMechanicalSoundVolume( int Val )
 {
     Val = clamp( Val, 0, 100 );
-    //if ( Val != GetMechSoundVol() ) {
-        trackbarMechSndVol->Value = Val;
-        if ( ProjectorPanel ) {
-            ProjectorPanel->MechSoundVolume = Val;
-        }
-    //}
+    trackbarMechSndVol->Value = Val;
+    if ( ProjectorPanel ) {
+        ProjectorPanel->MechSoundVolume = Val;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -283,4 +289,69 @@ void __fastcall TfrmMain::actFileBrowsePicturesPathUpdate(TObject *Sender)
     Act.Enabled = !ProjectorPanel;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::trackbarNoiseSndVolChange(TObject *Sender)
+{
+    SetNoiseSoundVolume( trackbarNoiseSndVol->Value );
+}
+//---------------------------------------------------------------------------
+
+int TfrmMain::GetNoiseSoundVolume() const
+{
+    return trackbarNoiseSndVol->Value;
+}
+//---------------------------------------------------------------------------
+
+void TfrmMain::SetNoiseSoundVolume(int Val)
+{
+    Val = clamp( Val, 0, 100 );
+    trackbarNoiseSndVol->Value = Val;
+    //if ( ProjectorPanel ) {
+    //    ProjectorPanel->NoiseSoundVolume = Val;
+    //}
+    tmrChangeSoundVol->Enabled = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::tmrChangeSoundVolTimer(TObject *Sender)
+{
+    if ( ProjectorPanel ) {
+        ProjectorPanel->NoiseSoundVolume = NoiseSoundVolume;
+    }
+    tmrChangeSoundVol->Enabled = false;
+}
+//---------------------------------------------------------------------------
+
+bool TfrmMain::GetFanNoise() const
+{
+    return switchFanNoise->IsChecked;
+}
+//---------------------------------------------------------------------------
+
+void TfrmMain::SetFanNoise( bool Val )
+{
+    switchFanNoise->IsChecked = Val;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actPanelFanNoiseExecute(TObject *Sender)
+{
+    if ( ProjectorPanel ) {
+        ProjectorPanel->FanNoise = FanNoise;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actPanelFanNoiseUpdate(TObject *Sender)
+{
+//
+}
+//---------------------------------------------------------------------------
+
+void TfrmMain::ShowFileName()
+{
+    //lblFileName->Text =
+}
+//---------------------------------------------------------------------------
+
 

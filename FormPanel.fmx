@@ -1,6 +1,7 @@
 inherited frmPanel: TfrmPanel
   Caption = 'Schermo'
   StyleBook = dmStyleRes.StyleBook1
+  OnShow = FormShow
   DesignerMasterStyle = 0
   inherited layoutMain: TLayout
     object Layout1: TLayout

@@ -33,7 +33,10 @@ using std::towlower;
 //TfrmPanel *frmPanel;
 //---------------------------------------------------------------------------
 
-__fastcall TfrmPanel::TfrmPanel( TComponent* Owner, int MechSoundVolume,
+__fastcall TfrmPanel::TfrmPanel( TComponent* Owner,
+                                 int MechSoundVolume,
+                                 bool FanNoise,
+                                 int NoiseSoundVol,
                                  String PicturesPath,
                                  bool RecursivePicturesSearch,
                                  FMXWinDisplayDev const * Display,
@@ -41,12 +44,17 @@ __fastcall TfrmPanel::TfrmPanel( TComponent* Owner, int MechSoundVolume,
                                  Anafestica::TConfigNode* const RootNode )
     : TfrmPanelBase( Owner, Display, StoreOptions, RootNode )
     , mechSoundVolume_{ MechSoundVolume }
+    , fanNoise_{ FanNoise }
+    , noiseSoundVolume_{ NoiseSoundVol }
     , player_ { new WavePlayer{ WindowHandleToPlatform( Handle )->Wnd } }
+    , playerNoise_ { new WavePlayer{ WindowHandleToPlatform( Handle )->Wnd } }
     , picturesPath_{ PicturesPath }
     , recursivePicturesSearch_{ RecursivePicturesSearch }
 {
+    mechSoundVolume_ = MechSoundVolume;
+    noiseSoundVolume_ = NoiseSoundVolume;
     RestoreProperties();
-    LoadWave();
+    LoadMechanicalSound();
     LoadPictures();
 }
 //---------------------------------------------------------------------------
@@ -122,6 +130,23 @@ void TfrmPanel::LoadPictures()
 }
 //---------------------------------------------------------------------------
 
+void TfrmPanel::SetNoiseSoundVolume( int Val )
+{
+    if ( noiseSoundVolume_ != Val ) {
+        auto PlayerNoise = make_unique<WavePlayer>( WindowHandleToPlatform( Handle )->Wnd );
+        noiseSoundVolume_ = Val;
+        LoadNoiseSound( *PlayerNoise );
+        if ( fanNoise_ ) {
+            PlayerNoise->Play( true );
+        }
+        else {
+            PlayerNoise->Stop();
+        }
+        playerNoise_ = std::move( PlayerNoise );
+    }
+}
+//---------------------------------------------------------------------------
+
 void TfrmPanel::LoadImage( size_t Index )
 {
     auto FileName = entries_[Index];
@@ -165,11 +190,22 @@ bool TfrmPanel::IsIdle() const
 }
 //---------------------------------------------------------------------------
 
-void TfrmPanel::LoadWave()
+void TfrmPanel::LoadMechanicalSound()
 {
-    player_->LoadWaveFromResource(
-        HInstance, _D( "sound" ),
-        static_cast<float>( mechSoundVolume_ ) / 100.0F
+    if ( player_ ) {
+        player_->LoadWaveFromResource(
+            HInstance, _D( "sound" ),
+            static_cast<float>( mechSoundVolume_ ) / 100.0F
+        );
+    }
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanel::LoadNoiseSound( WavePlayer& Player )
+{
+    Player.LoadWaveFromResource(
+        HInstance, _D( "noise" ),
+        static_cast<float>( noiseSoundVolume_ ) / 100.0F
     );
 }
 //---------------------------------------------------------------------------
@@ -178,7 +214,7 @@ void TfrmPanel::SetMechSoundVolume( int Val )
 {
     if ( mechSoundVolume_ != Val ) {
         mechSoundVolume_ = Val;
-        LoadWave();
+        LoadMechanicalSound();
     }
 }
 //---------------------------------------------------------------------------
@@ -187,6 +223,19 @@ void TfrmPanel::PlayMechanicalSound()
 {
     if ( player_ ) {
         player_->Play( false );
+    }
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanel::PlayNoiseSound()
+{
+    if ( playerNoise_ ) {
+        if ( fanNoise_ ) {
+            playerNoise_->Play( true );
+        }
+        else {
+            playerNoise_->Stop();
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -210,6 +259,28 @@ void TfrmPanel::Prior()
     FloatAnimation2->StopValue = ImageViewer2->Width * 2;
     FloatAnimation2->Start();
     FloatAnimation1->Start();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPanel::FormShow(TObject *Sender)
+{
+    LoadNoiseSound( *playerNoise_ );
+    PlayNoiseSound();
+}
+//---------------------------------------------------------------------------
+
+bool TfrmPanel::GetFanNoise() const
+{
+    return fanNoise_;
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanel::SetFanNoise( bool Val )
+{
+    if ( fanNoise_ != Val ) {
+        fanNoise_ = Val;
+        PlayNoiseSound();
+    }
 }
 //---------------------------------------------------------------------------
 

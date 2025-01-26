@@ -43,7 +43,7 @@ static void AdjustVolume( int16_t* Samples, size_t SampleCount, float Volume )
     for ( size_t Idx {} ; Idx < SampleCount ; ++Idx ) {
         Samples[Idx] =
             clamp(
-                static_cast<int32_t>(Samples[Idx] * Volume ),
+                static_cast<int32_t>( Samples[Idx] * Volume ),
                 static_cast<int32_t>( numeric_limits<int16_t>::min() ),
                 static_cast<int32_t>( numeric_limits<int16_t>::max() )
             );
