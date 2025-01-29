@@ -1,6 +1,6 @@
 inherited frmMain: TfrmMain
-  Caption = 'Display OEE'
-  ClientHeight = 461
+  Caption = ''
+  ClientHeight = 504
   ClientWidth = 548
   StyleBook = dmStyleRes.StyleBook1
   OnCloseQuery = FormCloseQuery
@@ -11,7 +11,7 @@ inherited frmMain: TfrmMain
   end
   inherited layoutMain: TLayout
     Size.Width = 548.000000000000000000
-    Size.Height = 415.000000000000000000
+    Size.Height = 458.000000000000000000
     TabOrder = 1
     inherited Button1: TButton
       Position.Y = 16.000000000000000000
@@ -84,14 +84,14 @@ inherited frmMain: TfrmMain
       Position.X = 336.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 9.000000000000000000
-      Size.Height = 398.000000000000000000
+      Size.Height = 441.000000000000000000
       Size.PlatformDefault = False
     end
     object Button4: TButton
       Action = actPictureNext
       ImageIndex = -1
-      Position.X = 296.000000000000000000
-      Position.Y = 328.000000000000000000
+      Position.X = 288.000000000000000000
+      Position.Y = 376.000000000000000000
       Size.Width = 137.000000000000000000
       Size.Height = 65.000000000000000000
       Size.PlatformDefault = False
@@ -101,8 +101,8 @@ inherited frmMain: TfrmMain
     object Button6: TButton
       Action = actPicturePrior
       ImageIndex = -1
-      Position.X = 144.000000000000000000
-      Position.Y = 328.000000000000000000
+      Position.X = 136.000000000000000000
+      Position.Y = 376.000000000000000000
       Size.Width = 129.000000000000000000
       Size.Height = 65.000000000000000000
       Size.PlatformDefault = False
@@ -154,10 +154,11 @@ inherited frmMain: TfrmMain
     end
     object edtPicturesPath: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 25
       Position.X = 24.000000000000000000
       Position.Y = 265.000000000000000000
-      Size.Width = 265.000000000000000000
+      Size.Width = 461.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
     end
@@ -174,16 +175,16 @@ inherited frmMain: TfrmMain
     end
     object switchRecursivePicturesSearch1: TSwitch
       Action = actPanelRecursivePicturesSearch
-      Position.X = 353.000000000000000000
-      Position.Y = 273.000000000000000000
+      Position.X = 24.000000000000000000
+      Position.Y = 317.000000000000000000
       Size.Width = 44.000000000000000000
       Size.Height = 20.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 26
     end
     object Label6: TLabel
-      Position.X = 405.000000000000000000
-      Position.Y = 258.000000000000000000
+      Position.X = 76.000000000000000000
+      Position.Y = 302.000000000000000000
       Size.Width = 120.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
@@ -192,9 +193,10 @@ inherited frmMain: TfrmMain
     end
     object Button9: TButton
       Action = actFileBrowsePicturesPath
+      Anchors = [akTop, akRight]
       StyledSettings = [Family, Style, FontColor]
       ImageIndex = -1
-      Position.X = 296.000000000000000000
+      Position.X = 493.000000000000000000
       Position.Y = 265.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
@@ -238,10 +240,16 @@ inherited frmMain: TfrmMain
       Size.Height = 23.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 32
+      object lblPictureInfo: TLabel
+        Position.X = 201.000000000000000000
+        Position.Y = 8.000000000000000000
+        Text = 'Picture 0 '
+        TabOrder = 4
+      end
     end
   end
   inherited StatusBar1: TStatusBar
-    Position.Y = 439.000000000000000000
+    Position.Y = 482.000000000000000000
     Size.Width = 548.000000000000000000
     TabOrder = 3
   end
@@ -374,6 +382,13 @@ inherited frmMain: TfrmMain
     Value = 25.000000000000000000
     OnChange = trackbarNoiseSndVolChange
   end
+  object tmrChangeSoundVol: TTimer [6]
+    Enabled = False
+    Interval = 200
+    OnTimer = tmrChangeSoundVolTimer
+    Left = 216
+    Top = 56
+  end
   inherited ActionList1: TActionList
     Left = 120
     Top = 96
@@ -382,14 +397,14 @@ inherited frmMain: TfrmMain
       Text = 'Prior'
       Hint = 'Prior|Previous picture'
       OnExecute = actPicturePriorExecute
-      OnUpdate = actPicturePriorUpdate
+      OnUpdate = actPictureChangeUpdate
     end
     object actPictureNext: TAction
       Category = 'Picture'
       Text = 'Next'
       Hint = 'Next|Next picture'
       OnExecute = actPictureNextExecute
-      OnUpdate = actPictureNextUpdate
+      OnUpdate = actPictureChangeUpdate
     end
     object actPanelVignetting: TAction
       Category = 'Panel'
@@ -418,12 +433,5 @@ inherited frmMain: TfrmMain
       OnExecute = actPanelFanNoiseExecute
       OnUpdate = actPanelFanNoiseUpdate
     end
-  end
-  object tmrChangeSoundVol: TTimer
-    Enabled = False
-    Interval = 200
-    OnTimer = tmrChangeSoundVolTimer
-    Left = 216
-    Top = 56
   end
 end

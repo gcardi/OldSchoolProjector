@@ -8,6 +8,8 @@
 #include <FMX.Filter.Effects.hpp>
 #include <FMX.DialogService.Sync.hpp>
 
+#include <filesystem>
+
 #include "FormMain.h"
 #include "FormConfig.h"
 #include "AppUtils.h"
@@ -18,6 +20,9 @@ using Anafestica::TConfigNode;
 
 using std::make_unique;
 using std::clamp;
+using std::filesystem::is_directory;
+using std::filesystem::directory_iterator;
+using std::filesystem::recursive_directory_iterator;
 
 using AppUtils::GetConfigBaseNode;
 
@@ -31,6 +36,7 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     : TfrmPanelAppMain(Owner)
 {
+    ShowFileInfo( {} );
     PicturesPath = System::Ioutils::TPath::GetPicturesPath();
 	Application->OnIdle = &IdleEvent;
     RestoreProperties();
@@ -73,17 +79,60 @@ void TfrmMain::SaveProperties() const
 }
 //---------------------------------------------------------------------------
 
+void TfrmMain::LoadPictures()
+{
+    idx_ = {};
+    std::wstring Path = picturesPath_.c_str();
+	if ( is_directory( Path ) ) {
+        auto Inserter = [this]( auto const & Entry )
+        {
+            auto Path = Entry.path();
+            String Ext = String{ Path.extension().c_str() };
+			if ( SameText( Ext, _D( ".jpg" ) ) || SameText( Ext, _D( ".png" ) ) ) {
+				entries_.emplace_back( Path.c_str() );
+			}
+		};
+        if ( RecursivePicturesSearch ) {
+            for ( decltype( auto ) Entry : recursive_directory_iterator( Path ) ) {
+                Inserter( Entry );
+            }
+        }
+        else {
+    		for ( decltype( auto ) Entry : directory_iterator( Path ) ) {
+                Inserter( Entry );
+            }
+        }
+	}
+}
+//---------------------------------------------------------------------------
+
+void TfrmMain::LoadPicture( size_t Idx )
+{
+	if ( Idx < entries_.size() ) {
+        auto FileName = entries_[Idx];
+        auto Bmp = make_unique<TBitmap>( FileName );
+        panel_->LoadPicture( *Bmp );
+        ShowFileInfo( Idx );
+	}
+}
+//---------------------------------------------------------------------------
+
 void TfrmMain::Start()
 {
     inherited::Start();
+    idx_ = {};
     CreatePanel(
         GetSelectedDisplay(), PanelClipping, PanelScaling, PanelKeepAspectRatio
     );
+    LoadPictures();
+    LoadPicture( idx_ );
 }
 //---------------------------------------------------------------------------
 
 void TfrmMain::Stop()
 {
+    entries_.clear();
+    ShowFileInfo( {} );
     if ( GetPanel() ) {
         tmrPolling->Enabled = false;
         inherited::Stop();
@@ -101,14 +150,13 @@ void TfrmMain::CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
           , MechanicalSoundVolume
           , FanNoise
           , NoiseSoundVolume
-          , PicturesPath
           , RecursivePicturesSearch
           , Display
           , Display ? StoreOpts::None : StoreOpts::All
-//          , &GetConfigRootNode().GetSubNode( _D( "Panel" ) )
           , &GetConfigBaseNode( GetConfigRootNode() ).GetSubNode( _D( "Panel" ) )
         );
 
+    panel_->OnLoadPicture = &OnLoadPicture;
     panel_->Show();
     panel_->MonitorClipping = Clipping;
     panel_->MonitorScaling = Scaling;
@@ -144,31 +192,32 @@ void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 
 void __fastcall TfrmMain::actPicturePriorExecute(TObject *Sender)
 {
-    ProjectorPanel->Prior();
-    ShowFileName();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::actPicturePriorUpdate(TObject *Sender)
-{
-    auto& Act = static_cast<TAction&>( *Sender );
-    Act.Enabled = ProjectorPanel && ProjectorPanel->Images.size() > 1 &&
-                  ProjectorPanel->IsIdle();
+    ProjectorPanel->ChangePicture( true );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::actPictureNextExecute(TObject *Sender)
 {
-    ProjectorPanel->Next();
-    ShowFileName();
+    ProjectorPanel->ChangePicture( false );
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::actPictureNextUpdate(TObject *Sender)
+void __fastcall TfrmMain::actPictureChangeUpdate(TObject *Sender)
 {
     auto& Act = static_cast<TAction&>( *Sender );
-    Act.Enabled = ProjectorPanel && ProjectorPanel->Images.size() > 1 &&
-                  ProjectorPanel->IsIdle();
+    Act.Enabled = ProjectorPanel && !entries_.empty() && ProjectorPanel->IsIdle();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::OnLoadPicture( TObject *Sender, bool Backward )
+{
+    if ( Backward ) {
+        idx_ = ( idx_ ? idx_ : entries_.size() ) - 1;
+    }
+    else {
+        idx_ = ( idx_ + 1 ) % entries_.size();
+    }
+    LoadPicture( idx_ );
 }
 //---------------------------------------------------------------------------
 
@@ -249,14 +298,12 @@ void __fastcall TfrmMain::IdleEvent( TObject* Sender, bool &Done )
 
 bool TfrmMain::GetRecursivePicturesSearch() const
 {
-    //return switchRecursivePicturesSearch->IsChecked;
     return actPanelRecursivePicturesSearch->Checked;
 }
 //---------------------------------------------------------------------------
 
 void TfrmMain::SetRecursivePicturesSearch( bool Val )
 {
-    //switchRecursivePicturesSearch->IsChecked = Val;
     actPanelRecursivePicturesSearch->Checked = Val;
 }
 //---------------------------------------------------------------------------
@@ -306,9 +353,6 @@ void TfrmMain::SetNoiseSoundVolume(int Val)
 {
     Val = clamp( Val, 0, 100 );
     trackbarNoiseSndVol->Value = Val;
-    //if ( ProjectorPanel ) {
-    //    ProjectorPanel->NoiseSoundVolume = Val;
-    //}
     tmrChangeSoundVol->Enabled = true;
 }
 //---------------------------------------------------------------------------
@@ -348,10 +392,17 @@ void __fastcall TfrmMain::actPanelFanNoiseUpdate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfrmMain::ShowFileName()
+void TfrmMain::ShowFileInfo( size_t Idx )
 {
-    //lblFileName->Text =
+    if ( auto Size = entries_.size(); Idx < Size ) {
+        lblPictureInfo->Text =
+            Format( _D( "Picture %d of %d " ), ARRAYOFCONST(( Idx, Size )) );
+    }
+    else {
+        lblPictureInfo->Text = {};
+    }
 }
 //---------------------------------------------------------------------------
+
 
 

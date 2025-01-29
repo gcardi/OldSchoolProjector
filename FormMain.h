@@ -79,11 +79,10 @@ __published:	// IDE-managed Components
     TAction *actPanelFanNoise;
     TMenuItem *MenuItem38;
     TLabel *lblFileName;
+    TLabel *lblPictureInfo;
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
     void __fastcall actPictureNextExecute(TObject *Sender);
-    void __fastcall actPictureNextUpdate(TObject *Sender);
     void __fastcall actPicturePriorExecute(TObject *Sender);
-    void __fastcall actPicturePriorUpdate(TObject *Sender);
     void __fastcall actPanelVignettingExecute(TObject *Sender);
     void __fastcall actPanelVignettingUpdate(TObject *Sender);
     void __fastcall trackbarMechSndVolChange(TObject *Sender);
@@ -95,14 +94,18 @@ __published:	// IDE-managed Components
     void __fastcall tmrChangeSoundVolTimer(TObject *Sender);
     void __fastcall actPanelFanNoiseExecute(TObject *Sender);
     void __fastcall actPanelFanNoiseUpdate(TObject *Sender);
+    void __fastcall actPictureChangeUpdate(TObject *Sender);
 
 
 private:	// User declarations
     using PanelType = TfrmPanel;
+    using ImageFileNameCont = std::vector<String>;
 
     std::unique_ptr<TfrmPanel> panel_;
     bool vignetting_ {};
     String picturesPath_;
+    ImageFileNameCont entries_;
+    size_t idx_ {};
 
     void CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
                       bool Scaling, bool KeepAspectRatio );
@@ -125,7 +128,10 @@ private:	// User declarations
     void SetRecursivePicturesSearch( bool Val );
     bool GetFanNoise() const;
     void SetFanNoise( bool Val );
-    void ShowFileName();
+    void __fastcall OnLoadPicture( TObject *Sender, bool Backward );
+    void LoadPicture( size_t Idx );
+    void LoadPictures();
+    void ShowFileInfo( size_t Idx );
 protected:
     virtual void RestoreProperties();
     virtual void SaveProperties() const;
