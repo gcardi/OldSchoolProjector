@@ -19,6 +19,10 @@
 #include <System.Classes.hpp>
 #include "FMXFormAppMain.h"
 #include <FMX.Dialogs.hpp>
+#include "FMX.SVGIconImage.hpp"
+#include "FMX.SVGIconImageList.hpp"
+#include <FMX.ImgList.hpp>
+#include <System.ImageList.hpp>
 
 #include <vector>
 #include <memory>
@@ -50,9 +54,7 @@ __published:	// IDE-managed Components
     TMenuItem *MenuItem34;
     TLine *Line1;
     TMenuBar *MenuBar1;
-    TButton *Button4;
     TAction *actPictureNext;
-    TButton *Button6;
     TAction *actPicturePrior;
     TSwitch *switchVignetting1;
     TLabel *Label2;
@@ -80,6 +82,9 @@ __published:	// IDE-managed Components
     TMenuItem *MenuItem38;
     TLabel *lblFileName;
     TLabel *lblPictureInfo;
+    TButton *Button4;
+    TSVGIconImageList *SVGIconImageList1;
+    TButton *Button6;
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
     void __fastcall actPictureNextExecute(TObject *Sender);
     void __fastcall actPicturePriorExecute(TObject *Sender);
@@ -95,6 +100,9 @@ __published:	// IDE-managed Components
     void __fastcall actPanelFanNoiseExecute(TObject *Sender);
     void __fastcall actPanelFanNoiseUpdate(TObject *Sender);
     void __fastcall actPictureChangeUpdate(TObject *Sender);
+    void __fastcall Button4Paint(TObject *Sender, TCanvas *Canvas, const TRectF &ARect);
+
+
 
 
 private:	// User declarations

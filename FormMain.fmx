@@ -1,6 +1,6 @@
 inherited frmMain: TfrmMain
   Caption = ''
-  ClientHeight = 504
+  ClientHeight = 554
   ClientWidth = 548
   StyleBook = dmStyleRes.StyleBook1
   OnCloseQuery = FormCloseQuery
@@ -11,7 +11,7 @@ inherited frmMain: TfrmMain
   end
   inherited layoutMain: TLayout
     Size.Width = 548.000000000000000000
-    Size.Height = 458.000000000000000000
+    Size.Height = 508.000000000000000000
     TabOrder = 1
     inherited Button1: TButton
       Position.Y = 16.000000000000000000
@@ -84,30 +84,8 @@ inherited frmMain: TfrmMain
       Position.X = 336.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 9.000000000000000000
-      Size.Height = 441.000000000000000000
+      Size.Height = 491.000000000000000000
       Size.PlatformDefault = False
-    end
-    object Button4: TButton
-      Action = actPictureNext
-      ImageIndex = -1
-      Position.X = 288.000000000000000000
-      Position.Y = 376.000000000000000000
-      Size.Width = 137.000000000000000000
-      Size.Height = 65.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 20
-      TextSettings.Trimming = None
-    end
-    object Button6: TButton
-      Action = actPicturePrior
-      ImageIndex = -1
-      Position.X = 136.000000000000000000
-      Position.Y = 376.000000000000000000
-      Size.Width = 129.000000000000000000
-      Size.Height = 65.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 19
-      TextSettings.Trimming = None
     end
     object switchVignetting1: TSwitch
       Action = actPanelVignetting
@@ -126,7 +104,7 @@ inherited frmMain: TfrmMain
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Vignetting'
-      TabOrder = 23
+      TabOrder = 21
       OnClick = actPanelScalingExecute
     end
     object trackbarMechSndVol: TTrackBar
@@ -137,7 +115,7 @@ inherited frmMain: TfrmMain
       Size.Width = 108.000000000000000000
       Size.Height = 24.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 24
+      TabOrder = 22
       Value = 50.000000000000000000
       OnChange = trackbarMechSndVolChange
     end
@@ -149,13 +127,13 @@ inherited frmMain: TfrmMain
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Mechanism sound volume'
-      TabOrder = 21
+      TabOrder = 19
       OnClick = actPanelScalingExecute
     end
     object edtPicturesPath: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Anchors = [akLeft, akTop, akRight]
-      TabOrder = 25
+      TabOrder = 23
       Position.X = 24.000000000000000000
       Position.Y = 265.000000000000000000
       Size.Width = 461.000000000000000000
@@ -171,7 +149,7 @@ inherited frmMain: TfrmMain
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Pictures path'
-      TabOrder = 22
+      TabOrder = 20
     end
     object switchRecursivePicturesSearch1: TSwitch
       Action = actPanelRecursivePicturesSearch
@@ -180,7 +158,7 @@ inherited frmMain: TfrmMain
       Size.Width = 44.000000000000000000
       Size.Height = 20.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 26
+      TabOrder = 24
     end
     object Label6: TLabel
       Position.X = 76.000000000000000000
@@ -189,7 +167,7 @@ inherited frmMain: TfrmMain
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
       Text = 'Recursive pictures search'
-      TabOrder = 27
+      TabOrder = 25
     end
     object Button9: TButton
       Action = actFileBrowsePicturesPath
@@ -201,7 +179,7 @@ inherited frmMain: TfrmMain
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 28
+      TabOrder = 26
       Text = #8729#8729#8729
       TextSettings.Font.Size = 16.000000000000000000
       TextSettings.Trimming = None
@@ -213,7 +191,7 @@ inherited frmMain: TfrmMain
       Size.Height = 41.000000000000000000
       Size.PlatformDefault = False
       Text = 'Fan noise volume'
-      TabOrder = 29
+      TabOrder = 27
     end
     object switchFanNoise: TSwitch
       Action = actPanelFanNoise
@@ -222,7 +200,7 @@ inherited frmMain: TfrmMain
       Size.Width = 44.000000000000000000
       Size.Height = 20.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 30
+      TabOrder = 28
     end
     object Label10: TLabel
       Position.X = 384.000000000000000000
@@ -231,7 +209,7 @@ inherited frmMain: TfrmMain
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Fan noise'
-      TabOrder = 31
+      TabOrder = 29
     end
     object lblFileName: TLabel
       Position.X = 24.000000000000000000
@@ -239,7 +217,7 @@ inherited frmMain: TfrmMain
       Size.Width = 497.000000000000000000
       Size.Height = 23.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 32
+      TabOrder = 30
       object lblPictureInfo: TLabel
         Position.X = 201.000000000000000000
         Position.Y = 8.000000000000000000
@@ -247,9 +225,38 @@ inherited frmMain: TfrmMain
         TabOrder = 4
       end
     end
+    object Button4: TButton
+      Action = actPicturePrior
+      Anchors = [akLeft, akBottom]
+      ImageIndex = -1
+      Position.X = 48.000000000000000000
+      Position.Y = 392.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 89.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 32
+      TextSettings.VertAlign = Trailing
+      TextSettings.Trimming = None
+      OnPaint = Button4Paint
+    end
+    object Button6: TButton
+      Tag = 1
+      Action = actPictureNext
+      Anchors = [akRight, akBottom]
+      ImageIndex = -1
+      Position.X = 424.000000000000000000
+      Position.Y = 392.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 89.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 31
+      TextSettings.VertAlign = Trailing
+      TextSettings.Trimming = None
+      OnPaint = Button4Paint
+    end
   end
   inherited StatusBar1: TStatusBar
-    Position.Y = 482.000000000000000000
+    Position.Y = 532.000000000000000000
     Size.Width = 548.000000000000000000
     TabOrder = 3
   end
@@ -433,5 +440,190 @@ inherited frmMain: TfrmMain
       OnExecute = actPanelFanNoiseExecute
       OnUpdate = actPanelFanNoiseUpdate
     end
+  end
+  object SVGIconImageList1: TSVGIconImageList
+    Source = <
+      item
+        MultiResBitmap = <
+          item
+          end>
+        IconName = 'LeftArrow'
+        SVGText = 
+          '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'#10'<!-- Crea' +
+          'tor: CorelDRAW 2020 (64-Bit) -->'#10#10'<svg'#10'   xml:space="preserve"'#10' ' +
+          '  width="64"'#10'   height="64"'#10'   version="1.1"'#10'   shape-rendering=' +
+          '"geometricPrecision"'#10'   text-rendering="geometricPrecision"'#10'   i' +
+          'mage-rendering="optimizeQuality"'#10'   fill-rule="evenodd"'#10'   clip-' +
+          'rule="evenodd"'#10'   viewBox="0 0 63.877 63.877"'#10'   id="svg1494"'#10'  ' +
+          ' sodipodi:docname="LeftArrow.svg"'#10'   inkscape:version="1.2.2 (b0' +
+          'a8486541, 2022-12-01)"'#10'   xmlns:inkscape="http://www.inkscape.or' +
+          'g/namespaces/inkscape"'#10'   xmlns:sodipodi="http://sodipodi.source' +
+          'forge.net/DTD/sodipodi-0.dtd"'#10'   xmlns="http://www.w3.org/2000/s' +
+          'vg"'#10'   xmlns:svg="http://www.w3.org/2000/svg"><defs'#10'   id="defs1' +
+          '498" /><sodipodi:namedview'#10'   id="namedview1496"'#10'   pagecolor="#' +
+          'ffffff"'#10'   bordercolor="#666666"'#10'   borderopacity="1.0"'#10'   inksc' +
+          'ape:showpageshadow="2"'#10'   inkscape:pageopacity="0.0"'#10'   inkscape' +
+          ':pagecheckerboard="0"'#10'   inkscape:deskcolor="#d1d1d1"'#10'   showgri' +
+          'd="false"'#10'   inkscape:zoom="13.546875"'#10'   inkscape:cx="32"'#10'   in' +
+          'kscape:cy="32"'#10'   inkscape:window-width="1920"'#10'   inkscape:windo' +
+          'w-height="1115"'#10'   inkscape:window-x="0"'#10'   inkscape:window-y="0' +
+          '"'#10'   inkscape:window-maximized="1"'#10'   inkscape:current-layer="Li' +
+          'vello_x0020_1" />'#10' <g'#10'   id="Livello_x0020_1"'#10'   inkscape:label=' +
+          '"Livello 1"'#10'   inkscape:groupmode="layer">'#10'  <metadata'#10'   id="Co' +
+          'relCorpID_0Corel-Layer" />'#10'  <rect'#10'   fill="none"'#10'   width="63.8' +
+          '76999"'#10'   height="63.876999"'#10'   id="rect1480"'#10'   x="0"'#10'   y="0" ' +
+          '/>'#10'  <g'#10'   id="_2049549012976"'#10'   transform="matrix(-1,0,0,1,63.' +
+          '877,0)">'#10'   <path'#10'   fill="#6699ff"'#10'   d="m 28.043,18.995 v -5.1' +
+          '54 c 0,-1.496 0.783,-2.779 2.113,-3.463 1.33,-0.685 2.829,-0.576' +
+          ' 4.046,0.293 l 25.337,18.098 c 1.056,0.754 1.631,1.871 1.631,3.1' +
+          '69 0,1.298 -0.575,2.415 -1.631,3.17 L 34.202,53.205 c -1.217,0.8' +
+          '7 -2.716,0.979 -4.046,0.294 -1.33,-0.685 -2.113,-1.967 -2.113,-3' +
+          '.463 v -9.049 c 0,-2.145 1.75,-3.895 3.895,-3.895 2.146,0 3.895,' +
+          '1.75 3.895,3.895 v 1.48 L 50.574,31.938 35.833,21.409 v 1.481 c ' +
+          '0,2.145 -1.749,3.894 -3.895,3.894 H 6.602 c -2.145,0 -3.895,-1.7' +
+          '49 -3.895,-3.894 0,-2.146 1.75,-3.895 3.895,-3.895 z"'#10'   id="pat' +
+          'h1482" />'#10'   <path'#10'   fill="#99ffff"'#10'   d="m 28.822,19.774 v -5.' +
+          '933 c 0,-1.197 0.626,-2.223 1.691,-2.771 1.064,-0.547 2.262,-0.4' +
+          '6 3.236,0.235 l 25.337,18.098 c 0.845,0.603 1.305,1.497 1.305,2.' +
+          '535 0,1.039 -0.46,1.932 -1.305,2.536 L 33.75,52.571 c -0.975,0.6' +
+          '96 -2.173,0.783 -3.237,0.235 -1.065,-0.547 -1.691,-1.573 -1.691,' +
+          '-2.77 v -9.049 c 0,-1.716 1.4,-3.116 3.116,-3.116 1.717,0 3.116,' +
+          '1.4 3.116,3.116 v 2.994 L 51.914,31.938 35.054,19.896 v 2.994 c ' +
+          '0,1.716 -1.399,3.115 -3.116,3.115 H 6.602 c -1.716,0 -3.116,-1.3' +
+          '99 -3.116,-3.115 0,-1.717 1.4,-3.116 3.116,-3.116 z"'#10'   id="path' +
+          '1484" />'#10'   <path'#10'   fill="#6699ff"'#10'   d="m 29.601,20.553 v -6.7' +
+          '12 c 0,-0.898 0.47,-1.667 1.268,-2.078 0.798,-0.411 1.697,-0.346' +
+          ' 2.428,0.176 l 25.336,18.098 c 0.634,0.452 0.979,1.122 0.979,1.9' +
+          '01 0,0.779 -0.345,1.449 -0.979,1.902 L 33.297,51.937 c -0.731,0.' +
+          '522 -1.63,0.588 -2.428,0.177 -0.798,-0.411 -1.268,-1.18 -1.268,-' +
+          '2.078 v -9.049 c 0,-1.287 1.05,-2.337 2.337,-2.337 1.287,0 2.337' +
+          ',1.05 2.337,2.337 v 4.508 L 53.254,31.938 34.275,18.382 v 4.508 ' +
+          'c 0,1.287 -1.05,2.336 -2.337,2.336 H 6.602 c -1.287,0 -2.337,-1.' +
+          '049 -2.337,-2.336 0,-1.288 1.05,-2.337 2.337,-2.337 z"'#10'   id="pa' +
+          'th1486" />'#10'   <path'#10'   fill="#99ffff"'#10'   d="m 30.38,21.332 v -7.' +
+          '491 c 0,-0.599 0.313,-1.112 0.845,-1.385 0.533,-0.274 1.132,-0.2' +
+          '31 1.619,0.117 L 58.18,30.671 c 0.423,0.301 0.653,0.748 0.653,1.' +
+          '267 0,0.52 -0.23,0.966 -0.653,1.268 L 32.844,51.304 c -0.487,0.3' +
+          '47 -1.086,0.391 -1.619,0.117 -0.532,-0.274 -0.845,-0.787 -0.845,' +
+          '-1.385 v -9.049 c 0,-0.858 0.7,-1.558 1.558,-1.558 0.859,0 1.558' +
+          ',0.7 1.558,1.558 v 6.021 L 54.594,31.938 33.496,16.868 v 6.022 c' +
+          ' 0,0.858 -0.699,1.558 -1.558,1.558 H 6.602 c -0.858,0 -1.558,-0.' +
+          '7 -1.558,-1.558 0,-0.859 0.7,-1.558 1.558,-1.558 z"'#10'   id="path1' +
+          '488" />'#10'   <path'#10'   fill="#6699ff"'#10'   d="m 31.159,22.111 v -8.27' +
+          ' c 0,-0.299 0.157,-0.556 0.423,-0.693 0.266,-0.137 0.566,-0.115 ' +
+          '0.809,0.059 l 25.337,18.097 c 0.211,0.151 0.326,0.375 0.326,0.63' +
+          '4 0,0.26 -0.115,0.483 -0.326,0.634 L 32.391,50.67 c -0.243,0.174' +
+          ' -0.543,0.195 -0.809,0.059 -0.266,-0.137 -0.423,-0.394 -0.423,-0' +
+          '.693 v -9.049 c 0,-0.429 0.35,-0.779 0.779,-0.779 0.429,0 0.779,' +
+          '0.35 0.779,0.779 v 7.535 L 55.935,31.938 32.717,15.355 v 7.535 c' +
+          ' 0,0.429 -0.35,0.779 -0.779,0.779 H 6.602 c -0.429,0 -0.779,-0.3' +
+          '5 -0.779,-0.779 0,-0.43 0.35,-0.779 0.779,-0.779 z"'#10'   id="path1' +
+          '490" />'#10'  </g>'#10' </g>'#10'</svg>'#10
+        Opacity = 1.000000000000000000
+      end
+      item
+        MultiResBitmap = <
+          item
+          end>
+        IconName = 'RightArrow'
+        SVGText = 
+          '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'#10'<!-- Crea' +
+          'tor: CorelDRAW 2020 (64-Bit) -->'#10#10'<svg'#10'   xml:space="preserve"'#10' ' +
+          '  width="64"'#10'   height="64"'#10'   version="1.1"'#10'   shape-rendering=' +
+          '"geometricPrecision"'#10'   text-rendering="geometricPrecision"'#10'   i' +
+          'mage-rendering="optimizeQuality"'#10'   fill-rule="evenodd"'#10'   clip-' +
+          'rule="evenodd"'#10'   viewBox="0 0 63.877 63.877"'#10'   id="svg1494"'#10'  ' +
+          ' sodipodi:docname="RightArrow.svg"'#10'   inkscape:version="1.2.2 (b' +
+          '0a8486541, 2022-12-01)"'#10'   xmlns:inkscape="http://www.inkscape.o' +
+          'rg/namespaces/inkscape"'#10'   xmlns:sodipodi="http://sodipodi.sourc' +
+          'eforge.net/DTD/sodipodi-0.dtd"'#10'   xmlns="http://www.w3.org/2000/' +
+          'svg"'#10'   xmlns:svg="http://www.w3.org/2000/svg"><defs'#10'   id="defs' +
+          '1498" /><sodipodi:namedview'#10'   id="namedview1496"'#10'   pagecolor="' +
+          '#ffffff"'#10'   bordercolor="#666666"'#10'   borderopacity="1.0"'#10'   inks' +
+          'cape:showpageshadow="2"'#10'   inkscape:pageopacity="0.0"'#10'   inkscap' +
+          'e:pagecheckerboard="0"'#10'   inkscape:deskcolor="#d1d1d1"'#10'   showgr' +
+          'id="false"'#10'   inkscape:zoom="13.546875"'#10'   inkscape:cx="32"'#10'   i' +
+          'nkscape:cy="32"'#10'   inkscape:window-width="1920"'#10'   inkscape:wind' +
+          'ow-height="1115"'#10'   inkscape:window-x="0"'#10'   inkscape:window-y="' +
+          '0"'#10'   inkscape:window-maximized="1"'#10'   inkscape:current-layer="s' +
+          'vg1494" />'#10' <g'#10'   id="Livello_x0020_1"'#10'   inkscape:label="Livell' +
+          'o 1"'#10'   inkscape:groupmode="layer">'#10'  <metadata'#10'   id="CorelCorp' +
+          'ID_0Corel-Layer" />'#10'  <rect'#10'   fill="none"'#10'   width="63.876999"'#10 +
+          '   height="63.876999"'#10'   id="rect1480"'#10'   x="0"'#10'   y="0" />'#10'  <g' +
+          #10'   id="_2049549012976">'#10'   <path'#10'   fill="#6699ff"'#10'   d="m 28.0' +
+          '43,18.995 v -5.154 c 0,-1.496 0.783,-2.779 2.113,-3.463 1.33,-0.' +
+          '685 2.829,-0.576 4.046,0.293 l 25.337,18.098 c 1.056,0.754 1.631' +
+          ',1.871 1.631,3.169 0,1.298 -0.575,2.415 -1.631,3.17 L 34.202,53.' +
+          '205 c -1.217,0.87 -2.716,0.979 -4.046,0.294 -1.33,-0.685 -2.113,' +
+          '-1.967 -2.113,-3.463 v -9.049 c 0,-2.145 1.75,-3.895 3.895,-3.89' +
+          '5 2.146,0 3.895,1.75 3.895,3.895 v 1.48 L 50.574,31.938 35.833,2' +
+          '1.409 v 1.481 c 0,2.145 -1.749,3.894 -3.895,3.894 H 6.602 c -2.1' +
+          '45,0 -3.895,-1.749 -3.895,-3.894 0,-2.146 1.75,-3.895 3.895,-3.8' +
+          '95 z"'#10'   id="path1482" />'#10'   <path'#10'   fill="#99ffff"'#10'   d="m 28.' +
+          '822,19.774 v -5.933 c 0,-1.197 0.626,-2.223 1.691,-2.771 1.064,-' +
+          '0.547 2.262,-0.46 3.236,0.235 l 25.337,18.098 c 0.845,0.603 1.30' +
+          '5,1.497 1.305,2.535 0,1.039 -0.46,1.932 -1.305,2.536 L 33.75,52.' +
+          '571 c -0.975,0.696 -2.173,0.783 -3.237,0.235 -1.065,-0.547 -1.69' +
+          '1,-1.573 -1.691,-2.77 v -9.049 c 0,-1.716 1.4,-3.116 3.116,-3.11' +
+          '6 1.717,0 3.116,1.4 3.116,3.116 v 2.994 L 51.914,31.938 35.054,1' +
+          '9.896 v 2.994 c 0,1.716 -1.399,3.115 -3.116,3.115 H 6.602 c -1.7' +
+          '16,0 -3.116,-1.399 -3.116,-3.115 0,-1.717 1.4,-3.116 3.116,-3.11' +
+          '6 z"'#10'   id="path1484" />'#10'   <path'#10'   fill="#6699ff"'#10'   d="m 29.6' +
+          '01,20.553 v -6.712 c 0,-0.898 0.47,-1.667 1.268,-2.078 0.798,-0.' +
+          '411 1.697,-0.346 2.428,0.176 l 25.336,18.098 c 0.634,0.452 0.979' +
+          ',1.122 0.979,1.901 0,0.779 -0.345,1.449 -0.979,1.902 L 33.297,51' +
+          '.937 c -0.731,0.522 -1.63,0.588 -2.428,0.177 -0.798,-0.411 -1.26' +
+          '8,-1.18 -1.268,-2.078 v -9.049 c 0,-1.287 1.05,-2.337 2.337,-2.3' +
+          '37 1.287,0 2.337,1.05 2.337,2.337 v 4.508 L 53.254,31.938 34.275' +
+          ',18.382 v 4.508 c 0,1.287 -1.05,2.336 -2.337,2.336 H 6.602 c -1.' +
+          '287,0 -2.337,-1.049 -2.337,-2.336 0,-1.288 1.05,-2.337 2.337,-2.' +
+          '337 z"'#10'   id="path1486" />'#10'   <path'#10'   fill="#99ffff"'#10'   d="m 30' +
+          '.38,21.332 v -7.491 c 0,-0.599 0.313,-1.112 0.845,-1.385 0.533,-' +
+          '0.274 1.132,-0.231 1.619,0.117 L 58.18,30.671 c 0.423,0.301 0.65' +
+          '3,0.748 0.653,1.267 0,0.52 -0.23,0.966 -0.653,1.268 L 32.844,51.' +
+          '304 c -0.487,0.347 -1.086,0.391 -1.619,0.117 -0.532,-0.274 -0.84' +
+          '5,-0.787 -0.845,-1.385 v -9.049 c 0,-0.858 0.7,-1.558 1.558,-1.5' +
+          '58 0.859,0 1.558,0.7 1.558,1.558 v 6.021 L 54.594,31.938 33.496,' +
+          '16.868 v 6.022 c 0,0.858 -0.699,1.558 -1.558,1.558 H 6.602 c -0.' +
+          '858,0 -1.558,-0.7 -1.558,-1.558 0,-0.859 0.7,-1.558 1.558,-1.558' +
+          ' z"'#10'   id="path1488" />'#10'   <path'#10'   fill="#6699ff"'#10'   d="m 31.15' +
+          '9,22.111 v -8.27 c 0,-0.299 0.157,-0.556 0.423,-0.693 0.266,-0.1' +
+          '37 0.566,-0.115 0.809,0.059 l 25.337,18.097 c 0.211,0.151 0.326,' +
+          '0.375 0.326,0.634 0,0.26 -0.115,0.483 -0.326,0.634 L 32.391,50.6' +
+          '7 c -0.243,0.174 -0.543,0.195 -0.809,0.059 -0.266,-0.137 -0.423,' +
+          '-0.394 -0.423,-0.693 v -9.049 c 0,-0.429 0.35,-0.779 0.779,-0.77' +
+          '9 0.429,0 0.779,0.35 0.779,0.779 v 7.535 L 55.935,31.938 32.717,' +
+          '15.355 v 7.535 c 0,0.429 -0.35,0.779 -0.779,0.779 H 6.602 c -0.4' +
+          '29,0 -0.779,-0.35 -0.779,-0.779 0,-0.43 0.35,-0.779 0.779,-0.779' +
+          ' z"'#10'   id="path1490" />'#10'  </g>'#10' </g>'#10'</svg>'#10
+        Opacity = 1.000000000000000000
+      end>
+    Destination = <
+      item
+        Layers = <
+          item
+            Name = 'LeftArrow'
+            SourceRect.Right = 34.000000000000000000
+            SourceRect.Bottom = 34.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'RightArrow'
+            SourceRect.Right = 120.000000000000000000
+            SourceRect.Bottom = 120.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'Item 0'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
+          end>
+      end>
+    Left = 368
+    Top = 160
   end
 end

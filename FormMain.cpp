@@ -9,6 +9,7 @@
 #include <FMX.DialogService.Sync.hpp>
 
 #include <filesystem>
+#include <algorithm>
 
 #include "FormMain.h"
 #include "FormConfig.h"
@@ -23,12 +24,15 @@ using std::clamp;
 using std::filesystem::is_directory;
 using std::filesystem::directory_iterator;
 using std::filesystem::recursive_directory_iterator;
+using std::min;
 
 using AppUtils::GetConfigBaseNode;
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "FMXFormAppMain"
+#pragma link "FMX.SVGIconImage"
+#pragma link "FMX.SVGIconImageList"
 #pragma resource "*.fmx"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -404,5 +408,17 @@ void TfrmMain::ShowFileInfo( size_t Idx )
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::Button4Paint(TObject *Sender, TCanvas *Canvas, const TRectF &ARect)
+{
+    auto& Btn = static_cast<TButton&>( *Sender );
+    auto DstRect = ARect;
+    DstRect.Inflate( -8, -8 );
+    auto Size = min( DstRect.Width(), DstRect.Height() );
+    DstRect = TRectF( DstRect.TopLeft(), Size, Size );
+    auto SrcRect = TRectF( TPointF{}, Size, Size );
+    auto Bmp = SVGIconImageList1->Bitmap( SrcRect.Size, Btn.Tag );
+    Canvas->DrawBitmap( Bmp, SrcRect, DstRect, Btn.Enabled ? 1.0F : 0.5F );
+}
+//---------------------------------------------------------------------------
 
 
