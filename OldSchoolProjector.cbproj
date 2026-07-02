@@ -139,7 +139,7 @@
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
         <BCC_EnableBatchCompilation>true</BCC_EnableBatchCompilation>
-        <Icon_MainIcon>Resources\Icon.ico</Icon_MainIcon>
+        <Icon_MainIcon>Resources\NewIcon.ico</Icon_MainIcon>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
         <ILINK_AdditionalOptions>-luiautomationcore $(ILINK_AdditionalOptions)</ILINK_AdditionalOptions>
     </PropertyGroup>
