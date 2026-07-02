@@ -76,6 +76,20 @@ void TfrmPanel::RestoreProperties()
 }
 //---------------------------------------------------------------------------
 
+void TfrmPanel::ApplyCanvasSize( float W, float H )
+{
+    inherited::ApplyCanvasSize( W, H );
+
+    // Layout1 is the sliding "film frame"; ImageViewer2 shows the picture and
+    // letterboxes it against its black background. Rectangle1 (vignette flash)
+    // and Layout2 (vignette overlay) are Align=Client and follow on their own.
+    Layout1->Size->Width = W;
+    Layout1->Size->Height = H;
+    ImageViewer2->Size->Width = W;
+    ImageViewer2->Size->Height = H;
+}
+//---------------------------------------------------------------------------
+
 void TfrmPanel::SaveProperties() const
 {
     // Put code here to save attribute(s)
@@ -168,18 +182,45 @@ void TfrmPanel::LoadImage( size_t Index )
 */
 void TfrmPanel::LoadPicture( TBitmap& Bmp )
 {
+    // "Cover" fit: keep the picture's aspect, expand it to fill the canvas in
+    // both dimensions, and crop the overflow symmetrically (centered). We do
+    // this by cropping the source to the canvas aspect ratio up front, so the
+    // result fills the viewer exactly with no letterbox bars.
+    float const CanvasW = ImageViewer2->Width;
+    float const CanvasH = ImageViewer2->Height;
+    float const CanvasAR = CanvasW / CanvasH;
+    float const SrcAR = static_cast<float>( Bmp.Width ) / Bmp.Height;
+
+    int CropW, CropH;
+    if ( SrcAR > CanvasAR ) {           // source too wide -> crop left/right
+        CropH = Bmp.Height;
+        CropW = static_cast<int>( Bmp.Height * CanvasAR + 0.5f );
+    }
+    else {                              // source too tall -> crop top/bottom
+        CropW = Bmp.Width;
+        CropH = static_cast<int>( Bmp.Width / CanvasAR + 0.5f );
+    }
+    int const CropX = ( Bmp.Width  - CropW ) / 2;
+    int const CropY = ( Bmp.Height - CropH ) / 2;
+
+    auto Cropped = make_unique<TBitmap>( CropW, CropH );
+    if ( Cropped->Canvas->BeginScene() ) {
+        try {
+            Cropped->Canvas->DrawBitmap(
+                &Bmp,
+                TRectF( CropX, CropY, CropX + CropW, CropY + CropH ),
+                TRectF( 0, 0, CropW, CropH ),
+                1.0f, true
+            );
+        }
+        __finally {
+            Cropped->Canvas->EndScene();
+        }
+    }
+
     ImageViewer2->Bitmap->Clear( {} );
-    auto WFactor = static_cast<float>( ImageViewer2->Width ) / Bmp.Width;
-    auto HFactor = static_cast<float>( ImageViewer2->Height ) / Bmp.Height;
-    if ( HFactor <= WFactor ) {
-        // H
-        ImageViewer2->BitmapScale = HFactor;
-    }
-    else {
-        // W
-        ImageViewer2->BitmapScale = WFactor;
-    }
-    ImageViewer2->Bitmap->Assign( &Bmp );
+    ImageViewer2->BitmapScale = CanvasW / CropW;   // crop shares the canvas AR
+    ImageViewer2->Bitmap->Assign( Cropped.get() );
 }
 //---------------------------------------------------------------------------
 

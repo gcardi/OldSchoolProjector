@@ -48,6 +48,7 @@ private:	// User declarations
     bool monitorClipping_ {};
     bool monitorScaling_ {};
     bool maintainAspectRatio_ {};
+    float aspectRatio_ { 16.0f / 9.0f };
     std::unique_ptr<TImage> monoscope_;
 
     void Init();
@@ -65,8 +66,16 @@ private:	// User declarations
     bool GetMonitorScaling() const;
     void SetMonitorScaling( bool Val );
     void SetMaintainAspectRatio( bool Val );
+    void SetAspectRatio( float Val );
 
     bool GetWindowMode() const { return !display_; }
+
+    // Canonical canvas height; the canvas width follows the aspect ratio.
+    static constexpr float DesignCanvasHeight = 1080.0f;
+protected:
+    // Resize the projection canvas to the given size. The base resizes
+    // layoutMain; derived panels override to resize their child controls too.
+    virtual void ApplyCanvasSize( float W, float H );
 public:		// User declarations
     __fastcall TfrmPanelBase( TComponent* Owner,
                               FMXWinDisplayDev const * Display );
@@ -81,6 +90,7 @@ public:		// User declarations
     __property bool MonitorClipping = { read = monitorClipping_, write = SetMonitorClipping };
     __property bool MonitorScaling = { read = monitorScaling_, write = SetMonitorScaling };
     __property bool MaintainAspectRatio = { read = maintainAspectRatio_, write = SetMaintainAspectRatio };
+    __property float AspectRatio = { read = aspectRatio_, write = SetAspectRatio };
     __property bool WindowMode = { read = GetWindowMode };
 
     void AutoFit();

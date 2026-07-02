@@ -35,6 +35,60 @@ using AppUtils::GetConfigBaseNode;
 
 //---------------------------------------------------------------------------
 
+namespace {
+
+// The Display dropdown starts with these fixed "Window <ratio>" entries; the
+// enumerated monitors are appended after them. The order here must match the
+// Items.Strings order in FMXFormAppMain.fmx.
+struct WindowRatioDef {
+    wchar_t const * Suffix;   // label suffix and persisted id tail
+    float Ratio;              // width / height
+};
+
+const WindowRatioDef WindowRatios[] = {
+    { L"16:9",  16.0f /  9.0f },
+    { L"4:3",    4.0f /  3.0f },
+    { L"16:10", 16.0f / 10.0f },
+};
+
+constexpr int WindowItemCount =
+    static_cast<int>( sizeof( WindowRatios ) / sizeof( WindowRatios[0] ) );
+
+wchar_t const WindowDeviceIDPrefix[] = L"WINDOW:";
+
+float WindowAspectRatioForIndex( int Idx )
+{
+    return ( Idx >= 0 && Idx < WindowItemCount ) ?
+        WindowRatios[Idx].Ratio : WindowRatios[0].Ratio;
+}
+
+String WindowDeviceIDForIndex( int Idx )
+{
+    int const I = ( Idx >= 0 && Idx < WindowItemCount ) ? Idx : 0;
+    return String( WindowDeviceIDPrefix ) + WindowRatios[I].Suffix;
+}
+
+// Index of the "Window <ratio>" item whose id matches Val, or 0 if none.
+int WindowItemIndexForDeviceID( String Val )
+{
+    for ( int I = 0; I < WindowItemCount; ++I ) {
+        if ( SameText( Val, WindowDeviceIDForIndex( I ) ) ) {
+            return I;
+        }
+    }
+    return 0;
+}
+
+bool IsWindowDeviceID( String Val )
+{
+    String const Prefix( WindowDeviceIDPrefix );
+    return Val.SubString( 1, Prefix.Length() ) == Prefix;
+}
+
+} // namespace
+
+//---------------------------------------------------------------------------
+
 LRESULT WINAPI NewSubclassproc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
                                 UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
 {
@@ -95,19 +149,17 @@ void TfrmPanelAppMain::Init()
 
     EnumFMXDisplays( back_inserter( displays_ ) );
 
-    int PrimaryIdx = -1;
+    // Default selection: the primary monitor (falls back to the first
+    // "Window" item if none reports itself as primary).
+    int PrimaryComboIdx = 0;
 
     for( auto const & Disp : displays_ ) {
         auto const & FMXDisp = get<ToIdx( FMXWinDisplayDevField::FMXDisplay )>( Disp );
 
-        if ( FMXDisp.Primary ) {
-            PrimaryIdx = FMXDisp.Index;
-        }
-
         auto const & GDisp =
             get<ToIdx( FMXWinDisplayDevField::Display )>( Disp );
 
-        comboboxPanelTopLeftScreen->Items->AddObject(
+        int const ComboIdx = comboboxPanelTopLeftScreen->Items->AddObject(
             Format(
                 _D( "%s (%s)" ),
                 ARRAYOFCONST((
@@ -119,9 +171,13 @@ void TfrmPanelAppMain::Init()
                 const_cast<FMXWinDisplayDevCont::pointer>( &Disp )
             )
         );
+
+        if ( FMXDisp.Primary ) {
+            PrimaryComboIdx = ComboIdx;
+        }
     }
 
-    comboboxPanelTopLeftScreen->ItemIndex = PrimaryIdx;
+    comboboxPanelTopLeftScreen->ItemIndex = PrimaryComboIdx;
 
     SetupCaption();
 
@@ -172,7 +228,21 @@ String TfrmPanelAppMain::GetDisplayDeviceID() const
     if ( FMXWinDisplayDev const * const Display = GetSelectedDisplay() ) {
         return get<ToIdx( FMXWinDisplayDevField::Display )>( *Display ).DeviceID;
     }
-    return String();
+    // Windowed: persist which "Window <ratio>" item is selected.
+    return WindowDeviceIDForIndex( comboboxPanelTopLeftScreen->ItemIndex );
+}
+//---------------------------------------------------------------------------
+
+float TfrmPanelAppMain::GetSelectedAspectRatio() const
+{
+    if ( FMXWinDisplayDev const * const Display = GetSelectedDisplay() ) {
+        TDisplay const & FMXDisp =
+            get<ToIdx( FMXWinDisplayDevField::FMXDisplay )>( *Display );
+        float const H = static_cast<float>( FMXDisp.Bounds.Height() );
+        float const W = static_cast<float>( FMXDisp.Bounds.Width() );
+        return H > 0.0f ? W / H : WindowRatios[0].Ratio;
+    }
+    return WindowAspectRatioForIndex( comboboxPanelTopLeftScreen->ItemIndex );
 }
 //---------------------------------------------------------------------------
 
@@ -199,16 +269,22 @@ inline DisplayDeviceIDIsType<T> DisplayDeviceIDIs( T const & ID ) {
 
 void TfrmPanelAppMain::SetDisplayDeviceID( String Val )
 {
+    if ( IsWindowDeviceID( Val ) ) {
+        comboboxPanelTopLeftScreen->ItemIndex = WindowItemIndexForDeviceID( Val );
+        return;
+    }
+
     FMXWinDisplayDevCont::const_iterator ci =
         find_if(
             displays_.begin(), displays_.end(), DisplayDeviceIDIs( Val )
         );
     if ( ci != displays_.end() ) {
         comboboxPanelTopLeftScreen->ItemIndex =
+            WindowItemCount +
             distance(
                 static_cast<FMXWinDisplayDevCont const &>( displays_ ).begin(),
                 ci
-            ) + 1;
+            );
     }
     else {
         comboboxPanelTopLeftScreen->ItemIndex = 0;
@@ -563,7 +639,7 @@ void __fastcall TfrmPanelAppMain::TrayIconRClick( System::TObject* Sender )
 
     ::GetCursorPos( &Pt );
 
-    // Sennò il menu popup rimane sotto la traybar
+    // Sennï¿½ il menu popup rimane sotto la traybar
     ::SetWindowPos(
         Fmx::Platform::Win::WindowHandleToPlatform( Handle )->Wnd,
         HWND_TOPMOST, 0, 0, 0, 0,

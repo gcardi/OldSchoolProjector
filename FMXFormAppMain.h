@@ -158,6 +158,9 @@ protected:
     bool __fastcall ReportMessageHandler( System::TObject* Sender,
                                           String Message, bool Error );
     FMXWinDisplayDev const * GetSelectedDisplay() const;
+    // Canvas aspect ratio (width/height) implied by the current dropdown
+    // selection: the monitor's native ratio, or the chosen "Window <ratio>".
+    float GetSelectedAspectRatio() const;
     void EnableAlarm();
     void DisableAlarm();
 

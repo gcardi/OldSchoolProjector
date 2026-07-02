@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <tuple>
+#include <cmath>
 
 #include <DateUtils.hpp>
 #include <FMX.Platform.Win.hpp>
@@ -70,8 +71,7 @@ LONG TfrmPanelBase::GetMonitorHeight() const
         return
             maintainAspectRatio_ ?
               static_cast<LONG>(
-                  static_cast<float>( GetMonitorWidth() ) /
-                  ( static_cast<float>( FormFactor->Width ) / FormFactor->Height )
+                  static_cast<float>( GetMonitorWidth() ) / aspectRatio_
               )
             :
               //FMXDisp.BoundsRect.Height();
@@ -82,8 +82,7 @@ LONG TfrmPanelBase::GetMonitorHeight() const
             maintainAspectRatio_ ?
               static_cast<float>(
                   const_cast<TfrmPanelBase*>( this )->ClientWidth
-              ) /
-              ( static_cast<float>( FormFactor->Width ) / FormFactor->Height )
+              ) / aspectRatio_
             :
               static_cast<float>(
                 const_cast<TfrmPanelBase*>( this )->ClientHeight
@@ -207,11 +206,19 @@ bool TfrmPanelBase::GetMonoscope() const
 void TfrmPanelBase::SetMonoscope( bool Val )
 {
     if ( Val ) {
-        TDisplay const & FMXDisp =
-            get<ToIdx( FMXWinDisplayDevField::FMXDisplay )>( *display_ );
+        // Pick the monoscope that best matches the current canvas ratio.
+        // 4:3 and 16:10 have native patterns; any other (e.g. monitor) ratio
+        // falls back to the 16:9 one, stretched to the canvas.
+        char const * MonoscopeResName = "MONOSCOPE_1920x1080_PNG";
+        if ( std::abs( aspectRatio_ - 4.0f / 3.0f ) < 0.03f ) {
+            MonoscopeResName = "MONOSCOPE_768x576_PNG";
+        }
+        else if ( std::abs( aspectRatio_ - 16.0f / 10.0f ) < 0.03f ) {
+            MonoscopeResName = "MONOSCOPE_1920x1200_PNG";
+        }
 
         auto MonoscopeStream = make_unique<TResourceStream>(
-            (NativeUInt)HInstance, "MONOSCOPE_1920x1080_PNG", RT_RCDATA
+            (NativeUInt)HInstance, MonoscopeResName, RT_RCDATA
         );
         auto MonoscopeBitmap = make_unique<TBitmap>( MonoscopeStream.get() );
         monoscope_ = std::move( make_unique<TImage>( nullptr ) );
@@ -303,6 +310,17 @@ void TfrmPanelBase::UpdateMonitorScaling( bool Scale )
             layoutMain->Scale->Y =
                 static_cast<float>( GetMonitorHeight() ) / layoutMain->Height;
         }
+
+        // Center the canvas within the window. layoutMain scales about its
+        // top-left (Position), so the on-screen size is Size * Scale; centre
+        // it to get symmetric bars when the window's shape differs from the
+        // canvas aspect ratio.
+        layoutMain->Position->X =
+            ( static_cast<float>( ClientWidth ) -
+              layoutMain->Width * layoutMain->Scale->X ) / 2;
+        layoutMain->Position->Y =
+            ( static_cast<float>( ClientHeight ) -
+              layoutMain->Height * layoutMain->Scale->Y ) / 2;
     }
     else {
         layoutMain->Scale->X = 1.0;
@@ -335,6 +353,34 @@ void TfrmPanelBase::SetMaintainAspectRatio( bool Val )
         UpdateMonitorClipping( monitorClipping_ );
         UpdateMonitorScaling( monitorScaling_ );
     }
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanelBase::ApplyCanvasSize( float W, float H )
+{
+    layoutMain->Size->Width = W;
+    layoutMain->Size->Height = H;
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanelBase::SetAspectRatio( float Val )
+{
+    if ( Val <= 0.0f ) {
+        return;
+    }
+
+    aspectRatio_ = Val;
+
+    ApplyCanvasSize( DesignCanvasHeight * aspectRatio_, DesignCanvasHeight );
+
+    if ( monoscope_ ) {
+        // Rebuild so it picks the resource matching the new ratio/size.
+        SetMonoscope( false );
+        SetMonoscope( true );
+    }
+
+    UpdateMonitorClipping( monitorClipping_ );
+    UpdateMonitorScaling( monitorScaling_ );
 }
 //---------------------------------------------------------------------------
 

@@ -70,6 +70,8 @@ private:	// User declarations
     void SetNoiseSoundVolume( int Val );
     bool GetFanNoise() const;
     void SetFanNoise( bool Val );
+protected:
+    virtual void ApplyCanvasSize( float W, float H ) override;
 public:		// User declarations
     using inherited = TfrmPanelBase;
 

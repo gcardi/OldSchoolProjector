@@ -162,6 +162,7 @@ void TfrmMain::CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
 
     panel_->OnLoadPicture = &OnLoadPicture;
     panel_->Show();
+    panel_->AspectRatio = GetSelectedAspectRatio();
     panel_->MonitorClipping = Clipping;
     panel_->MonitorScaling = Scaling;
     panel_->MaintainAspectRatio = KeepAspectRatio;

@@ -95,7 +95,9 @@ object frmPanelAppMain: TfrmPanelAppMain
     end
     object comboboxPanelTopLeftScreen: TComboBox
       Items.Strings = (
-        'Window')
+        'Window 16:9'
+        'Window 4:3'
+        'Window 16:10')
       ItemIndex = 0
       Position.X = 24.000000000000000000
       Position.Y = 200.000000000000000000
