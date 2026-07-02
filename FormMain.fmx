@@ -603,22 +603,14 @@ inherited frmMain: TfrmMain
         Layers = <
           item
             Name = 'LeftArrow'
-            SourceRect.Right = 34.000000000000000000
-            SourceRect.Bottom = 34.000000000000000000
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
           end>
       end
       item
         Layers = <
           item
             Name = 'RightArrow'
-            SourceRect.Right = 120.000000000000000000
-            SourceRect.Bottom = 120.000000000000000000
-          end>
-      end
-      item
-        Layers = <
-          item
-            Name = 'Item 0'
             SourceRect.Right = 32.000000000000000000
             SourceRect.Bottom = 32.000000000000000000
           end>

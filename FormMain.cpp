@@ -400,7 +400,7 @@ void TfrmMain::ShowFileInfo( size_t Idx )
 {
     if ( auto Size = entries_.size(); Idx < Size ) {
         lblPictureInfo->Text =
-            Format( _D( "Picture %d of %d " ), ARRAYOFCONST(( Idx, Size )) );
+            Format( _D( "Picture %d of %d " ), ARRAYOFCONST(( Idx + 1, Size )) );
     }
     else {
         lblPictureInfo->Text = {};
