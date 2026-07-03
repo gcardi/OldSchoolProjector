@@ -77,13 +77,11 @@ void TThumbnailStrip::EnsureVisible( int Index )
     if ( Vis <= 0 ) {
         return;
     }
-    int const First = FirstVisibleIndex();
-    if ( Index < First ) {
-        scrollThumbs->Value = Index;                 // scroll left to reveal it
-    }
-    else if ( Index >= First + Vis ) {
-        scrollThumbs->Value = Index - Vis + 1;       // scroll right to reveal it
-    }
+    // Keep the selected thumbnail centred, so the previous and next slides stay
+    // visible on either side. The scrollbar naturally clamps near the two ends
+    // (the selection then sits off-centre because we cannot scroll past them).
+    int const MaxFirst = max( 0, count_ - Vis );
+    scrollThumbs->Value = max( 0, min( Index - Vis / 2, MaxFirst ) );
 }
 //---------------------------------------------------------------------------
 
@@ -162,6 +160,12 @@ void TThumbnailStrip::ThumbnailReady( int Index )
     if ( Index >= First && Index < First + VisibleCount() ) {
         paintThumbs->Repaint();
     }
+}
+//---------------------------------------------------------------------------
+
+void TThumbnailStrip::RefreshThumbnails()
+{
+    paintThumbs->Repaint();
 }
 //---------------------------------------------------------------------------
 

@@ -271,6 +271,10 @@
             <ResourceType>WAVE</ResourceType>
             <ResourceId>sound</ResourceId>
         </RcItem>
+        <CppCompile Include="ThumbnailLoader.cpp">
+            <DependentOn>ThumbnailLoader.h</DependentOn>
+            <BuildOrder>17</BuildOrder>
+        </CppCompile>
         <CppCompile Include="ThumbnailMaker.cpp">
             <DependentOn>ThumbnailMaker.h</DependentOn>
             <BuildOrder>16</BuildOrder>

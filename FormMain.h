@@ -26,10 +26,10 @@
 
 #include <vector>
 #include <memory>
-#include <map>
 
 #include "FormPanel.h"
 #include "ThumbnailStrip.h"
+#include "ThumbnailLoader.h"
 
 //---------------------------------------------------------------------------
 
@@ -118,11 +118,10 @@ private:	// User declarations
     ImageFileNameCont entries_;
     size_t idx_ {};
 
-    // Thumbnail cache owned by the host (the frame stays cache-agnostic),
-    // keyed by file path. A null entry means "tried and failed", so we do not
-    // keep retrying a broken file on every repaint.
-    using ThumbCache = std::map<String, std::unique_ptr<TBitmap>>;
-    ThumbCache thumbCache_;
+    // Background thumbnail producer/cache (the frame stays cache-agnostic),
+    // polled from the UI thread by thumbTimer_ so new thumbnails get repainted.
+    std::unique_ptr<TThumbnailLoader> loader_;
+    std::unique_ptr<TTimer> thumbTimer_;
 
     void CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
                       bool Scaling, bool KeepAspectRatio );
@@ -151,6 +150,7 @@ private:	// User declarations
     void __fastcall ThumbRequest( TObject* Sender, int Index, TBitmap*& Bmp );
     void __fastcall ThumbPick( TObject* Sender, int Index );
     void __fastcall ThumbVisibleRange( TObject* Sender, int First, int Last );
+    void __fastcall ThumbPollTimer( TObject* Sender );
 
     void LoadPicture( size_t Idx );
     void LoadPictures();

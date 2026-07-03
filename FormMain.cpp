@@ -16,7 +16,6 @@
 #include "AppUtils.h"
 #include "DataModStyleRes.h"
 #include "BrowseFolder.h"
-#include "ThumbnailMaker.h"
 
 using Anafestica::TConfigNode;
 
@@ -28,6 +27,10 @@ using std::filesystem::recursive_directory_iterator;
 using std::min;
 
 using AppUtils::GetConfigBaseNode;
+
+// Thumbnails are produced at this size and scaled to the slot when drawn, so
+// the cache is independent of the current strip geometry.
+static constexpr int ThumbTargetSize = 256;
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -42,6 +45,13 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     : TfrmPanelAppMain(Owner)
 {
+    loader_ = std::make_unique<TThumbnailLoader>( ThumbTargetSize );
+
+    thumbTimer_ = std::make_unique<TTimer>( static_cast<TComponent*>( nullptr ) );
+    thumbTimer_->Interval = 66;   // ~15 fps poll while thumbnails are loading
+    thumbTimer_->Enabled = false;
+    thumbTimer_->OnTimer = &ThumbPollTimer;
+
     frameThumbs->OnRequestThumbnail = &ThumbRequest;
     frameThumbs->OnPick = &ThumbPick;
     frameThumbs->OnVisibleRangeChanged = &ThumbVisibleRange;
@@ -60,30 +70,10 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 void __fastcall TfrmMain::ThumbRequest( TObject* /*Sender*/, int Index,
                                         TBitmap*& Bmp )
 {
-    // Thumbnails are rendered at a fixed size and scaled to the slot when
-    // drawn; this keeps the cache independent of the current strip geometry.
-    static constexpr int ThumbTargetSize = 256;
-
-    Bmp = nullptr;
-    if ( Index < 0 || static_cast<size_t>( Index ) >= entries_.size() ) {
-        return;
-    }
-
-    String const& Path = entries_[Index];
-    auto It = thumbCache_.find( Path );
-    if ( It == thumbCache_.end() ) {
-        // Not cached yet: build it now (synchronous; a worker thread is a
-        // later step) and cache it, storing null on failure.
-        std::unique_ptr<TBitmap> Made;
-        try {
-            Made = MakeThumbnail( Path, ThumbTargetSize, ThumbTargetSize );
-        }
-        catch ( ... ) {
-            Made.reset();
-        }
-        It = thumbCache_.emplace( Path, std::move( Made ) ).first;
-    }
-    Bmp = It->second.get();
+    // Non-blocking: return whatever the worker has already produced. Missing
+    // thumbnails are requested via OnVisibleRangeChanged and drawn as
+    // placeholders until they arrive.
+    Bmp = loader_ ? loader_->Get( Index ) : nullptr;
 }
 //---------------------------------------------------------------------------
 
@@ -95,10 +85,21 @@ void __fastcall TfrmMain::ThumbPick( TObject* /*Sender*/, int Index )
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::ThumbVisibleRange( TObject* /*Sender*/, int /*First*/,
-                                             int /*Last*/ )
+void __fastcall TfrmMain::ThumbVisibleRange( TObject* /*Sender*/, int First,
+                                             int Last )
 {
-    // Step 4 will schedule preloading of the visible range here.
+    if ( loader_ ) {
+        loader_->EnsureRange( First, Last );
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::ThumbPollTimer( TObject* /*Sender*/ )
+{
+    // Repaint the strip only when the worker has produced new thumbnails.
+    if ( loader_ && loader_->ConsumeReady() ) {
+        frameThumbs->RefreshThumbnails();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -142,7 +143,6 @@ void TfrmMain::LoadPictures()
 {
     idx_ = {};
     entries_.clear();
-    thumbCache_.clear();
     std::wstring Path = picturesPath_.c_str();
 	if ( is_directory( Path ) ) {
         auto Inserter = [this]( auto const & Entry )
@@ -187,6 +187,10 @@ void TfrmMain::Start()
         GetSelectedDisplay(), PanelClipping, PanelScaling, PanelKeepAspectRatio
     );
     LoadPictures();
+    // Feed the worker before setting Count: setting Count fires
+    // OnVisibleRangeChanged, which asks the loader to preload the first window.
+    loader_->SetEntries( entries_ );
+    thumbTimer_->Enabled = true;
     frameThumbs->ThumbAspectRatio = GetSelectedAspectRatio();
     frameThumbs->Count = static_cast<int>( entries_.size() );
     LoadPicture( idx_ );
@@ -196,7 +200,8 @@ void TfrmMain::Start()
 void TfrmMain::Stop()
 {
     entries_.clear();
-    thumbCache_.clear();
+    thumbTimer_->Enabled = false;
+    loader_->SetEntries( {} );
     frameThumbs->Count = 0;
     ShowFileInfo( {} );
     if ( GetPanel() ) {
