@@ -127,7 +127,7 @@ void TThumbnailLoader::Run()
         // Heavy work outside the lock.
         std::unique_ptr<Fmx::Graphics::TBitmap> Bmp;
         try {
-            Bmp = MakeThumbnail( Path, targetSize_, targetSize_ );
+            Bmp = LoadImageOriented( Path, targetSize_, targetSize_ );
         }
         catch ( ... ) {
             Bmp.reset();   // cache the failure as null so we do not retry it

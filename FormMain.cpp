@@ -16,6 +16,7 @@
 #include "AppUtils.h"
 #include "DataModStyleRes.h"
 #include "BrowseFolder.h"
+#include "ThumbnailMaker.h"
 
 using Anafestica::TConfigNode;
 
@@ -189,8 +190,11 @@ void TfrmMain::LoadPicture( size_t Idx )
 {
 	if ( Idx < entries_.size() ) {
         auto FileName = entries_[Idx];
-        auto Bmp = make_unique<TBitmap>( FileName );
-        panel_->LoadPicture( *Bmp );
+        // Load full-size with EXIF auto-orientation (same path as thumbnails).
+        auto Bmp = LoadImageOriented( FileName, 0, 0 );
+        if ( Bmp ) {
+            panel_->LoadPicture( *Bmp );
+        }
         ShowFileInfo( Idx );
         frameThumbs->SelectedIndex = static_cast<int>( Idx );
 	}

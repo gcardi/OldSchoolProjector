@@ -182,45 +182,48 @@ void TfrmPanel::LoadImage( size_t Index )
 */
 void TfrmPanel::LoadPicture( TBitmap& Bmp )
 {
-    // "Cover" fit: keep the picture's aspect, expand it to fill the canvas in
-    // both dimensions, and crop the overflow symmetrically (centered). We do
-    // this by cropping the source to the canvas aspect ratio up front, so the
-    // result fills the viewer exactly with no letterbox bars.
+    // "Contain" fit: show the whole picture, scaled to fit the canvas with its
+    // aspect preserved and centered on black bands, so portrait photos are
+    // shown in full instead of being cropped.
     float const CanvasW = ImageViewer2->Width;
     float const CanvasH = ImageViewer2->Height;
     float const CanvasAR = CanvasW / CanvasH;
     float const SrcAR = static_cast<float>( Bmp.Width ) / Bmp.Height;
 
-    int CropW, CropH;
-    if ( SrcAR > CanvasAR ) {           // source too wide -> crop left/right
-        CropH = Bmp.Height;
-        CropW = static_cast<int>( Bmp.Height * CanvasAR + 0.5f );
+    // Build a canvas-aspect bitmap large enough to hold the picture at full
+    // resolution, letterboxing the unused space with black.
+    int OutW, OutH;
+    if ( SrcAR > CanvasAR ) {           // relatively wider -> bands top/bottom
+        OutW = Bmp.Width;
+        OutH = static_cast<int>( Bmp.Width / CanvasAR + 0.5f );
     }
-    else {                              // source too tall -> crop top/bottom
-        CropW = Bmp.Width;
-        CropH = static_cast<int>( Bmp.Width / CanvasAR + 0.5f );
+    else {                              // relatively taller -> bands left/right
+        OutH = Bmp.Height;
+        OutW = static_cast<int>( Bmp.Height * CanvasAR + 0.5f );
     }
-    int const CropX = ( Bmp.Width  - CropW ) / 2;
-    int const CropY = ( Bmp.Height - CropH ) / 2;
+    int const OfsX = ( OutW - Bmp.Width ) / 2;
+    int const OfsY = ( OutH - Bmp.Height ) / 2;
 
-    auto Cropped = make_unique<TBitmap>( CropW, CropH );
-    if ( Cropped->Canvas->BeginScene() ) {
-        try {
-            Cropped->Canvas->DrawBitmap(
-                &Bmp,
-                TRectF( CropX, CropY, CropX + CropW, CropY + CropH ),
-                TRectF( 0, 0, CropW, CropH ),
-                1.0f, true
-            );
-        }
-        __finally {
-            Cropped->Canvas->EndScene();
-        }
+    auto Out = make_unique<TBitmap>( OutW, OutH );
+    if ( Out->Canvas->BeginScene() ) {
+        // RAII: EndScene on every exit path, exceptions included.
+        struct TSceneGuard {
+            TCanvas& Canvas;
+            ~TSceneGuard() { Canvas.EndScene(); }
+        } SceneGuard { *Out->Canvas };
+
+        Out->Canvas->Clear( claBlack );
+        Out->Canvas->DrawBitmap(
+            &Bmp,
+            TRectF( 0, 0, Bmp.Width, Bmp.Height ),
+            TRectF( OfsX, OfsY, OfsX + Bmp.Width, OfsY + Bmp.Height ),
+            1.0f, true
+        );
     }
 
     ImageViewer2->Bitmap->Clear( {} );
-    ImageViewer2->BitmapScale = CanvasW / CropW;   // crop shares the canvas AR
-    ImageViewer2->Bitmap->Assign( Cropped.get() );
+    ImageViewer2->BitmapScale = CanvasW / OutW;   // Out shares the canvas AR
+    ImageViewer2->Bitmap->Assign( Out.get() );
 }
 //---------------------------------------------------------------------------
 
