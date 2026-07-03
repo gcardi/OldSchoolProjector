@@ -79,9 +79,16 @@ void __fastcall TfrmMain::ThumbRequest( TObject* /*Sender*/, int Index,
 
 void __fastcall TfrmMain::ThumbPick( TObject* /*Sender*/, int Index )
 {
-    // Step 5 will actually project entries_[Index]. For now just move the
-    // highlight so the click is visibly wired.
-    frameThumbs->SelectedIndex = Index;
+    // Project the clicked slide directly. No slide animation/sound (a dissolve
+    // may come later). LoadPicture also updates the strip selection/centering.
+    if ( !GetPanel() ) {
+        return;   // only meaningful while projecting
+    }
+    if ( Index < 0 || static_cast<size_t>( Index ) >= entries_.size() ) {
+        return;
+    }
+    idx_ = static_cast<size_t>( Index );
+    LoadPicture( idx_ );
 }
 //---------------------------------------------------------------------------
 
