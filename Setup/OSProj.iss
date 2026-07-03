@@ -4,7 +4,7 @@
 #define MyAppName "Old School Projector"
 #define MyAppVersion "1.0"
 #define MyAppPublisher "Sandro"
-#define MyAppExeName "OldSchoolProjector.exe"
+#define MyAppExeName "OldSlideProjector.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
