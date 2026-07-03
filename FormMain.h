@@ -117,6 +117,9 @@ private:	// User declarations
     String picturesPath_;
     ImageFileNameCont entries_;
     size_t idx_ {};
+    // Absolute target for the next animated change (thumbnail click); -1 means
+    // "no target", so OnLoadPicture falls back to the usual +/-1 step.
+    int pendingTarget_ { -1 };
 
     // Background thumbnail producer/cache (the frame stays cache-agnostic),
     // polled from the UI thread by thumbTimer_ so new thumbnails get repainted.

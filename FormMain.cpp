@@ -79,16 +79,27 @@ void __fastcall TfrmMain::ThumbRequest( TObject* /*Sender*/, int Index,
 
 void __fastcall TfrmMain::ThumbPick( TObject* /*Sender*/, int Index )
 {
-    // Project the clicked slide directly. No slide animation/sound (a dissolve
-    // may come later). LoadPicture also updates the strip selection/centering.
     if ( !GetPanel() ) {
         return;   // only meaningful while projecting
     }
     if ( Index < 0 || static_cast<size_t>( Index ) >= entries_.size() ) {
         return;
     }
-    idx_ = static_cast<size_t>( Index );
-    LoadPicture( idx_ );
+    if ( !ProjectorPanel->IsIdle() ) {
+        return;   // ignore clicks during a slide transition, like Next/Prev
+    }
+
+    int const Cur = static_cast<int>( idx_ );
+    if ( Index == Cur ) {
+        return;   // already the projected slide
+    }
+
+    // Any clicked slide (adjacent or far) changes like Next/Prev: mechanical
+    // sound (if its volume is up) and the sliding animation, sliding in the
+    // direction of the target. pendingTarget_ makes OnLoadPicture jump straight
+    // to Index instead of stepping by one.
+    pendingTarget_ = Index;
+    ProjectorPanel->ChangePicture( Index < Cur );   // backward if before current
 }
 //---------------------------------------------------------------------------
 
@@ -290,7 +301,12 @@ void __fastcall TfrmMain::actPictureChangeUpdate(TObject *Sender)
 
 void __fastcall TfrmMain::OnLoadPicture( TObject *Sender, bool Backward )
 {
-    if ( Backward ) {
+    if ( pendingTarget_ >= 0 ) {
+        // A thumbnail click asked to jump straight to this slide (possibly far).
+        idx_ = static_cast<size_t>( pendingTarget_ );
+        pendingTarget_ = -1;
+    }
+    else if ( Backward ) {
         idx_ = ( idx_ ? idx_ : entries_.size() ) - 1;
     }
     else {
