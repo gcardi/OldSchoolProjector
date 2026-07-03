@@ -99,10 +99,6 @@ public:    // User declarations
         read = onVisibleRangeChanged_, write = onVisibleRangeChanged_
     };
 
-    // The host calls this once a thumbnail becomes available (async, later
-    // steps) so the frame can repaint it if it is currently visible.
-    void ThumbnailReady( int Index );
-
     // Repaint the whole strip (e.g. after a batch of async thumbnails arrived).
     void RefreshThumbnails();
 };

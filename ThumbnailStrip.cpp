@@ -154,15 +154,6 @@ void TThumbnailStrip::SetThumbAspectRatio( float Val )
 }
 //---------------------------------------------------------------------------
 
-void TThumbnailStrip::ThumbnailReady( int Index )
-{
-    int const First = FirstVisibleIndex();
-    if ( Index >= First && Index < First + VisibleCount() ) {
-        paintThumbs->Repaint();
-    }
-}
-//---------------------------------------------------------------------------
-
 void TThumbnailStrip::RefreshThumbnails()
 {
     paintThumbs->Repaint();
