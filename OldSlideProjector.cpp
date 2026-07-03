@@ -40,9 +40,10 @@ extern "C" int FMXmain()
         }
 
         Application->Initialize();
+        Application->Title = _D( "Old Slide Projector" );
         Application->CreateForm(__classid(TfrmMain), &frmMain);
-         Application->CreateForm(__classid(TdmStyleRes), &dmStyleRes);
-         Application->Run();
+        Application->CreateForm(__classid(TdmStyleRes), &dmStyleRes);
+        Application->Run();
         while ( Screen->FormCount ) {
            delete Screen->Forms[0];
         }

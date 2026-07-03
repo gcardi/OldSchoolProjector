@@ -3,13 +3,13 @@
         <ProjectGuid>{FFB005EC-673C-48F8-934A-E88BF587DE9D}</ProjectGuid>
         <ProjectVersion>20.4</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
-        <MainSource>OldSchoolProjector.cpp</MainSource>
+        <MainSource>OldSlideProjector.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win64x</Platform>
         <TargetedPlatforms>1048579</TargetedPlatforms>
         <AppType>Application</AppType>
-        <ProjectName Condition="'$(ProjectName)'==''">OldSchoolProjector</ProjectName>
+        <ProjectName Condition="'$(ProjectName)'==''">OldSlideProjector</ProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -102,7 +102,7 @@
         <_TCHARMapping>wchar_t</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <SanitizedProjectName>OldSchoolProjector</SanitizedProjectName>
+        <SanitizedProjectName>OldSlideProjector</SanitizedProjectName>
         <VerInfo_Keys>CompanyName=Sandro;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=OldSchoolProjector;ProductVersion=1.0;Comments=</VerInfo_Keys>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -177,6 +177,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win64x)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <LinkPackageStatics>rtl.lib;fmx.lib;bindengine.lib;bindcomp.lib;dbrtl.lib;bindcompfmx.lib;vcl.lib;SVGIconImageListFMX.lib;SVGImage32Package.lib;vclimg.lib</LinkPackageStatics>
+        <Icon_MainIcon>Resources\NewIcon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -193,6 +194,7 @@
     <PropertyGroup Condition="'$(Cfg_2_Win64x)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <LinkPackageStatics>rtl.lib;fmx.lib;bindengine.lib;bindcomp.lib;dbrtl.lib;bindcompfmx.lib;vcl.lib;SVGIconImageListFMX.lib;SVGImage32Package.lib;vclimg.lib</LinkPackageStatics>
+        <Icon_MainIcon>Resources\NewIcon.ico</Icon_MainIcon>
     </PropertyGroup>
     <ItemGroup>
         <ResourceCompile Include="AllRes.rc">
@@ -256,7 +258,7 @@
             <DependentOn>FormPanel.h</DependentOn>
             <BuildOrder>3</BuildOrder>
         </CppCompile>
-        <CppCompile Include="OldSchoolProjector.cpp">
+        <CppCompile Include="OldSlideProjector.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
         <RcItem Include="Resources\FanNoise.wav">
@@ -307,7 +309,7 @@
                     <ProjectProperties Name="IndexFiles">False</ProjectProperties>
                 </ProjectProperties>
                 <Source>
-                    <Source Name="MainSource">OldSchoolProjector.cpp</Source>
+                    <Source Name="MainSource">OldSlideProjector.cpp</Source>
                 </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\SynEditDD290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\SynEditDD290.bpl not found</Excluded_Packages>
@@ -468,15 +470,21 @@
                 <DeployFile LocalName=".\Win32\Release\Tombola.exe" Configuration="Release" Class="ProjectOutput"/>
                 <DeployFile LocalName=".\Win64\Debug\Tombola.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName=".\Win64\Release\Tombola.exe" Configuration="Release" Class="ProjectOutput"/>
-                <DeployFile LocalName=".\Win64x\Debug\OldSchoolProjector.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName=".\Win64x\Debug\OldSlideProjector.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64x">
-                        <RemoteName>OldSchoolProjector.exe</RemoteName>
+                        <RemoteName>OldSlideProjector.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName=".\Win64x\Release\OldSchoolProjector.exe" Configuration="Release" Class="ProjectOutput">
+                <DeployFile LocalName=".\Win64x\Debug\OldSlideProjector.pdb" Configuration="Debug" Class="DebugSymbols">
                     <Platform Name="Win64x">
-                        <RemoteName>OldSchoolProjector.exe</RemoteName>
+                        <RemoteName>OldSlideProjector.pdb</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName=".\Win64x\Release\OldSlideProjector.exe" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64x">
+                        <RemoteName>OldSlideProjector.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
