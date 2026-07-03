@@ -68,6 +68,25 @@ void TThumbnailStrip::UpdateScrollRange()
 }
 //---------------------------------------------------------------------------
 
+void TThumbnailStrip::EnsureVisible( int Index )
+{
+    if ( Index < 0 ) {
+        return;
+    }
+    int const Vis = VisibleCount();
+    if ( Vis <= 0 ) {
+        return;
+    }
+    int const First = FirstVisibleIndex();
+    if ( Index < First ) {
+        scrollThumbs->Value = Index;                 // scroll left to reveal it
+    }
+    else if ( Index >= First + Vis ) {
+        scrollThumbs->Value = Index - Vis + 1;       // scroll right to reveal it
+    }
+}
+//---------------------------------------------------------------------------
+
 void TThumbnailStrip::NotifyVisibleRange()
 {
     if ( onVisibleRangeChanged_ && count_ > 0 ) {
@@ -117,6 +136,10 @@ void TThumbnailStrip::SetSelectedIndex( int Val )
     int const New = ( Val >= 0 && Val < count_ ) ? Val : -1;
     if ( New != selectedIndex_ ) {
         selectedIndex_ = New;
+        // The selection only changes when the projected picture changes (e.g.
+        // Next/Prev), so scroll it into view. Plain scrolling does not touch
+        // the selection, so it never triggers this.
+        EnsureVisible( selectedIndex_ );
         paintThumbs->Repaint();
     }
 }
@@ -195,8 +218,27 @@ void __fastcall TThumbnailStrip::paintThumbsPaint(
         }
 
         if ( Bmp ) {
+            // Letterbox the thumbnail inside the slot, preserving its aspect
+            // ratio (contain): fill the slot black, then centre the picture.
+            Canvas->Fill->Kind = TBrushKind::Solid;
+            Canvas->Fill->Color = claBlack;
+            Canvas->FillRect( R, 0, 0, AllCorners, 1.0f );
+
+            float const BmpAR = static_cast<float>( Bmp->Width ) / Bmp->Height;
+            float const SlotAR = Tw / Th;
+            TRectF Dest = R;
+            if ( BmpAR > SlotAR ) {
+                float const NewH = Tw / BmpAR;
+                Dest.Top = R.Top + ( Th - NewH ) / 2;
+                Dest.Bottom = Dest.Top + NewH;
+            }
+            else {
+                float const NewW = Th * BmpAR;
+                Dest.Left = R.Left + ( Tw - NewW ) / 2;
+                Dest.Right = Dest.Left + NewW;
+            }
             Canvas->DrawBitmap(
-                Bmp, TRectF( 0, 0, Bmp->Width, Bmp->Height ), R, 1.0f, true
+                Bmp, TRectF( 0, 0, Bmp->Width, Bmp->Height ), Dest, 1.0f, true
             );
         }
         else {

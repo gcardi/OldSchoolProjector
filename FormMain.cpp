@@ -16,6 +16,7 @@
 #include "AppUtils.h"
 #include "DataModStyleRes.h"
 #include "BrowseFolder.h"
+#include "ThumbnailMaker.h"
 
 using Anafestica::TConfigNode;
 
@@ -56,12 +57,33 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::ThumbRequest( TObject* /*Sender*/, int /*Index*/,
+void __fastcall TfrmMain::ThumbRequest( TObject* /*Sender*/, int Index,
                                         TBitmap*& Bmp )
 {
-    // Step 3+ will return the cached thumbnail for entries_[Index]; until then
-    // there is no cache, so the frame draws placeholders.
+    // Thumbnails are rendered at a fixed size and scaled to the slot when
+    // drawn; this keeps the cache independent of the current strip geometry.
+    static constexpr int ThumbTargetSize = 256;
+
     Bmp = nullptr;
+    if ( Index < 0 || static_cast<size_t>( Index ) >= entries_.size() ) {
+        return;
+    }
+
+    String const& Path = entries_[Index];
+    auto It = thumbCache_.find( Path );
+    if ( It == thumbCache_.end() ) {
+        // Not cached yet: build it now (synchronous; a worker thread is a
+        // later step) and cache it, storing null on failure.
+        std::unique_ptr<TBitmap> Made;
+        try {
+            Made = MakeThumbnail( Path, ThumbTargetSize, ThumbTargetSize );
+        }
+        catch ( ... ) {
+            Made.reset();
+        }
+        It = thumbCache_.emplace( Path, std::move( Made ) ).first;
+    }
+    Bmp = It->second.get();
 }
 //---------------------------------------------------------------------------
 
@@ -119,6 +141,8 @@ void TfrmMain::SaveProperties() const
 void TfrmMain::LoadPictures()
 {
     idx_ = {};
+    entries_.clear();
+    thumbCache_.clear();
     std::wstring Path = picturesPath_.c_str();
 	if ( is_directory( Path ) ) {
         auto Inserter = [this]( auto const & Entry )
@@ -172,6 +196,7 @@ void TfrmMain::Start()
 void TfrmMain::Stop()
 {
     entries_.clear();
+    thumbCache_.clear();
     frameThumbs->Count = 0;
     ShowFileInfo( {} );
     if ( GetPanel() ) {

@@ -26,6 +26,7 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 
 #include "FormPanel.h"
 #include "ThumbnailStrip.h"
@@ -116,6 +117,12 @@ private:	// User declarations
     String picturesPath_;
     ImageFileNameCont entries_;
     size_t idx_ {};
+
+    // Thumbnail cache owned by the host (the frame stays cache-agnostic),
+    // keyed by file path. A null entry means "tried and failed", so we do not
+    // keep retrying a broken file on every repaint.
+    using ThumbCache = std::map<String, std::unique_ptr<TBitmap>>;
+    ThumbCache thumbCache_;
 
     void CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
                       bool Scaling, bool KeepAspectRatio );

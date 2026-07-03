@@ -73,6 +73,7 @@ private:    // User declarations
     int IndexAtX( float X ) const;
     void UpdateScrollRange();
     void NotifyVisibleRange();
+    void EnsureVisible( int Index );
 
 public:    // User declarations
     __fastcall TThumbnailStrip( TComponent* Owner );
