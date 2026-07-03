@@ -103,7 +103,7 @@
         <Multithreaded>true</Multithreaded>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <SanitizedProjectName>OldSlideProjector</SanitizedProjectName>
-        <VerInfo_Keys>CompanyName=Sandro;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=OldSchoolProjector;ProductVersion=1.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=GCardi;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=OldSlideProjector;ProductVersion=1.0;Comments=</VerInfo_Keys>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <Defines>VCL_IOSTREAMS;$(Defines)</Defines>
@@ -311,16 +311,7 @@
                 <Source>
                     <Source Name="MainSource">OldSlideProjector.cpp</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\SynEditDD290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\SynEditDD290.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPython290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPython290.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonVcl290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonVcl290.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonFmx290.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\dclPythonFmx290.bpl not found</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k290.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp290.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
                 <VFOLDERS/>
             </CPlusPlusBuilder.Personality>
             <Deployment Version="5">
