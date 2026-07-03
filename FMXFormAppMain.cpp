@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #include <fmx.h>
 #pragma hdrstop
@@ -130,6 +130,20 @@ __fastcall TfrmPanelAppMain::~TfrmPanelAppMain()
 }
 //---------------------------------------------------------------------------
 
+static String GetMainFormTitle()
+{
+    TFileVersionInfo Info( ParamStr( 0 ) );
+    return
+        Format(
+            _D( "%s, %s" ),
+            ARRAYOFCONST((
+                Application->Title
+              , Info.ProductVersion
+            ))
+        );
+}
+//---------------------------------------------------------------------------
+
 void TfrmPanelAppMain::Init()
 {
     ::SetWindowSubclass(
@@ -139,9 +153,11 @@ void TfrmPanelAppMain::Init()
         reinterpret_cast<DWORD_PTR>( this )
     );
 
+    auto MainFormTitle = GetMainFormTitle();
+
     trayIcon_ = std::move( make_unique<TTrayIcon>( nullptr, Handle ) );
     trayIcon_->Icon = _D( "MAINICON" );
-    trayIcon_->Hint = _D( "Tabellone" );
+    trayIcon_->Hint = MainFormTitle;
     trayIcon_->OnDblClick = &TrayIconDblClick;
     trayIcon_->OnRClick = &TrayIconRClick;
 
@@ -179,7 +195,7 @@ void TfrmPanelAppMain::Init()
 
     comboboxPanelTopLeftScreen->ItemIndex = PrimaryComboIdx;
 
-    SetupCaption();
+    SetupCaption( MainFormTitle );
 
     RestoreProperties();
 }
@@ -196,17 +212,9 @@ void TfrmPanelAppMain::Destroy()
 }
 //---------------------------------------------------------------------------
 
-void TfrmPanelAppMain::SetupCaption()
+void TfrmPanelAppMain::SetupCaption( String Value )
 {
-    TFileVersionInfo Info( ParamStr( 0 ) );
-    Caption =
-        Format(
-            _D( "%s, %s" ),
-            ARRAYOFCONST((
-                Info.FileDescription
-              , Info.ProductVersion
-            ))
-        );
+    Caption = Value;
 }
 //---------------------------------------------------------------------------
 

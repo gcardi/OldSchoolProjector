@@ -19,78 +19,71 @@ object frmPanelAppMain: TfrmPanelAppMain
   end
   object layoutMain: TLayout
     Align = Client
-    Size.Width = 337.000000000000000000
-    Size.Height = 258.000000000000000000
+    Size.Width = 337.00000000000000000
+    Size.Height = 258.00000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Button1: TButton
       Action = actPanelShow
       ImageIndex = -1
-      Position.X = 232.000000000000000000
-      Position.Y = 24.000000000000000000
+      Position.X = 232.00000000000000000
+      Position.Y = 24.00000000000000000
       TabOrder = 0
-      TextSettings.Trimming = None
     end
     object Button11: TButton
       Action = actPanelMonoscope
       ImageIndex = -1
-      Position.X = 24.000000000000000000
-      Position.Y = 64.000000000000000000
-      Size.Width = 81.000000000000000000
-      Size.Height = 22.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 64.00000000000000000
+      Size.Width = 81.00000000000000000
+      Size.Height = 22.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
-      TextSettings.Trimming = None
     end
     object Button2: TButton
       Action = actPanelHide
       ImageIndex = -1
-      Position.X = 232.000000000000000000
-      Position.Y = 64.000000000000000000
+      Position.X = 232.00000000000000000
+      Position.Y = 64.00000000000000000
       TabOrder = 2
-      TextSettings.Trimming = None
     end
     object Button3: TButton
       Action = actPanelAutoFit
       ImageIndex = -1
-      Position.X = 128.000000000000000000
-      Position.Y = 64.000000000000000000
+      Position.X = 128.00000000000000000
+      Position.Y = 64.00000000000000000
       TabOrder = 3
-      TextSettings.Trimming = None
     end
     object Button5: TButton
       Action = actFileStart
       ImageIndex = -1
-      Position.X = 24.000000000000000000
-      Position.Y = 24.000000000000000000
-      Size.Width = 81.000000000000000000
-      Size.Height = 22.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 24.00000000000000000
+      Size.Width = 81.00000000000000000
+      Size.Height = 22.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
-      TextSettings.Trimming = None
     end
     object Button7: TButton
       Action = actFileStop
       ImageIndex = -1
-      Position.X = 128.000000000000000000
-      Position.Y = 24.000000000000000000
-      Size.Width = 81.000000000000000000
-      Size.Height = 22.000000000000000000
+      Position.X = 128.00000000000000000
+      Position.Y = 24.00000000000000000
+      Size.Width = 81.00000000000000000
+      Size.Height = 22.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 5
-      TextSettings.Trimming = None
     end
     object Button8: TButton
       Enabled = False
       StyledSettings = [Family, Style, FontColor]
-      Position.Y = 85.000000000000000000
-      Size.Width = 305.000000000000000000
-      Size.Height = 33.000000000000000000
+      Position.Y = 85.00000000000000000
+      Size.Width = 305.00000000000000000
+      Size.Height = 33.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 6
       Text = 'Cell finished'
-      TextSettings.Font.Size = 18.000000000000000000
-      TextSettings.Trimming = None
+      TextSettings.Font.Size = 18.00000000000000000
       Visible = False
     end
     object comboboxPanelTopLeftScreen: TComboBox
@@ -99,10 +92,10 @@ object frmPanelAppMain: TfrmPanelAppMain
         'Window 4:3'
         'Window 16:10')
       ItemIndex = 0
-      Position.X = 24.000000000000000000
-      Position.Y = 200.000000000000000000
-      Size.Width = 289.000000000000000000
-      Size.Height = 22.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 200.00000000000000000
+      Size.Width = 289.00000000000000000
+      Size.Height = 22.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 7
     end
@@ -110,83 +103,83 @@ object frmPanelAppMain: TfrmPanelAppMain
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 8
       Text = '0123456789AB'
-      Position.X = 208.000000000000000000
-      Position.Y = 80.000000000000000000
-      Size.Width = 121.000000000000000000
-      Size.Height = 22.000000000000000000
+      Position.X = 208.00000000000000000
+      Position.Y = 80.00000000000000000
+      Size.Width = 121.00000000000000000
+      Size.Height = 22.00000000000000000
       Size.PlatformDefault = False
       Visible = False
     end
     object Label1: TLabel
       AutoSize = True
-      Position.X = 24.000000000000000000
-      Position.Y = 183.000000000000000000
-      Size.Width = 39.000000000000000000
-      Size.Height = 16.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 183.00000000000000000
+      Size.Width = 39.00000000000000000
+      Size.Height = 16.00000000000000000
       Size.PlatformDefault = False
       TextSettings.WordWrap = False
       Text = 'Display'
     end
     object Label3: TLabel
       Action = actPanelKeepAspectRatio
-      Position.X = 80.000000000000000000
-      Position.Y = 98.000000000000000000
-      Size.Width = 73.000000000000000000
-      Size.Height = 33.000000000000000000
+      Position.X = 80.00000000000000000
+      Position.Y = 98.00000000000000000
+      Size.Width = 73.00000000000000000
+      Size.Height = 33.00000000000000000
       Size.PlatformDefault = False
       TextSettings.Trimming = None
     end
     object Label8: TLabel
       Action = actPanelScaling
-      Position.X = 80.000000000000000000
-      Position.Y = 140.000000000000000000
-      Size.Width = 73.000000000000000000
-      Size.Height = 33.000000000000000000
+      Position.X = 80.00000000000000000
+      Position.Y = 140.00000000000000000
+      Size.Width = 73.00000000000000000
+      Size.Height = 33.00000000000000000
       Size.PlatformDefault = False
       TextSettings.Trimming = None
     end
     object Label9: TLabel
       Action = actPanelClipping
-      Position.X = 240.000000000000000000
-      Position.Y = 98.000000000000000000
-      Size.Width = 73.000000000000000000
-      Size.Height = 33.000000000000000000
+      Position.X = 240.00000000000000000
+      Position.Y = 98.00000000000000000
+      Size.Width = 73.00000000000000000
+      Size.Height = 33.00000000000000000
       Size.PlatformDefault = False
       TextSettings.Trimming = None
     end
     object switchPanelClipping: TSwitch
       Action = actPanelClipping
-      Position.X = 184.000000000000000000
-      Position.Y = 104.000000000000000000
-      Size.Width = 48.000000000000000000
-      Size.Height = 20.000000000000000000
+      Position.X = 184.00000000000000000
+      Position.Y = 104.00000000000000000
+      Size.Width = 48.00000000000000000
+      Size.Height = 20.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 14
     end
     object switchPanelKeepAspectRatio: TSwitch
       Action = actPanelKeepAspectRatio
-      Position.X = 24.000000000000000000
-      Position.Y = 104.000000000000000000
-      Size.Width = 48.000000000000000000
-      Size.Height = 20.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 104.00000000000000000
+      Size.Width = 48.00000000000000000
+      Size.Height = 20.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 15
     end
     object switchPanelScaling: TSwitch
       Action = actPanelScaling
-      Position.X = 24.000000000000000000
-      Position.Y = 146.000000000000000000
-      Size.Width = 48.000000000000000000
-      Size.Height = 20.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 146.00000000000000000
+      Size.Width = 48.00000000000000000
+      Size.Height = 20.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 16
     end
   end
   object StatusBar1: TStatusBar
-    Position.Y = 258.000000000000000000
+    Position.Y = 258.00000000000000000
     ShowSizeGrip = False
-    Size.Width = 337.000000000000000000
-    Size.Height = 22.000000000000000000
+    Size.Width = 337.00000000000000000
+    Size.Height = 22.00000000000000000
     Size.PlatformDefault = False
     TabOrder = 4
   end

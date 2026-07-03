@@ -128,7 +128,7 @@ private: // User declarations
     static String CreateInstanceName();
     void Init();
     void Destroy();
-    void SetupCaption();
+    void SetupCaption( String Value );
     void SetPanelClipping( bool Val );
     void SetPanelScaling( bool Val );
     void SetPanelKeepAspectRatio( bool Val );
