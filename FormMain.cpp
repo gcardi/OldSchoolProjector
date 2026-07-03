@@ -162,6 +162,9 @@ void TfrmMain::LoadPictures()
 {
     idx_ = {};
     entries_.clear();
+    // Pick up the path currently in the edit field: it may have been typed
+    // directly, which does not go through SetPicturesPath()/picturesPath_.
+    picturesPath_ = GetPicturesPath();
     std::wstring Path = picturesPath_.c_str();
 	if ( is_directory( Path ) ) {
         auto Inserter = [this]( auto const & Entry )
