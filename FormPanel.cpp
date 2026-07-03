@@ -353,6 +353,20 @@ void TfrmPanel::ChangePicture( bool Backward )
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPanel::KeyDown( System::Word &Key, System::WideChar &KeyChar,
+                                    System::Classes::TShiftState Shift )
+{
+    // Give the host first crack at the key (e.g. the Prev/Next shortcuts) so the
+    // projector window reacts even when the main window is minimized to the tray.
+    if ( onPictureKey_ && onPictureKey_( Key, Shift ) ) {
+        Key = 0;
+        KeyChar = 0;
+        return;
+    }
+    inherited::KeyDown( Key, KeyChar, Shift );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmPanel::FormShow(TObject *Sender)
 {
     LoadNoiseSound( *playerNoise_ );

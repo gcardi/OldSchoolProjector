@@ -253,6 +253,10 @@ void TfrmMain::CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
         );
 
     panel_->OnLoadPicture = &OnLoadPicture;
+    panel_->OnPictureKey =
+        [this]( System::Word Key, System::Classes::TShiftState Shift ) {
+            return TryPictureShortcut( Key, Shift );
+        };
     panel_->Show();
     panel_->AspectRatio = GetSelectedAspectRatio();
     panel_->MonitorClipping = Clipping;
@@ -303,6 +307,43 @@ void __fastcall TfrmMain::actPictureChangeUpdate(TObject *Sender)
 {
     auto& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = ProjectorPanel && !entries_.empty() && ProjectorPanel->IsIdle();
+}
+//---------------------------------------------------------------------------
+
+// Build a TShortCut (same encoding as the IDE stores) from a key + modifiers.
+static System::Classes::TShortCut MakeShortCut(
+    System::Word Key, System::Classes::TShiftState Shift )
+{
+    unsigned Sc = Key;
+    if ( Shift.Contains( System::Classes::ssShift ) ) { Sc |= 0x2000; }
+    if ( Shift.Contains( System::Classes::ssCtrl ) )  { Sc |= 0x4000; }
+    if ( Shift.Contains( System::Classes::ssAlt ) )   { Sc |= 0x8000; }
+    return static_cast<System::Classes::TShortCut>( Sc );
+}
+//---------------------------------------------------------------------------
+
+bool TfrmMain::TryPictureShortcut( System::Word Key,
+                                   System::Classes::TShiftState Shift )
+{
+    // Same guard as the actions' OnUpdate, checked directly (the action list
+    // may not be updating while the main window is minimized to the tray).
+    if ( !ProjectorPanel || entries_.empty() || !ProjectorPanel->IsIdle() ) {
+        return false;
+    }
+
+    System::Classes::TShortCut const Sc = MakeShortCut( Key, Shift );
+    if ( Sc == 0 ) {
+        return false;
+    }
+    if ( Sc == actPicturePrior->ShortCut ) {
+        ProjectorPanel->ChangePicture( true );
+        return true;
+    }
+    if ( Sc == actPictureNext->ShortCut ) {
+        ProjectorPanel->ChangePicture( false );
+        return true;
+    }
+    return false;
 }
 //---------------------------------------------------------------------------
 

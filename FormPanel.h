@@ -18,6 +18,7 @@
 #include <FMX.Filter.Effects.hpp>
 
 #include <memory>
+#include <functional>
 
 #include "WavePlayer.h"
 
@@ -55,6 +56,13 @@ private:	// User declarations
     TLoadPictureEvent onLoadPicture_ { nullptr };
     bool backward_ {};
 
+    // The host handles a key while this window has focus; returns true if it
+    // consumed it (e.g. Prev/Next shortcut). Keeps the projector window in sync
+    // with the main window's picture shortcuts without owning the actions.
+    using TPictureKeyEvent =
+        std::function<bool( System::Word Key, System::Classes::TShiftState Shift )>;
+    TPictureKeyEvent onPictureKey_;
+
     void RestoreProperties();
     void SaveProperties() const;
 //    void LoadImage( size_t Index );
@@ -72,6 +80,8 @@ private:	// User declarations
     void SetFanNoise( bool Val );
 protected:
     virtual void ApplyCanvasSize( float W, float H ) override;
+    virtual void __fastcall KeyDown( System::Word &Key, System::WideChar &KeyChar,
+                                     System::Classes::TShiftState Shift ) override;
 public:		// User declarations
     using inherited = TfrmPanelBase;
 
@@ -101,6 +111,9 @@ public:		// User declarations
     void ChangePicture( bool Backward );
     __property TNotifyEvent OnLoadPicture = {
         read = onLoadPicture_, write = onLoadPicture_
+    };
+    __property TPictureKeyEvent OnPictureKey = {
+        read = onPictureKey_, write = onPictureKey_
     };
 
 };

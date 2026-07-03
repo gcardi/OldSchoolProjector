@@ -10,66 +10,80 @@ inherited frmMain: TfrmMain
     Top = 80
   end
   inherited layoutMain: TLayout
-    Size.Width = 548.000000000000000000
-    Size.Height = 508.000000000000000000
+    Size.Width = 548.00000000000000000
+    Size.Height = 508.00000000000000000
     TabOrder = 1
     inherited Button1: TButton
-      Position.Y = 16.000000000000000000
-      Size.Height = 30.000000000000000000
+      Position.Y = 16.00000000000000000
+      Size.Height = 30.00000000000000000
       Size.PlatformDefault = False
+      TextSettings.FontColor = claBlack
     end
     inherited Button11: TButton
-      Position.Y = 56.000000000000000000
-      Size.Height = 30.000000000000000000
+      Position.Y = 56.00000000000000000
+      Size.Height = 30.00000000000000000
+      TextSettings.FontColor = claBlack
     end
     inherited Button2: TButton
-      Position.Y = 56.000000000000000000
-      Size.Height = 30.000000000000000000
+      Position.Y = 56.00000000000000000
+      Size.Height = 30.00000000000000000
       Size.PlatformDefault = False
+      TextSettings.FontColor = claBlack
     end
     inherited Button3: TButton
-      Position.Y = 56.000000000000000000
-      Size.Height = 30.000000000000000000
+      Position.Y = 56.00000000000000000
+      Size.Height = 30.00000000000000000
       Size.PlatformDefault = False
+      TextSettings.FontColor = claBlack
     end
     inherited Button5: TButton
-      Position.Y = 16.000000000000000000
-      Size.Height = 30.000000000000000000
+      Position.Y = 16.00000000000000000
+      Size.Height = 30.00000000000000000
+      TextSettings.FontColor = claBlack
     end
     inherited Button7: TButton
-      Position.Y = 16.000000000000000000
-      Size.Height = 30.000000000000000000
+      Position.Y = 16.00000000000000000
+      Size.Height = 30.00000000000000000
+      TextSettings.FontColor = claBlack
+    end
+    inherited Button8: TButton
+      TextSettings.FontColor = claBlack
     end
     inherited comboboxPanelTopLeftScreen: TComboBox
-      Size.Width = 501.000000000000000000
-      Size.Height = 32.000000000000000000
+      Size.Width = 501.00000000000000000
+      Size.Height = 32.00000000000000000
     end
     inherited edtEventCode: TEdit
-      Size.Height = 32.000000000000000000
+      TextSettings.FontColor = claBlack
+      Size.Height = 32.00000000000000000
     end
     inherited Label1: TLabel
-      Position.Y = 179.000000000000000000
-      Size.Width = 45.000000000000000000
-      Size.Height = 19.000000000000000000
+      Position.Y = 179.00000000000000000
+      Size.Width = 45.00000000000000000
+      Size.Height = 19.00000000000000000
+      TextSettings.FontColor = claBlack
     end
     inherited Label3: TLabel
       Action = nil
+      TextSettings.FontColor = claBlack
     end
     inherited Label8: TLabel
       Action = nil
+      TextSettings.FontColor = claBlack
     end
     inherited Label9: TLabel
       Action = nil
+      TextSettings.FontColor = claBlack
       TabOrder = 18
     end
     inherited switchPanelClipping: TSwitch
-      Size.Width = 44.000000000000000000
+      Size.Width = 44.00000000000000000
     end
     inherited switchPanelKeepAspectRatio: TSwitch
-      Size.Width = 44.000000000000000000
+      Size.Width = 44.00000000000000000
     end
     inherited switchPanelScaling: TSwitch
-      Size.Width = 44.000000000000000000
+      Size.Width = 44.00000000000000000
       TabOrder = 17
     end
     object tmrPolling: TTimer
@@ -81,26 +95,26 @@ inherited frmMain: TfrmMain
     object Line1: TLine
       Anchors = [akLeft, akTop, akBottom]
       LineType = Left
-      Position.X = 336.000000000000000000
-      Position.Y = 8.000000000000000000
-      Size.Width = 9.000000000000000000
-      Size.Height = 491.000000000000000000
+      Position.X = 336.00000000000000000
+      Position.Y = 8.00000000000000000
+      Size.Width = 9.00000000000000000
+      Size.Height = 491.00000000000000000
       Size.PlatformDefault = False
     end
     object switchVignetting1: TSwitch
       Action = actPanelVignetting
-      Position.X = 184.000000000000000000
-      Position.Y = 146.000000000000000000
-      Size.Width = 44.000000000000000000
-      Size.Height = 20.000000000000000000
+      Position.X = 184.00000000000000000
+      Position.Y = 146.00000000000000000
+      Size.Width = 44.00000000000000000
+      Size.Height = 20.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 16
     end
     object Label2: TLabel
-      Position.X = 240.000000000000000000
-      Position.Y = 139.000000000000000000
-      Size.Width = 73.000000000000000000
-      Size.Height = 33.000000000000000000
+      Position.X = 240.00000000000000000
+      Position.Y = 139.00000000000000000
+      Size.Width = 73.00000000000000000
+      Size.Height = 33.00000000000000000
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Vignetting'
@@ -110,20 +124,20 @@ inherited frmMain: TfrmMain
     object trackbarMechSndVol: TTrackBar
       CanParentFocus = True
       Orientation = Horizontal
-      Position.X = 328.000000000000000000
-      Position.Y = 21.000000000000000000
-      Size.Width = 108.000000000000000000
-      Size.Height = 24.000000000000000000
+      Position.X = 328.00000000000000000
+      Position.Y = 21.00000000000000000
+      Size.Width = 108.00000000000000000
+      Size.Height = 24.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 22
-      Value = 50.000000000000000000
+      Value = 50.00000000000000000
       OnChange = trackbarMechSndVolChange
     end
     object Label4: TLabel
-      Position.X = 444.000000000000000000
-      Position.Y = 13.000000000000000000
-      Size.Width = 101.000000000000000000
-      Size.Height = 33.000000000000000000
+      Position.X = 444.00000000000000000
+      Position.Y = 13.00000000000000000
+      Size.Width = 101.00000000000000000
+      Size.Height = 33.00000000000000000
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Mechanism sound volume'
@@ -134,18 +148,18 @@ inherited frmMain: TfrmMain
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 23
-      Position.X = 24.000000000000000000
-      Position.Y = 265.000000000000000000
-      Size.Width = 461.000000000000000000
-      Size.Height = 32.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 265.00000000000000000
+      Size.Width = 461.00000000000000000
+      Size.Height = 32.00000000000000000
       Size.PlatformDefault = False
     end
     object Label5: TLabel
       Action = actPanelScaling
-      Position.X = 24.000000000000000000
-      Position.Y = 236.000000000000000000
-      Size.Width = 129.000000000000000000
-      Size.Height = 33.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 236.00000000000000000
+      Size.Width = 129.00000000000000000
+      Size.Height = 33.00000000000000000
       Size.PlatformDefault = False
       TextSettings.Trimming = None
       Text = 'Pictures path'
@@ -153,18 +167,18 @@ inherited frmMain: TfrmMain
     end
     object switchRecursivePicturesSearch1: TSwitch
       Action = actPanelRecursivePicturesSearch
-      Position.X = 24.000000000000000000
-      Position.Y = 317.000000000000000000
-      Size.Width = 44.000000000000000000
-      Size.Height = 20.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 317.00000000000000000
+      Size.Width = 44.00000000000000000
+      Size.Height = 20.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 24
     end
     object Label6: TLabel
-      Position.X = 76.000000000000000000
-      Position.Y = 302.000000000000000000
-      Size.Width = 120.000000000000000000
-      Size.Height = 50.000000000000000000
+      Position.X = 76.00000000000000000
+      Position.Y = 302.00000000000000000
+      Size.Width = 120.00000000000000000
+      Size.Height = 50.00000000000000000
       Size.PlatformDefault = False
       Text = 'Recursive pictures search'
       TabOrder = 25
@@ -174,53 +188,52 @@ inherited frmMain: TfrmMain
       Anchors = [akTop, akRight]
       StyledSettings = [Family, Style, FontColor]
       ImageIndex = -1
-      Position.X = 493.000000000000000000
-      Position.Y = 265.000000000000000000
-      Size.Width = 32.000000000000000000
-      Size.Height = 32.000000000000000000
+      Position.X = 493.00000000000000000
+      Position.Y = 265.00000000000000000
+      Size.Width = 32.00000000000000000
+      Size.Height = 32.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 26
       Text = #8729#8729#8729
-      TextSettings.Font.Size = 16.000000000000000000
-      TextSettings.Trimming = None
+      TextSettings.Font.Size = 16.00000000000000000
     end
     object Label7: TLabel
-      Position.X = 444.000000000000000000
-      Position.Y = 90.000000000000000000
-      Size.Width = 96.000000000000000000
-      Size.Height = 41.000000000000000000
+      Position.X = 444.00000000000000000
+      Position.Y = 90.00000000000000000
+      Size.Width = 96.00000000000000000
+      Size.Height = 41.00000000000000000
       Size.PlatformDefault = False
       Text = 'Fan noise volume'
       TabOrder = 27
     end
     object switchFanNoise: TSwitch
       Action = actPanelFanNoise
-      Position.X = 328.000000000000000000
-      Position.Y = 62.000000000000000000
-      Size.Width = 44.000000000000000000
-      Size.Height = 20.000000000000000000
+      Position.X = 328.00000000000000000
+      Position.Y = 62.00000000000000000
+      Size.Width = 44.00000000000000000
+      Size.Height = 20.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 28
     end
     object Label10: TLabel
-      Position.X = 384.000000000000000000
-      Position.Y = 62.000000000000000000
-      Size.Width = 73.000000000000000000
-      Size.Height = 17.000000000000000000
+      Position.X = 384.00000000000000000
+      Position.Y = 62.00000000000000000
+      Size.Width = 73.00000000000000000
+      Size.Height = 17.00000000000000000
       Size.PlatformDefault = False
       Text = 'Fan noise'
       TabOrder = 29
     end
     object lblFileName: TLabel
-      Position.X = 24.000000000000000000
-      Position.Y = 314.000000000000000000
-      Size.Width = 497.000000000000000000
-      Size.Height = 23.000000000000000000
+      Position.X = 24.00000000000000000
+      Position.Y = 314.00000000000000000
+      Size.Width = 497.00000000000000000
+      Size.Height = 23.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 30
       object lblPictureInfo: TLabel
-        Position.X = 201.000000000000000000
-        Position.Y = 8.000000000000000000
+        Position.X = 201.00000000000000000
+        Position.Y = 8.00000000000000000
         Text = 'Picture 0 '
         TabOrder = 4
       end
@@ -229,14 +242,13 @@ inherited frmMain: TfrmMain
       Action = actPicturePrior
       Anchors = [akLeft, akBottom]
       ImageIndex = -1
-      Position.X = 48.000000000000000000
-      Position.Y = 392.000000000000000000
-      Size.Width = 80.000000000000000000
-      Size.Height = 89.000000000000000000
+      Position.X = 48.00000000000000000
+      Position.Y = 392.00000000000000000
+      Size.Width = 80.00000000000000000
+      Size.Height = 89.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 32
       TextSettings.VertAlign = Trailing
-      TextSettings.Trimming = None
       OnPaint = Button4Paint
     end
     object Button6: TButton
@@ -244,28 +256,27 @@ inherited frmMain: TfrmMain
       Action = actPictureNext
       Anchors = [akRight, akBottom]
       ImageIndex = -1
-      Position.X = 424.000000000000000000
-      Position.Y = 392.000000000000000000
-      Size.Width = 80.000000000000000000
-      Size.Height = 89.000000000000000000
+      Position.X = 424.00000000000000000
+      Position.Y = 392.00000000000000000
+      Size.Width = 80.00000000000000000
+      Size.Height = 89.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 31
       TextSettings.VertAlign = Trailing
-      TextSettings.Trimming = None
       OnPaint = Button4Paint
     end
     inline frameThumbs: TThumbnailStrip
-      Position.X = 136.000000000000000000
-      Position.Y = 392.000000000000000000
-      Size.Width = 280.000000000000000000
-      Size.Height = 89.000000000000000000
+      Position.X = 136.00000000000000000
+      Position.Y = 392.00000000000000000
+      Size.Width = 280.00000000000000000
+      Size.Height = 89.00000000000000000
       Size.PlatformDefault = False
       TabOrder = 33
     end
   end
   inherited StatusBar1: TStatusBar
-    Position.Y = 532.000000000000000000
-    Size.Width = 548.000000000000000000
+    Position.Y = 532.00000000000000000
+    Size.Width = 548.00000000000000000
     TabOrder = 3
   end
   inherited popupmenuTrayIcon: TPopupMenu
@@ -273,8 +284,8 @@ inherited frmMain: TfrmMain
     Top = 120
   end
   object MenuBar1: TMenuBar [4]
-    Size.Width = 548.000000000000000000
-    Size.Height = 24.000000000000000000
+    Size.Width = 548.00000000000000000
+    Size.Height = 24.00000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object MenuItem1: TMenuItem
@@ -388,13 +399,13 @@ inherited frmMain: TfrmMain
   object trackbarNoiseSndVol: TTrackBar [5]
     CanParentFocus = True
     Orientation = Horizontal
-    Position.X = 328.000000000000000000
-    Position.Y = 124.000000000000000000
-    Size.Width = 108.000000000000000000
-    Size.Height = 24.000000000000000000
+    Position.X = 328.00000000000000000
+    Position.Y = 124.00000000000000000
+    Size.Width = 108.00000000000000000
+    Size.Height = 24.00000000000000000
     Size.PlatformDefault = False
     TabOrder = 8
-    Value = 25.000000000000000000
+    Value = 25.00000000000000000
     OnChange = trackbarNoiseSndVolChange
   end
   object tmrChangeSoundVol: TTimer [6]
@@ -411,6 +422,7 @@ inherited frmMain: TfrmMain
       Category = 'Picture'
       Text = 'Prior'
       Hint = 'Prior|Previous picture'
+      ShortCut = 33
       OnExecute = actPicturePriorExecute
       OnUpdate = actPictureChangeUpdate
     end
@@ -418,6 +430,7 @@ inherited frmMain: TfrmMain
       Category = 'Picture'
       Text = 'Next'
       Hint = 'Next|Next picture'
+      ShortCut = 34
       OnExecute = actPictureNextExecute
       OnUpdate = actPictureChangeUpdate
     end
@@ -527,7 +540,7 @@ inherited frmMain: TfrmMain
           ' 0,0.429 -0.35,0.779 -0.779,0.779 H 6.602 c -0.429,0 -0.779,-0.3' +
           '5 -0.779,-0.779 0,-0.43 0.35,-0.779 0.779,-0.779 z"'#10'   id="path1' +
           '490" />'#10'  </g>'#10' </g>'#10'</svg>'#10
-        Opacity = 1.000000000000000000
+        Opacity = 1.00000000000000000
       end
       item
         MultiResBitmap = <
@@ -604,23 +617,23 @@ inherited frmMain: TfrmMain
           '15.355 v 7.535 c 0,0.429 -0.35,0.779 -0.779,0.779 H 6.602 c -0.4' +
           '29,0 -0.779,-0.35 -0.779,-0.779 0,-0.43 0.35,-0.779 0.779,-0.779' +
           ' z"'#10'   id="path1490" />'#10'  </g>'#10' </g>'#10'</svg>'#10
-        Opacity = 1.000000000000000000
+        Opacity = 1.00000000000000000
       end>
     Destination = <
       item
         Layers = <
           item
             Name = 'LeftArrow'
-            SourceRect.Right = 32.000000000000000000
-            SourceRect.Bottom = 32.000000000000000000
+            SourceRect.Right = 32.00000000000000000
+            SourceRect.Bottom = 32.00000000000000000
           end>
       end
       item
         Layers = <
           item
             Name = 'RightArrow'
-            SourceRect.Right = 32.000000000000000000
-            SourceRect.Bottom = 32.000000000000000000
+            SourceRect.Right = 32.00000000000000000
+            SourceRect.Bottom = 32.00000000000000000
           end>
       end>
     Left = 368

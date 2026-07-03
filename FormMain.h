@@ -23,6 +23,7 @@
 #include "FMX.SVGIconImageList.hpp"
 #include <FMX.ImgList.hpp>
 #include <System.ImageList.hpp>
+#include <FMX.Forms.hpp>
 
 #include <vector>
 #include <memory>
@@ -154,6 +155,10 @@ private:	// User declarations
     void __fastcall ThumbPick( TObject* Sender, int Index );
     void __fastcall ThumbVisibleRange( TObject* Sender, int First, int Last );
     void __fastcall ThumbPollTimer( TObject* Sender );
+
+    // Called by the projector window when it has focus: run the Prev/Next
+    // picture shortcuts there too. Returns true if the key was consumed.
+    bool TryPictureShortcut( System::Word Key, System::Classes::TShiftState Shift );
 
     void LoadPicture( size_t Idx );
     void LoadPictures();
