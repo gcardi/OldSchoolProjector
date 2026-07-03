@@ -28,6 +28,7 @@
 #include <memory>
 
 #include "FormPanel.h"
+#include "ThumbnailStrip.h"
 
 //---------------------------------------------------------------------------
 
@@ -85,6 +86,7 @@ __published:	// IDE-managed Components
     TButton *Button4;
     TSVGIconImageList *SVGIconImageList1;
     TButton *Button6;
+    TThumbnailStrip *frameThumbs;
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
     void __fastcall actPictureNextExecute(TObject *Sender);
     void __fastcall actPicturePriorExecute(TObject *Sender);
@@ -137,6 +139,12 @@ private:	// User declarations
     bool GetFanNoise() const;
     void SetFanNoise( bool Val );
     void __fastcall OnLoadPicture( TObject *Sender, bool Backward );
+
+    // Thumbnail strip callbacks (the frame is filesystem/cache agnostic).
+    void __fastcall ThumbRequest( TObject* Sender, int Index, TBitmap*& Bmp );
+    void __fastcall ThumbPick( TObject* Sender, int Index );
+    void __fastcall ThumbVisibleRange( TObject* Sender, int First, int Last );
+
     void LoadPicture( size_t Idx );
     void LoadPictures();
     void ShowFileInfo( size_t Idx );

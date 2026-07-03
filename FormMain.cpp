@@ -33,6 +33,7 @@ using AppUtils::GetConfigBaseNode;
 #pragma link "FMXFormAppMain"
 #pragma link "FMX.SVGIconImage"
 #pragma link "FMX.SVGIconImageList"
+#pragma link "ThumbnailStrip"
 #pragma resource "*.fmx"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -40,10 +41,42 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     : TfrmPanelAppMain(Owner)
 {
+    frameThumbs->OnRequestThumbnail = &ThumbRequest;
+    frameThumbs->OnPick = &ThumbPick;
+    frameThumbs->OnVisibleRangeChanged = &ThumbVisibleRange;
+    // TFrame does not publish Anchors for streaming, so set it here: keep the
+    // strip stretched between the Prior/Next buttons as the form is resized.
+    frameThumbs->Anchors = TAnchors()
+        << TAnchorKind::akLeft << TAnchorKind::akRight << TAnchorKind::akBottom;
+
     ShowFileInfo( {} );
     PicturesPath = System::Ioutils::TPath::GetPicturesPath();
 	Application->OnIdle = &IdleEvent;
     RestoreProperties();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::ThumbRequest( TObject* /*Sender*/, int /*Index*/,
+                                        TBitmap*& Bmp )
+{
+    // Step 3+ will return the cached thumbnail for entries_[Index]; until then
+    // there is no cache, so the frame draws placeholders.
+    Bmp = nullptr;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::ThumbPick( TObject* /*Sender*/, int Index )
+{
+    // Step 5 will actually project entries_[Index]. For now just move the
+    // highlight so the click is visibly wired.
+    frameThumbs->SelectedIndex = Index;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::ThumbVisibleRange( TObject* /*Sender*/, int /*First*/,
+                                             int /*Last*/ )
+{
+    // Step 4 will schedule preloading of the visible range here.
 }
 //---------------------------------------------------------------------------
 
@@ -117,6 +150,7 @@ void TfrmMain::LoadPicture( size_t Idx )
         auto Bmp = make_unique<TBitmap>( FileName );
         panel_->LoadPicture( *Bmp );
         ShowFileInfo( Idx );
+        frameThumbs->SelectedIndex = static_cast<int>( Idx );
 	}
 }
 //---------------------------------------------------------------------------
@@ -129,6 +163,8 @@ void TfrmMain::Start()
         GetSelectedDisplay(), PanelClipping, PanelScaling, PanelKeepAspectRatio
     );
     LoadPictures();
+    frameThumbs->ThumbAspectRatio = GetSelectedAspectRatio();
+    frameThumbs->Count = static_cast<int>( entries_.size() );
     LoadPicture( idx_ );
 }
 //---------------------------------------------------------------------------
@@ -136,6 +172,7 @@ void TfrmMain::Start()
 void TfrmMain::Stop()
 {
     entries_.clear();
+    frameThumbs->Count = 0;
     ShowFileInfo( {} );
     if ( GetPanel() ) {
         tmrPolling->Enabled = false;

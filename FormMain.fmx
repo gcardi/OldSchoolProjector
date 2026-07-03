@@ -254,6 +254,14 @@ inherited frmMain: TfrmMain
       TextSettings.Trimming = None
       OnPaint = Button4Paint
     end
+    inline frameThumbs: TThumbnailStrip
+      Position.X = 136.000000000000000000
+      Position.Y = 392.000000000000000000
+      Size.Width = 280.000000000000000000
+      Size.Height = 89.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 33
+    end
   end
   inherited StatusBar1: TStatusBar
     Position.Y = 532.000000000000000000

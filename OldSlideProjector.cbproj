@@ -271,6 +271,13 @@
             <ResourceType>WAVE</ResourceType>
             <ResourceId>sound</ResourceId>
         </RcItem>
+        <CppCompile Include="ThumbnailStrip.cpp">
+            <Form>ThumbnailStrip</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+            <DependentOn>ThumbnailStrip.h</DependentOn>
+            <BuildOrder>15</BuildOrder>
+        </CppCompile>
         <CppCompile Include="TrayIcon.cpp">
             <DependentOn>TrayIcon.h</DependentOn>
             <BuildOrder>2</BuildOrder>
@@ -284,6 +291,7 @@
         <FormResources Include="FormConfig.fmx"/>
         <FormResources Include="FMXFormPanelBase.fmx"/>
         <FormResources Include="FMXFormAppMain.fmx"/>
+        <FormResources Include="ThumbnailStrip.fmx"/>
         <FormResources Include="DataModStyleRes.dfm"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

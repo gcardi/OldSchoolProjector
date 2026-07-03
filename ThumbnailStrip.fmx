@@ -1,0 +1,23 @@
+object ThumbnailStrip: TThumbnailStrip
+  Size.Width = 280.000000000000000000
+  Size.Height = 89.000000000000000000
+  Size.PlatformDefault = False
+  object scrollThumbs: TSmallScrollBar
+    Align = Bottom
+    Orientation = Horizontal
+    Position.Y = 73.000000000000000000
+    Size.Width = 280.000000000000000000
+    Size.Height = 16.000000000000000000
+    Size.PlatformDefault = False
+    OnChange = scrollThumbsChange
+  end
+  object paintThumbs: TPaintBox
+    Align = Client
+    Size.Width = 280.000000000000000000
+    Size.Height = 73.000000000000000000
+    Size.PlatformDefault = False
+    OnMouseDown = paintThumbsMouseDown
+    OnPaint = paintThumbsPaint
+    OnResized = paintThumbsResized
+  end
+end
