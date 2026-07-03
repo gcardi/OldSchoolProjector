@@ -190,8 +190,9 @@ void TfrmPanel::LoadPicture( TBitmap& Bmp )
     float const CanvasAR = CanvasW / CanvasH;
     float const SrcAR = static_cast<float>( Bmp.Width ) / Bmp.Height;
 
-    // Build a canvas-aspect bitmap large enough to hold the picture at full
-    // resolution, letterboxing the unused space with black.
+    // Build a canvas-aspect bitmap large enough to hold the picture, then cap it
+    // to a safe max size: a wide canvas plus a tall photo can push a full-
+    // resolution letterbox past the texture limit ("Bitmap size too big").
     int OutW, OutH;
     if ( SrcAR > CanvasAR ) {           // relatively wider -> bands top/bottom
         OutW = Bmp.Width;
@@ -201,8 +202,23 @@ void TfrmPanel::LoadPicture( TBitmap& Bmp )
         OutH = Bmp.Height;
         OutW = static_cast<int>( Bmp.Height * CanvasAR + 0.5f );
     }
-    int const OfsX = ( OutW - Bmp.Width ) / 2;
-    int const OfsY = ( OutH - Bmp.Height ) / 2;
+
+    constexpr int MaxDim = 4096;        // safe upper bound for FMX bitmaps
+    int const Larger = OutW > OutH ? OutW : OutH;
+    float const Fit =
+        Larger > MaxDim ? static_cast<float>( MaxDim ) / Larger : 1.0f;
+
+    OutW = static_cast<int>( OutW * Fit + 0.5f );
+    OutH = static_cast<int>( OutH * Fit + 0.5f );
+    if ( OutW < 1 ) { OutW = 1; }
+    if ( OutH < 1 ) { OutH = 1; }
+
+    int DrawW = static_cast<int>( Bmp.Width * Fit + 0.5f );
+    int DrawH = static_cast<int>( Bmp.Height * Fit + 0.5f );
+    if ( DrawW < 1 ) { DrawW = 1; }
+    if ( DrawH < 1 ) { DrawH = 1; }
+    int const OfsX = ( OutW - DrawW ) / 2;
+    int const OfsY = ( OutH - DrawH ) / 2;
 
     auto Out = make_unique<TBitmap>( OutW, OutH );
     if ( Out->Canvas->BeginScene() ) {
@@ -216,7 +232,7 @@ void TfrmPanel::LoadPicture( TBitmap& Bmp )
         Out->Canvas->DrawBitmap(
             &Bmp,
             TRectF( 0, 0, Bmp.Width, Bmp.Height ),
-            TRectF( OfsX, OfsY, OfsX + Bmp.Width, OfsY + Bmp.Height ),
+            TRectF( OfsX, OfsY, OfsX + DrawW, OfsY + DrawH ),
             1.0f, true
         );
     }
