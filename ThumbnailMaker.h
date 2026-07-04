@@ -9,6 +9,18 @@
 #include <FMX.Graphics.hpp>
 
 #include <memory>
+#include <set>
+#include <string>
+
+//---------------------------------------------------------------------------
+
+// Return the set of lower-cased file extensions (each with its leading dot,
+// e.g. L".jpg") that the WIC codecs installed on this machine can decode.
+// Because the list is queried from WIC at runtime, installing an extra codec
+// - for instance the Microsoft/Canon/Nikon RAW camera codec packs - makes the
+// matching files (.cr2, .cr3, .nef, .arw, ...) show up here automatically,
+// with no change to the program. Returns an empty set if WIC cannot be queried.
+std::set<std::wstring> GetWICSupportedExtensions();
 
 //---------------------------------------------------------------------------
 

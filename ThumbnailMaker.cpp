@@ -10,6 +10,7 @@
 #include <propidl.h>              // PROPVARIANT / PropVariantClear
 
 #include <algorithm>
+#include <cwctype>
 
 #include "ThumbnailMaker.h"
 
@@ -77,6 +78,15 @@ bool RotationSwapsSides( WICBitmapTransformOptions Transform )
     unsigned const Rot = Transform & 0x03;   // low bits hold the rotation
     return Rot == WICBitmapTransformRotate90 || Rot == WICBitmapTransformRotate270;
 }
+//---------------------------------------------------------------------------
+
+// RAII deleter for raw COM out-params, so a unique_ptr Releases them on every
+// exit path (no try/__finally). Works for any IUnknown-derived interface.
+struct ComReleaser {
+    template <class T> void operator()( T* P ) const { if ( P ) { P->Release(); } }
+};
+template <class T>
+using ComPtr = std::unique_ptr<T, ComReleaser>;
 
 } // namespace
 //---------------------------------------------------------------------------
@@ -178,5 +188,71 @@ LoadImageOriented( System::UnicodeString FileName, int MaxW, int MaxH )
         );
     }
     return Bmp;
+}
+//---------------------------------------------------------------------------
+
+std::set<std::wstring> GetWICSupportedExtensions()
+{
+    std::set<std::wstring> Result;
+
+    // An empty TWICImage is just a convenient handle to the WIC factory.
+    std::unique_ptr<Vcl::Graphics::TWICImage> Probe(
+        new Vcl::Graphics::TWICImage()
+    );
+    _di_IWICImagingFactory Factory = Probe->ImagingFactory;
+    if ( !Factory ) {
+        return Result;
+    }
+
+    // Walk every installed decoder and collect the file extensions it claims.
+    IEnumUnknown* RawEnum = nullptr;
+    if ( FAILED( Factory->CreateComponentEnumerator(
+             WICDecoder, WICComponentEnumerateDefault, &RawEnum ) ) || !RawEnum ) {
+        return Result;
+    }
+    ComPtr<IEnumUnknown> Enum( RawEnum );
+
+    IUnknown* RawElement = nullptr;
+    ULONG Fetched = 0;
+    while ( Enum->Next( 1, &RawElement, &Fetched ) == S_OK && Fetched == 1 ) {
+        ComPtr<IUnknown> Element( RawElement );
+        RawElement = nullptr;
+
+        IWICBitmapCodecInfo* RawInfo = nullptr;
+        if ( FAILED( Element->QueryInterface(
+                 __uuidof( IWICBitmapCodecInfo ), reinterpret_cast<void**>( &RawInfo ) ) )
+             || !RawInfo ) {
+            continue;
+        }
+        ComPtr<IWICBitmapCodecInfo> Info( RawInfo );
+
+        // Two-call idiom: ask for the required length, then fetch. The list is a
+        // comma-separated string such as ".jpg,.jpeg,.jpe,.jfif".
+        UINT Needed = 0;
+        if ( FAILED( Info->GetFileExtensions( 0, nullptr, &Needed ) ) || Needed == 0 ) {
+            continue;
+        }
+        std::wstring Buf( Needed, L'\0' );
+        UINT Actual = 0;
+        if ( FAILED( Info->GetFileExtensions( Needed, &Buf[0], &Actual ) ) ) {
+            continue;
+        }
+        Buf.resize( Actual > 0 ? Actual - 1 : 0 );   // drop the trailing NUL
+
+        std::wstring Ext;
+        auto Flush = [&Result, &Ext]() {
+            if ( !Ext.empty() ) {
+                for ( wchar_t& C : Ext ) { C = static_cast<wchar_t>( towlower( C ) ); }
+                Result.insert( Ext );
+                Ext.clear();
+            }
+        };
+        for ( wchar_t const C : Buf ) {
+            if ( C == L',' ) { Flush(); } else { Ext.push_back( C ); }
+        }
+        Flush();
+    }
+
+    return Result;
 }
 //---------------------------------------------------------------------------

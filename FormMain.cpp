@@ -10,6 +10,9 @@
 
 #include <filesystem>
 #include <algorithm>
+#include <set>
+#include <string>
+#include <cwctype>
 
 #include "FormMain.h"
 #include "FormConfig.h"
@@ -167,11 +170,16 @@ void TfrmMain::LoadPictures()
     picturesPath_ = GetPicturesPath();
     std::wstring Path = picturesPath_.c_str();
 	if ( is_directory( Path ) ) {
-        auto Inserter = [this]( auto const & Entry )
+        // Accept every file the installed WIC codecs can decode - not just
+        // JPG/PNG. Add the Canon/Nikon (or Microsoft) RAW codec pack and .cr2 /
+        // .nef / ... start being picked up here too, with no code change.
+        std::set<std::wstring> const SupportedExt = GetWICSupportedExtensions();
+        auto Inserter = [this, &SupportedExt]( auto const & Entry )
         {
             auto Path = Entry.path();
-            String Ext = String{ Path.extension().c_str() };
-			if ( SameText( Ext, _D( ".jpg" ) ) || SameText( Ext, _D( ".png" ) ) ) {
+            std::wstring Ext = Path.extension().wstring();
+            for ( wchar_t& C : Ext ) { C = static_cast<wchar_t>( towlower( C ) ); }
+			if ( SupportedExt.count( Ext ) > 0 ) {
 				entries_.emplace_back( Path.c_str() );
 			}
 		};
