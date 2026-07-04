@@ -103,7 +103,7 @@
         <Multithreaded>true</Multithreaded>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <SanitizedProjectName>OldSlideProjector</SanitizedProjectName>
-        <VerInfo_Keys>CompanyName=GCardi;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=OldSlideProjector;ProductVersion=1.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=GCardi;FileDescription=$(MSBuildProjectName);FileVersion=0.9.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=;ProductName=OldSlideProjector;ProductVersion=0.9;Comments=</VerInfo_Keys>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <Defines>VCL_IOSTREAMS;$(Defines)</Defines>

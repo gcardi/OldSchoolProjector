@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Old School Projector"
-#define MyAppVersion "1.0"
+#define MyAppVersion "0.9"
 #define MyAppPublisher "Sandro"
 #define MyAppExeName "OldSlideProjector.exe"
 
