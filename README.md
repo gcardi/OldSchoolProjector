@@ -121,6 +121,20 @@ smooth scrolling), and every result is **cached** — so scrolling back is insta
 never tries to chew through an entire huge folder at once. The full-resolution picture for
 the projection itself is always loaded on demand.
 
+## Building from source
+
+Old Slide Projector depends on **[Anafestica](https://github.com/gcardi/Anafestica)**, a
+C++Builder support library that provides the form-persistence and configuration-registry
+framework the app is built on (its headers are included as `anafestica/…`). To build:
+
+1. Clone **Anafestica** and make it available on the project's search path — the project
+   looks for an `Anafestica\anafestica` folder, either alongside the project or in the shared
+   Embarcadero *Public Documents* library location.
+2. Open `OldSlideProjector.cbproj` in Embarcadero C++Builder (FireMonkey / FMX) and build the
+   **Win64** target.
+
 ## Built with
 
-C++ · Embarcadero C++Builder (FireMonkey / FMX) · Windows · Windows Imaging Component (WIC)
+C++ · Embarcadero C++Builder (FireMonkey / FMX) ·
+[Anafestica](https://github.com/gcardi/Anafestica) · Windows ·
+Windows Imaging Component (WIC)
