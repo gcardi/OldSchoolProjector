@@ -103,9 +103,6 @@ Coordinates=990,157,70,33
 [Button3]
 Coordinates=374,248,53,51
 
-[edtEventCode]
-Coordinates=134,1,83,51
-
 [MenuItem31]
 Coordinates=990,261,73,33
 

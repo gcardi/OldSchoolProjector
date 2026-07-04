@@ -99,17 +99,6 @@ object frmPanelAppMain: TfrmPanelAppMain
       Size.PlatformDefault = False
       TabOrder = 7
     end
-    object edtEventCode: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 8
-      Text = '0123456789AB'
-      Position.X = 208.00000000000000000
-      Position.Y = 80.00000000000000000
-      Size.Width = 121.00000000000000000
-      Size.Height = 22.00000000000000000
-      Size.PlatformDefault = False
-      Visible = False
-    end
     object Label1: TLabel
       AutoSize = True
       Position.X = 24.00000000000000000

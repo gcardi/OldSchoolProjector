@@ -53,10 +53,6 @@ inherited frmMain: TfrmMain
       Size.Width = 501.00000000000000000
       Size.Height = 32.00000000000000000
     end
-    inherited edtEventCode: TEdit
-      TextSettings.FontColor = claBlack
-      Size.Height = 32.00000000000000000
-    end
     inherited Label1: TLabel
       Position.Y = 179.00000000000000000
       Size.Width = 45.00000000000000000

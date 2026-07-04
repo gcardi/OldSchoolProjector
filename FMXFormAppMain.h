@@ -48,7 +48,6 @@ __published: // IDE-managed Components
     TTimer *tmrAutoStart;
     TLayout *layoutMain;
     TButton *Button8;
-    TEdit *edtEventCode;
     TButton *Button11;
     TButton *Button1;
     TAction *actPanelShow;
@@ -136,10 +135,6 @@ private: // User declarations
     void SetDisplayDeviceID( String Val );
 
     void SetPanelForceMonitorFullScreen( bool Val );
-
-    void StartMulticast();
-    void StopMulticast();
-    void __fastcall MultiCastOnReadEvtHandler( System::TObject* Sender, String Text );
 
     void __fastcall TrayIconDblClick( System::TObject* Sender );
     void __fastcall TrayIconRClick( System::TObject* Sender );
