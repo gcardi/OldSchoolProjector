@@ -13,14 +13,14 @@
 AppId={{DFB3AD5E-7068-45AD-A847-D072CB99237B}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 OutputBaseFilename=OldSchoolProjectorInstaller
-Compression=zip
-ArchitecturesInstallIn64BitMode=x64os
+Compression=lzma2
 SolidCompression=yes
+ArchitecturesInstallIn64BitMode=x64os
+ArchitecturesAllowed=x64compatible
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -41,3 +41,4 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
