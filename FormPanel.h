@@ -56,11 +56,17 @@ private:	// User declarations
     TLoadPictureEvent onLoadPicture_ { nullptr };
     bool backward_ {};
 
+    // Full-surface black overlay, created in the constructor and toggled by the
+    // "black screen" command. Owned by the form (Owner = this), so no manual
+    // lifetime management. Kept topmost so it covers image, flash and vignette.
+    TRectangle* blackout_ {};
+
     // The host handles a key while this window has focus; returns true if it
     // consumed it (e.g. Prev/Next shortcut). Keeps the projector window in sync
     // with the main window's picture shortcuts without owning the actions.
     using TPictureKeyEvent =
-        std::function<bool( System::Word Key, System::Classes::TShiftState Shift )>;
+        std::function<bool( System::Word Key, System::WideChar KeyChar,
+                            System::Classes::TShiftState Shift )>;
     TPictureKeyEvent onPictureKey_;
 
     void RestoreProperties();
@@ -69,6 +75,8 @@ private:	// User declarations
     //ImageFileNameCont& GetImages();
     bool GetVignetting() const;
     void SetVignetting( bool Val );
+    bool GetBlackout() const;
+    void SetBlackout( bool Val );
     void PlayMechanicalSound();
     void PlayNoiseSound();
     void SetMechSoundVolume( int Val );
@@ -100,6 +108,7 @@ public:		// User declarations
     //__property ImageFileNameCont& Images = { read = GetImages };
     bool IsIdle() const;
     __property bool Vignetting = { read = GetVignetting, write = SetVignetting };
+    __property bool Blackout = { read = GetBlackout, write = SetBlackout };
     __property int MechSoundVolume = {
         read = mechSoundVolume_, write = SetMechSoundVolume
     };

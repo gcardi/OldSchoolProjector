@@ -24,6 +24,7 @@
 #include <FMX.ImgList.hpp>
 #include <System.ImageList.hpp>
 #include <FMX.Forms.hpp>
+#include "ThumbnailStrip.h"
 
 #include <vector>
 #include <memory>
@@ -62,6 +63,9 @@ __published:	// IDE-managed Components
     TSwitch *switchVignetting1;
     TLabel *Label2;
     TAction *actPanelVignetting;
+    TSwitch *switchBlackout;
+    TLabel *lblBlackout;
+    TAction *actPanelBlackout;
     TTrackBar *trackbarMechSndVol;
     TLabel *Label4;
     TEdit *edtPicturesPath;
@@ -94,6 +98,8 @@ __published:	// IDE-managed Components
     void __fastcall actPicturePriorExecute(TObject *Sender);
     void __fastcall actPanelVignettingExecute(TObject *Sender);
     void __fastcall actPanelVignettingUpdate(TObject *Sender);
+    void __fastcall actPanelBlackoutExecute(TObject *Sender);
+    void __fastcall actPanelBlackoutUpdate(TObject *Sender);
     void __fastcall trackbarMechSndVolChange(TObject *Sender);
     void __fastcall actPanelRecursivePicturesSearchExecute(TObject *Sender);
     void __fastcall actPanelRecursivePicturesSearchUpdate(TObject *Sender);
@@ -156,9 +162,17 @@ private:	// User declarations
     void __fastcall ThumbVisibleRange( TObject* Sender, int First, int Last );
     void __fastcall ThumbPollTimer( TObject* Sender );
 
-    // Called by the projector window when it has focus: run the Prev/Next
-    // picture shortcuts there too. Returns true if the key was consumed.
-    bool TryPictureShortcut( System::Word Key, System::Classes::TShiftState Shift );
+    // Central handler for the "USB/Bluetooth presenter" command set. Called both
+    // by the main window (via the KeyDown override) and by the projector window
+    // when it has focus, so the same keys work whichever window is foreground.
+    // Recognises the common synonyms popular presenters send. Returns true if the
+    // key was a known command and was consumed.
+    bool TryPresenterShortcut( System::Word Key, System::WideChar KeyChar,
+                               System::Classes::TShiftState Shift );
+
+    // True when a control that legitimately consumes typing/arrows (edit, combo,
+    // track bar) has focus, so we don't steal those keys on the main window.
+    bool IsInputControlFocused() const;
 
     void LoadPicture( size_t Idx );
     void LoadPictures();
@@ -170,6 +184,8 @@ protected:
     virtual void Stop();
     virtual TfrmPanelBase* GetPanel() { return panel_.get(); }
     virtual void Config();
+    virtual void __fastcall KeyDown( System::Word &Key, System::WideChar &KeyChar,
+                                     System::Classes::TShiftState Shift );
 
 public:		// User declarations
     using inherited = TfrmPanelAppMain;

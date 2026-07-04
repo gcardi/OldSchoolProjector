@@ -57,6 +57,19 @@ __fastcall TfrmPanel::TfrmPanel( TComponent* Owner,
     RestoreProperties();
     LoadMechanicalSound();
 //    LoadPictures();
+
+    // Black-screen overlay: a solid black rectangle filling the whole projector
+    // surface, hidden until the "black screen" command turns it on. Owned by the
+    // form; HitTest off so it never eats input; kept above every other layer.
+    blackout_ = new TRectangle( this );
+    blackout_->Parent = layoutMain;
+    blackout_->Align = TAlignLayout::Client;
+    blackout_->HitTest = false;
+    blackout_->Stroke->Kind = TBrushKind::None;
+    blackout_->Fill->Kind = TBrushKind::Solid;
+    blackout_->Fill->Color = claBlack;
+    blackout_->Visible = false;
+    blackout_->BringToFront();
 }
 //---------------------------------------------------------------------------
 
@@ -255,6 +268,22 @@ void TfrmPanel::SetVignetting( bool Val )
 }
 //---------------------------------------------------------------------------
 
+bool TfrmPanel::GetBlackout() const
+{
+    return blackout_ && blackout_->Visible;
+}
+//---------------------------------------------------------------------------
+
+void TfrmPanel::SetBlackout( bool Val )
+{
+    if ( !blackout_ ) { return; }
+    if ( Val ) {
+        blackout_->BringToFront();   // stay above any later-added layer
+    }
+    blackout_->Visible = Val;
+}
+//---------------------------------------------------------------------------
+
 /*
 TfrmPanel::ImageFileNameCont& TfrmPanel::GetImages()
 {
@@ -356,9 +385,9 @@ void TfrmPanel::ChangePicture( bool Backward )
 void __fastcall TfrmPanel::KeyDown( System::Word &Key, System::WideChar &KeyChar,
                                     System::Classes::TShiftState Shift )
 {
-    // Give the host first crack at the key (e.g. the Prev/Next shortcuts) so the
+    // Give the host first crack at the key (e.g. the presenter shortcuts) so the
     // projector window reacts even when the main window is minimized to the tray.
-    if ( onPictureKey_ && onPictureKey_( Key, Shift ) ) {
+    if ( onPictureKey_ && onPictureKey_( Key, KeyChar, Shift ) ) {
         Key = 0;
         KeyChar = 0;
         return;

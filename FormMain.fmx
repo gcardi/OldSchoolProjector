@@ -6,8 +6,8 @@ inherited frmMain: TfrmMain
   OnCloseQuery = FormCloseQuery
   DesignerMasterStyle = 0
   inherited tmrAutoStart: TTimer
-    Left = 144
-    Top = 80
+    Left = 200
+    Top = 248
   end
   inherited layoutMain: TLayout
     Size.Width = 548.00000000000000000
@@ -85,8 +85,8 @@ inherited frmMain: TfrmMain
     object tmrPolling: TTimer
       Enabled = False
       Interval = 60000
-      Left = 56
-      Top = 56
+      Left = 440
+      Top = 312
     end
     object Line1: TLine
       Anchors = [akLeft, akTop, akBottom]
@@ -220,6 +220,24 @@ inherited frmMain: TfrmMain
       Text = 'Fan noise'
       TabOrder = 29
     end
+    object switchBlackout: TSwitch
+      Action = actPanelBlackout
+      Position.X = 328.00000000000000000
+      Position.Y = 146.00000000000000000
+      Size.Width = 44.00000000000000000
+      Size.Height = 20.00000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 32
+    end
+    object lblBlackout: TLabel
+      Position.X = 384.00000000000000000
+      Position.Y = 149.00000000000000000
+      Size.Width = 96.00000000000000000
+      Size.Height = 17.00000000000000000
+      Size.PlatformDefault = False
+      Text = 'Black screen'
+      TabOrder = 35
+    end
     object lblFileName: TLabel
       Position.X = 24.00000000000000000
       Position.Y = 314.00000000000000000
@@ -243,7 +261,7 @@ inherited frmMain: TfrmMain
       Size.Width = 80.00000000000000000
       Size.Height = 89.00000000000000000
       Size.PlatformDefault = False
-      TabOrder = 32
+      TabOrder = 34
       TextSettings.VertAlign = Trailing
       OnPaint = Button4Paint
     end
@@ -276,8 +294,8 @@ inherited frmMain: TfrmMain
     TabOrder = 3
   end
   inherited popupmenuTrayIcon: TPopupMenu
-    Left = 152
-    Top = 120
+    Left = 320
+    Top = 224
   end
   object MenuBar1: TMenuBar [4]
     Size.Width = 548.00000000000000000
@@ -408,12 +426,12 @@ inherited frmMain: TfrmMain
     Enabled = False
     Interval = 200
     OnTimer = tmrChangeSoundVolTimer
-    Left = 216
-    Top = 56
+    Left = 456
+    Top = 240
   end
   inherited ActionList1: TActionList
-    Left = 120
-    Top = 96
+    Left = 112
+    Top = 256
     object actPicturePrior: TAction
       Category = 'Picture'
       Text = 'Prior'
@@ -436,6 +454,13 @@ inherited frmMain: TfrmMain
       Text = 'Vignetting'
       OnExecute = actPanelVignettingExecute
       OnUpdate = actPanelVignettingUpdate
+    end
+    object actPanelBlackout: TAction
+      Category = 'Panel'
+      AutoCheck = True
+      Text = 'Black screen'
+      OnExecute = actPanelBlackoutExecute
+      OnUpdate = actPanelBlackoutUpdate
     end
     object actPanelRecursivePicturesSearch: TAction
       Category = 'Panel'
@@ -632,7 +657,7 @@ inherited frmMain: TfrmMain
             SourceRect.Bottom = 32.00000000000000000
           end>
       end>
-    Left = 368
-    Top = 160
+    Left = 328
+    Top = 304
   end
 end

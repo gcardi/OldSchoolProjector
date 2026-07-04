@@ -42,6 +42,7 @@ static constexpr int ThumbTargetSize = 256;
 #pragma link "FMX.SVGIconImage"
 #pragma link "FMX.SVGIconImageList"
 #pragma link "ThumbnailStrip"
+#pragma link "ThumbnailStrip"
 #pragma resource "*.fmx"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -262,8 +263,9 @@ void TfrmMain::CreatePanel( FMXWinDisplayDev const * Display, bool Clipping,
 
     panel_->OnLoadPicture = &OnLoadPicture;
     panel_->OnPictureKey =
-        [this]( System::Word Key, System::Classes::TShiftState Shift ) {
-            return TryPictureShortcut( Key, Shift );
+        [this]( System::Word Key, System::WideChar KeyChar,
+                System::Classes::TShiftState Shift ) {
+            return TryPresenterShortcut( Key, KeyChar, Shift );
         };
     panel_->Show();
     panel_->AspectRatio = GetSelectedAspectRatio();
@@ -318,40 +320,101 @@ void __fastcall TfrmMain::actPictureChangeUpdate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-// Build a TShortCut (same encoding as the IDE stores) from a key + modifiers.
-static System::Classes::TShortCut MakeShortCut(
-    System::Word Key, System::Classes::TShiftState Shift )
+// Central command handler for USB/Bluetooth presenters. Presenters enumerate as
+// a plain HID keyboard and send whatever keys the target app expects, so we match
+// the de-facto PowerPoint slideshow keys plus the synonyms different models emit:
+//   Next    : Page Down / Right / Down / Space / Enter
+//   Previous: Page Up / Left / Up / Backspace
+//   Start   : F5
+//   Stop    : Esc / F6
+//   Black   : 'B' or '.'   (toggles the black-screen overlay on/off)
+// Letters/punctuation are matched on KeyChar (layout independent), navigation on
+// the virtual key. Each command guards its own applicability via the live panel
+// state (not the actions' Enabled, which may be stale while minimized to tray).
+bool TfrmMain::TryPresenterShortcut( System::Word Key, System::WideChar KeyChar,
+                                     System::Classes::TShiftState Shift )
 {
-    unsigned Sc = Key;
-    if ( Shift.Contains( System::Classes::ssShift ) ) { Sc |= 0x2000; }
-    if ( Shift.Contains( System::Classes::ssCtrl ) )  { Sc |= 0x4000; }
-    if ( Shift.Contains( System::Classes::ssAlt ) )   { Sc |= 0x8000; }
-    return static_cast<System::Classes::TShortCut>( Sc );
+    namespace vk = System::Uitypes;
+
+    // Real presenters send bare keys; ignore Ctrl/Alt combos so we never clash
+    // with the app's own Alt+Fx panel shortcuts.
+    if ( Shift.Contains( System::Classes::ssCtrl ) ||
+         Shift.Contains( System::Classes::ssAlt ) ) {
+        return false;
+    }
+
+    System::WideChar const Ch =
+        ( KeyChar >= L'A' && KeyChar <= L'Z' ) ? KeyChar + 32 : KeyChar;
+
+    bool const Next = Key == vk::vkNext  || Key == vk::vkRight ||
+                      Key == vk::vkDown  || Key == vk::vkSpace ||
+                      Key == vk::vkReturn;
+    bool const Prev = Key == vk::vkPrior || Key == vk::vkLeft ||
+                      Key == vk::vkUp    || Key == vk::vkBack;
+
+    if ( Next || Prev ) {
+        // Needs loaded pictures and an idle (not mid-animation) projector.
+        if ( !ProjectorPanel || entries_.empty() || !ProjectorPanel->IsIdle() ) {
+            return false;
+        }
+        ProjectorPanel->ChangePicture( Prev );
+        return true;
+    }
+
+    if ( Key == vk::vkF5 ) {                 // Start (only when not running)
+        if ( GetPanel() ) { return false; }
+        Start();
+        return true;
+    }
+
+    if ( Key == vk::vkEscape || Key == vk::vkF6 ) {   // Stop (only when running)
+        if ( !GetPanel() ) { return false; }
+        Stop();
+        return true;
+    }
+
+    if ( Ch == L'b' || Ch == L'.' ) {        // Blank: toggle the black overlay
+        if ( !ProjectorPanel ) { return false; }
+        actPanelBlackout->Execute();          // toggles the overlay + the switch
+        return true;
+    }
+
+    return false;
 }
 //---------------------------------------------------------------------------
 
-bool TfrmMain::TryPictureShortcut( System::Word Key,
-                                   System::Classes::TShiftState Shift )
+bool TfrmMain::IsInputControlFocused() const
 {
-    // Same guard as the actions' OnUpdate, checked directly (the action list
-    // may not be updating while the main window is minimized to the tray).
-    if ( !ProjectorPanel || entries_.empty() || !ProjectorPanel->IsIdle() ) {
-        return false;
-    }
-
-    System::Classes::TShortCut const Sc = MakeShortCut( Key, Shift );
-    if ( Sc == 0 ) {
-        return false;
-    }
-    if ( Sc == actPicturePrior->ShortCut ) {
-        ProjectorPanel->ChangePicture( true );
-        return true;
-    }
-    if ( Sc == actPictureNext->ShortCut ) {
-        ProjectorPanel->ChangePicture( false );
-        return true;
+    _di_IControl const Ctl = Focused;
+    if ( !Ctl ) { return false; }
+    for ( TFmxObject* Obj = dynamic_cast<TFmxObject*>( Ctl->GetObject() );
+          Obj; Obj = Obj->Parent ) {
+        if ( dynamic_cast<TCustomEdit*>( Obj ) ||
+             dynamic_cast<TComboBox*>( Obj )   ||
+             dynamic_cast<TTrackBar*>( Obj ) ) {
+            return true;
+        }
     }
     return false;
+}
+//---------------------------------------------------------------------------
+
+// Route the main window's keys through the presenter handler as well, so a
+// clicker works whether the control window or the full-screen projector has the
+// focus. Runs after the inherited dispatch (which fires the ActionList's own
+// F5/F6/PgUp/PgDn shortcuts and lets the focused control consume its keys first)
+// and never overrides typing in an edit/combo/track bar.
+void __fastcall TfrmMain::KeyDown( System::Word &Key, System::WideChar &KeyChar,
+                                   System::Classes::TShiftState Shift )
+{
+    inherited::KeyDown( Key, KeyChar, Shift );
+    if ( ( Key == 0 && KeyChar == 0 ) || IsInputControlFocused() ) {
+        return;
+    }
+    if ( TryPresenterShortcut( Key, KeyChar, Shift ) ) {
+        Key = 0;
+        KeyChar = 0;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -429,6 +492,30 @@ void __fastcall TfrmMain::actPanelVignettingUpdate(TObject *Sender)
     auto& Act = static_cast<TAction&>( *Sender );
     Act.Enabled = !ProjectorPanel || !ProjectorPanel->WindowMode;
 */
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actPanelBlackoutExecute(TObject *Sender)
+{
+    // Toggle the projector's black overlay. Read the live panel state (rather
+    // than the action's Checked) so UI clicks and the presenter key behave the
+    // same regardless of AutoCheck, then mirror it back onto Checked/the switch.
+    if ( auto Panel = ProjectorPanel ) {
+        bool const NewVal = !Panel->Blackout;
+        Panel->Blackout = NewVal;
+        actPanelBlackout->Checked = NewVal;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::actPanelBlackoutUpdate(TObject *Sender)
+{
+    // Only meaningful while projecting; keep the switch in sync with the panel
+    // and reset it once projection stops (the state is transient, not stored).
+    auto& Act = static_cast<TAction&>( *Sender );
+    auto Panel = ProjectorPanel;
+    Act.Enabled = Panel != nullptr;
+    Act.Checked = Panel && Panel->Blackout;
 }
 //---------------------------------------------------------------------------
 
