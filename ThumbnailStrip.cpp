@@ -25,26 +25,35 @@ __fastcall TThumbnailStrip::TThumbnailStrip( TComponent* Owner )
 }
 //---------------------------------------------------------------------------
 
-float TThumbnailStrip::ThumbHeight() const
+float TThumbnailStrip::ThumbWidth() const
 {
-    return max( 0.0f, paintThumbs->Height - 2 * Margin );
+    float const AvailW = paintThumbs->Width - 2 * Margin;
+    float const AvailH = paintThumbs->Height - 2 * Margin;
+    if ( AvailW <= 0 || AvailH <= 0 ) {
+        return 0.0f;
+    }
+    // Width of one of TargetVisibleCount equal slots that together span the
+    // strip, spacing included...
+    float const SlotW =
+        ( AvailW - ( TargetVisibleCount - 1 ) * Spacing ) / TargetVisibleCount;
+    // ...but never so wide that the thumbnail - whose shape follows the canvas
+    // aspect ratio - would be taller than the strip. Whichever limit bites
+    // first wins: the width for wide (16:9/16:10) ratios, the height for 4:3.
+    return max( 0.0f, min( SlotW, AvailH * thumbAspectRatio_ ) );
 }
 //---------------------------------------------------------------------------
 
-float TThumbnailStrip::ThumbWidth() const
+float TThumbnailStrip::ThumbHeight() const
 {
-    return ThumbHeight() * thumbAspectRatio_;
+    return ThumbWidth() / thumbAspectRatio_;
 }
 //---------------------------------------------------------------------------
 
 int TThumbnailStrip::VisibleCount() const
 {
-    float const Slot = ThumbWidth() + Spacing;
-    if ( Slot <= 0 ) {
-        return 0;
-    }
-    float const Avail = paintThumbs->Width - 2 * Margin + Spacing;
-    return max( 0, static_cast<int>( floor( Avail / Slot ) ) );
+    // Fixed by design so the count no longer shrinks for wider aspect ratios;
+    // ThumbWidth() is sized to make exactly this many fit.
+    return ThumbWidth() > 0 ? TargetVisibleCount : 0;
 }
 //---------------------------------------------------------------------------
 
@@ -201,7 +210,9 @@ void __fastcall TThumbnailStrip::paintThumbsPaint(
     int const First = FirstVisibleIndex();
     int const Vis = VisibleCount();
     float X = Margin;
-    float const Y = Margin;
+    // Centre the row vertically: for wide ratios the thumbnails are shorter than
+    // the strip, so a small band is left above and below.
+    float const Y = Margin + ( ( paintThumbs->Height - 2 * Margin ) - Th ) / 2;
 
     for ( int i = First; i < First + Vis && i < count_; ++i ) {
         TRectF const R( X, Y, X + Tw, Y + Th );

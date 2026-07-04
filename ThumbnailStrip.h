@@ -61,6 +61,10 @@ private:    // User declarations
 
     static constexpr float Margin = 4.0f;    // gap between strip edge and thumbs
     static constexpr float Spacing = 4.0f;   // gap between two thumbs
+    // Always show this many thumbnails, whatever the canvas aspect ratio: the
+    // thumbnail width is derived from the strip so exactly this many span it
+    // (the selected one in the middle, one on each side).
+    static constexpr int TargetVisibleCount = 3;
 
     void SetCount( int Val );
     void SetSelectedIndex( int Val );
