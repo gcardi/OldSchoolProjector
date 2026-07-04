@@ -15,8 +15,11 @@
   <img src="docs/assets/images/Animated.gif" alt="Old Slide Projector in action" width="760">
 </p>
 
-> **Works with JPG and PNG**, and **auto-rotates every shot** from its EXIF orientation,
-> so those sideways phone photos always show up straight — in the thumbnails and on screen.
+> **Works with every image format your Windows codecs can read** — JPG and PNG out of
+> the box, and **Canon / Nikon RAW** (CR2, CR3, NEF, ARW, DNG …) and more as soon as the
+> matching WIC codec is installed — and **auto-rotates every shot** from its EXIF
+> orientation, so those sideways phone photos always show up straight — in the thumbnails
+> and on screen.
 
 ## Overview
 
@@ -52,7 +55,11 @@ time.
   see what came before and what comes next; click any thumbnail to jump straight to it.
 - **Authentic "old school" feel** — the mechanical slide-change sound and the cooling-fan
   hum, with independent volume sliders and a sliding transition between slides.
-- **JPG & PNG**, decoded through the Windows Imaging Component (WIC) for accurate color.
+- **Any WIC-supported format**, decoded through the Windows Imaging Component (WIC) for
+  accurate color. JPG and PNG work out of the box; the list of accepted formats is read
+  from the codecs installed on your PC, so adding a codec pack (for example the
+  **Canon / Nikon RAW** camera codecs — CR2, CR3, NEF, ARW, DNG …) makes those files load
+  too, automatically and with no update to the program.
 - **Automatic EXIF rotation** — portraits are turned the right way up automatically, in the
   thumbnails and in the projection alike.
 - **"Contain" framing** — every photo is shown in full (letterboxed) with no cropping.
@@ -61,7 +68,6 @@ time.
 - **Pictures from any folder**, with optional recursive search through sub-folders.
 - **Keyboard friendly** — Page Up / Page Down move between slides even when the projector
   window has focus and the main window is tucked away in the tray.
-- **Network trigger** — advance the show remotely through a multicast event with an event code.
 - **Lives in the tray**, with minimize-to-tray and optional auto-start.
 
 ## Using it
