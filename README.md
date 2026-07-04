@@ -129,7 +129,7 @@ framework the app is built on (its headers are included as `anafestica/…`). To
 
 1. Clone **Anafestica** and make it available on the project's search path — the project
    looks for an `Anafestica\anafestica` folder, either alongside the project or in the shared
-   Embarcadero *Public Documents* library location.
+   Embarcadero $(BDSCOMMONDIR)\hpp library location.
 2. Open `OldSlideProjector.cbproj` in Embarcadero C++Builder (FireMonkey / FMX) and build the
    **Win64** target.
 
