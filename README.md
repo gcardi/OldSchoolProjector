@@ -66,6 +66,11 @@ time.
 - **Built-in test pattern (monoscope)** to line up and calibrate the target screen.
 - **Image controls** — keep aspect ratio, clipping, scaling and a vintage vignette effect.
 - **Pictures from any folder**, with optional recursive search through sub-folders.
+- **Works with presentation remotes** — most USB / Bluetooth presenter clickers act as a
+  plain keyboard, so their Next / Previous / Start / Stop / blank keys (and the usual
+  synonyms) drive the show whether the control window or the full-screen projector has focus.
+- **Black-screen toggle** — blank the projection to a full black screen and back with a
+  switch or the remote's blank button, while the projector window stays focused.
 - **Keyboard friendly** — Page Up / Page Down move between slides even when the projector
   window has focus and the main window is tucked away in the tray.
 - **Lives in the tray**, with minimize-to-tray and optional auto-start.
@@ -85,7 +90,26 @@ time.
   - **Click a thumbnail** — go to that photo (a neighboring one slides across by a single
     step, a distant one jumps straight there), with the mechanical sound and animation.
 - Set the mood with the **Vignetting** switch, the **Mechanism sound** and **Fan noise**
-  sliders, and the **Keep aspect ratio / Clipping / Scaling** controls.
+  sliders, and the **Keep aspect ratio / Clipping / Scaling** controls. Flip the **Black
+  screen** switch to blank the projection to black and back.
+
+## Presenter remotes & keyboard shortcuts
+
+Most USB / Bluetooth presentation clickers simply act as a keyboard, so Old Slide Projector
+reacts to the keys they send — and to the common synonyms different models use — **whether the
+control window or the full-screen projector has focus**:
+
+| Command | Keys |
+| --- | --- |
+| **Next slide** | Page Down · → · ↓ · Space · Enter |
+| **Previous slide** | Page Up · ← · ↑ · Backspace |
+| **Start** | F5 |
+| **Stop** | Esc · F6 |
+| **Black screen** (toggle) | B · . |
+
+Because these follow the de-facto PowerPoint slide-show keys, it works out of the box with most
+popular remotes (Logitech, Kensington and the many generic clones). Typing into a text field is
+never intercepted, so the shortcuts stay out of your way.
 
 ## Built for big libraries
 
