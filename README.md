@@ -93,6 +93,22 @@ time.
   sliders, and the **Keep aspect ratio / Clipping / Scaling** controls. Flip the **Black
   screen** switch to blank the projection to black and back.
 
+## In the system tray
+
+Old Slide Projector can tuck itself into the Windows **notification area (system tray)** and be
+run from there, so a show can sit ready without a window in the way:
+
+- **Minimize to tray** — minimizing the control window sends it to a tray icon instead of
+  leaving it on the taskbar.
+- **Double-click** the tray icon to bring the control window back (also available as **Open**
+  in the menu).
+- **Right-click** the tray icon for a full context menu: **Open** the window, **Start** /
+  **Stop** the show, **Show / Hide** the projector, **Monoscope**, **Autofit**, the
+  **Clipping / Scaling / Keep aspect ratio** toggles, and **Quit**.
+- **Auto-start** (in **Config…**) opens the projector on launch, and with **auto-minimize to
+  tray** it drops straight to the tray afterwards — so the app can come up already projecting
+  and be driven entirely from the tray menu or a presenter remote.
+
 ## Presenter remotes & keyboard shortcuts
 
 Most USB / Bluetooth presentation clickers simply act as a keyboard, so Old Slide Projector
