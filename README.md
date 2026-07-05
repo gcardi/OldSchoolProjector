@@ -16,10 +16,10 @@
 </p>
 
 > **Works with every image format your Windows codecs can read** — JPG and PNG out of
-> the box, and **Canon / Nikon RAW** (CR2, CR3, NEF, ARW, DNG …) and more as soon as the
-> matching WIC codec is installed — and **auto-rotates every shot** from its EXIF
-> orientation, so those sideways phone photos always show up straight — in the thumbnails
-> and on screen.
+> the box, plus **Canon / Nikon RAW** (CR2, CR3, NEF, ARW, DNG …) and more as soon as the
+> matching WIC codec is installed. It also **auto-rotates every shot** from its EXIF
+> orientation, so those sideways phone photos always show up straight, both in the
+> thumbnails and on screen.
 
 ## Overview
 
@@ -27,8 +27,8 @@ Old Slide Projector turns any Windows PC into a nostalgic slideshow machine. On 
 surface it is deliberately simple — a strip of thumbnails, a **Prev** and a **Next**
 button — but underneath it is built to stay smooth and responsive with photo libraries of
 **many thousands of images**, to drive a **second display** at full screen, and to get
-every picture's orientation and framing right without you having to think about it. Easy to
-use, quietly more capable than it looks.
+every picture's orientation and framing right without you having to think about it. It's easy
+to use, yet quietly more capable than it looks.
 
 ## Project onto a real screen
 
